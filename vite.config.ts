@@ -6,6 +6,9 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    port: 8080,
+  },
   base:
     process.env.NODE_ENV !== "development"
       ? "/programming-the-internet-tarea-2/"

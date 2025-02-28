@@ -1,4 +1,9 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  HeadContent,
+  Link,
+  Outlet,
+} from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 
 const TanStackRouterDevtools =
@@ -14,8 +19,12 @@ const TanStackRouterDevtools =
       );
 
 export const Route = createRootRoute({
+  head: () => ({
+    meta: [{ title: "My Store Test" }],
+  }),
   component: () => (
     <>
+      <HeadContent />
       <div className="flex gap-2 p-2">
         <Link to="/" className="[&.active]:font-bold">
           Home

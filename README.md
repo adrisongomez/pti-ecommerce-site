@@ -48,4 +48,16 @@ pnpm build # para buildear la version de produccion
 
 ### Notas del proyecto
 
-El proyecto se realizo utilizando `vite`, `swc`, `react` y `typescript`.
+El proyecto se realizo con la libreria de `react` en su version `v19` con `vite`, `typescript` y `SWC`.
+
+- `vite` es una herramienta de `bundling` muy utilizada en los ultimos años y se ha convertido en la herramienta de facto para la elaboracion de paginas web SPA sencillas.
+- `typescript` es un superset de javascript que añade muchos features al lenguaje como son los tipo de datos, decoradores y otro tipo de sintaxis. Este al compilar se convierte a javascript
+- `SWC` es una herramienta desarrollado por el equipo de Next.js que permite compilar codigo en typescript, tsx o jsx de una forma mucha raspida.
+
+Otras herramienta de desarrollo utilizadas son `husky`, `prettier` y `eslint`.
+
+- `prettier` es una herramienta que permite definir reglas de formato del codigo para asegurar un codigo homogeneo.
+- `eslint` es una herramienta que permite definir reglas y estilo de codigo para asegurar la consistencia en el codigo.
+- `husky` es una herramienta que permite ejecutar codigo arbitrario basado en eventos de git. En este caso, se utilizo en el event de `pre-commit` para asegurar que el codigo enviado a produccion, satisface las reglas y el formato establecidas por `eslint` y `prettier`.
+
+Como CSS framework se utilizo `tailwindcss`.

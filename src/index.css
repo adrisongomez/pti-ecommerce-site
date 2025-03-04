@@ -1,1 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
+
+:root {
+  --text-primary: #2e2e2e;
+  --text-accent: #948f8f;
+  --bg-main-light: #dfe7e8;
+  --bg-light: #f5f5f5;
+  --bg-main: #e0e8e9;
+  --bg-dark: #007297;
+  --background: linear-gradient(to bottom, #dfe7e8, #f5f5f5, #f5f5f5);
+  --btn-bg: #007297;
+  --bg-altern: white;
+}
+
+@layer base {
+  * {
+    font-family: "Montserrat", serif;
+  }
+  body {
+    background: var(--background);
+  }
+}

@@ -1,4 +1,4 @@
-import RootProvider from "./configs/providers/RootProvider";
+import RootProvider from "./globals/providers/RootProvider";
 
 function App() {
   return <RootProvider />;

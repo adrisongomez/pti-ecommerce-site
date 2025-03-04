@@ -1,16 +1,31 @@
 import { joinClass } from "@/globals/utilities/joinClass";
 import { ButtonHTMLAttributes, FC } from "react";
 
-type ButtonProps = {} & ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonVariantType = "contain" | "outline";
 
-const Button: FC<ButtonProps> = ({ ...props }) => {
+type ButtonProps = {
+  variant: ButtonVariantType;
+  disabled: boolean;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
+const Button: FC<ButtonProps> = ({ variant = "contain", ...props }) => {
   return (
     <button
       {...props}
       className={joinClass(
-        props.className ?? "p-2",
-        "cursor-pointer bg-(--bg-dark) text-white uppercase",
-        "transition-all duration-300 ease-in-out active:bg-(--bg-light) active:text-black",
+        props.className ?? "",
+        "box-content cursor-pointer px-6 py-2 uppercase",
+        "transition-all duration-300 ease-in-out",
+        "border border-solid border-(--bg-dark)",
+        ...(variant === "contain"
+          ? [
+              "bg-(--bg-dark)",
+              "text-white active:bg-(--bg-light) active:text-(--bg-dark)",
+            ]
+          : [
+              "text-(--bg-dark)",
+              "hover:bg-(--bg-dark) hover:text-white active:bg-(--bg-light) active:text-(--bg-dark)",
+            ]),
       )}
     ></button>
   );

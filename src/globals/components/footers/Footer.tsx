@@ -33,7 +33,9 @@ const Footer: FC = () => {
               name="userEmail"
               id="userEmail"
             />
-            <Button type="submit">Subscribe</Button>
+            <Button type="submit" variant="contained">
+              Subscribe
+            </Button>
           </form>
         </div>
         <FooterColumn label="About us">

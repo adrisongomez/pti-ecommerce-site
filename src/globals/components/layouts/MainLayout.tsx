@@ -31,7 +31,9 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           </div>
         }
       />
-      <main className="flex flex-1 flex-col">{children}</main>
+      <main className="m-auto block w-full max-w-7xl flex-1 bg-transparent px-5">
+        {children}
+      </main>
       <Footer />
     </div>
   );

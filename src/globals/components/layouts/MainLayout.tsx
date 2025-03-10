@@ -14,7 +14,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
     <div
       className={joinClass(
-        "font-monserat flex h-full min-h-screen",
+        "font-monserat flex h-full min-h-screen w-fit",
         "flex-col justify-between",
       )}
     >
@@ -31,7 +31,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           </div>
         }
       />
-      <main className="m-auto block w-full max-w-7xl flex-1 bg-transparent px-5">
+      <main className="m-auto mb-12 block w-full max-w-7xl flex-1 bg-transparent px-1.5">
         {children}
       </main>
       <Footer />

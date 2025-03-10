@@ -6,11 +6,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -21,11 +25,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -36,11 +44,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -51,11 +63,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -66,11 +82,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -81,11 +101,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -96,11 +120,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -111,11 +139,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -126,11 +158,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -141,11 +177,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -156,11 +196,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },
@@ -171,11 +215,15 @@ export const PRODUCTS = [
     label: "tuky",
     labelColor: "green",
     colorOptions: [
-      { colorSwatch: "black", imageUrl: "./assets/images/CSDWC4KW-WA.webp" },
       {
         colorSwatch: "green",
         imageUrl:
-          "./assets/images/dar-zira-monkey-table-lamp-gold-with-shade-amos-lighting-home_grande.webp",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX9xYU2loiqFRGd3S-_V2u1dkv542FhmlN7g&s",
+      },
+      {
+        colorSwatch: "black",
+        imageUrl:
+          "https://rukminim2.flixcart.com/image/850/1000/kj8wccw0-0/table-lamp/t/z/y/table-lamp-for-bedroom-and-drawing-room-big-gola-with-blue-original-imafyuwnuuxcypg9.jpeg?q=20&crop=false",
       },
     ],
   },

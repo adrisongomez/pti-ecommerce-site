@@ -17,7 +17,7 @@ declare module "@tanstack/react-router" {
 const RootProvider: FC = () => {
   return (
     <Fragment>
-      <IntlProvider locale="en_US" defaultLocale="en">
+      <IntlProvider locale="en" defaultLocale="en">
         <RouterProvider router={router} />
       </IntlProvider>
     </Fragment>

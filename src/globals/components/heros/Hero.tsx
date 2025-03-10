@@ -17,19 +17,14 @@ const Hero: FC<HeroProps> = ({
   imageUrl,
 }) => {
   return (
-    <div className="flex w-full flex-row">
-      <img
-        src={imageUrl}
-        alt="Hero Image"
-        width="40%"
-        className="flex-1 object-contain"
-      />
-      <section className="flex flex-1 flex-col items-start justify-center">
-        <h4 className="text-lg font-bold">{title}</h4>
-        <caption className="font-medium text-(--text-accent)">
+    <div className="mb-12 flex w-full gap-12 md:flex-col lg:flex-row lg:items-center">
+      <img src={imageUrl} alt="Hero Image" className="sm:w-full md:w-xl" />
+      <section className="flex flex-col items-start gap-6">
+        <h4 className="text-7xl font-bold">{title}</h4>
+        <caption className="text-lg text-(--text-accent)">
           {captionText}
         </caption>
-        <Button className="px-8 py-6" onClick={onActionClick}>
+        <Button className="px-8 py-2 text-lg" onClick={onActionClick}>
           {actionText}
         </Button>
       </section>

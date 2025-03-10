@@ -14,7 +14,7 @@ export const ContainButton: Story = {
   args: {
     children: "Primary Button",
     className: "",
-    variant: "contain",
+    variant: "contained",
   },
 };
 

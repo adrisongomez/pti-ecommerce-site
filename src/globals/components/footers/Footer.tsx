@@ -33,7 +33,7 @@ const Footer: FC = () => {
               name="userEmail"
               id="userEmail"
             />
-            <Button type="submit" variant="contained">
+            <Button type="submit" className="px-6 py-2" variant="contained">
               Subscribe
             </Button>
           </form>

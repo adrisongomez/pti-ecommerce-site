@@ -10,9 +10,10 @@ type FooterIconProps = {
 const FooterIcon: FC<FooterIconProps> = ({ Icon }) => {
   return (
     <Button
+      variant="contained"
       className={joinClass(
         "flex",
-        "items-center justify-center rounded-full p-2",
+        "w-fit items-center justify-center rounded-full p-2",
       )}
     >
       <Icon

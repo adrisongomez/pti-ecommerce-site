@@ -4,7 +4,7 @@ import { ButtonHTMLAttributes, FC } from "react";
 type ButtonVariantType = "contained" | "outline";
 
 type ButtonProps = {
-  variant: ButtonVariantType;
+  variant?: ButtonVariantType;
   disabled?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -18,7 +18,7 @@ const Button: FC<ButtonProps> = ({
       {...props}
       className={joinClass(
         props.className ?? "",
-        "box-content cursor-pointer px-6 py-2 uppercase",
+        "box-content cursor-pointer uppercase",
         "transition-all duration-300 ease-in-out",
         !disabled ? "border border-solid border-(--bg-dark)" : "",
         ...(disabled

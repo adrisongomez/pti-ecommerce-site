@@ -20,7 +20,7 @@ const Hero: FC<HeroProps> = ({
     <div className="mb-12 flex w-full gap-12 md:flex-col lg:flex-row lg:items-center">
       <img src={imageUrl} alt="Hero Image" className="sm:w-full md:w-xl" />
       <section className="flex flex-col items-start gap-6">
-        <h4 className="text-7xl font-bold">{title}</h4>
+        <h4 className="text-7xl font-bold text-(--bg-dark)">{title}</h4>
         <caption className="text-lg text-(--text-accent)">
           {captionText}
         </caption>

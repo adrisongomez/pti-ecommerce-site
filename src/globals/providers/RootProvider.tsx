@@ -1,5 +1,6 @@
 import { FC, Fragment } from "react";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { IntlProvider } from "react-intl";
 // Import the generated route tree
 import { routeTree } from "@/routeTree.gen";
 
@@ -16,7 +17,9 @@ declare module "@tanstack/react-router" {
 const RootProvider: FC = () => {
   return (
     <Fragment>
-      <RouterProvider router={router} />
+      <IntlProvider locale="en_US" defaultLocale="en">
+        <RouterProvider router={router} />
+      </IntlProvider>
     </Fragment>
   );
 };

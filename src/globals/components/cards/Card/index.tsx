@@ -9,8 +9,8 @@ type CardProps = {
 const Card: FC<CardProps> = ({ children, ...props }) => {
   return (
     <div
-      className={joinClass(props.className ?? "", "rounded-lg p-3 shadow")}
       {...props}
+      className={joinClass(props.className ?? "", "rounded-lg p-3 shadow-lg")}
     >
       {children}
     </div>

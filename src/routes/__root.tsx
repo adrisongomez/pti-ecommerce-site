@@ -16,12 +16,14 @@ export const Route = createRootRoute({
     meta: [{ title: "My Store Test" }],
   }),
   component: () => (
-    <MainLayout>
-      <HeadContent />
-      <Outlet />
+    <>
+      <MainLayout>
+        <HeadContent />
+        <Outlet />
+      </MainLayout>
       <Suspense>
         <TanStackRouterDevtools />
       </Suspense>
-    </MainLayout>
+    </>
   ),
 });

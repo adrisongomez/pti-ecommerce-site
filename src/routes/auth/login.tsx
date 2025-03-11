@@ -1,9 +1,14 @@
+import LoginForm from "@/libs/routes/auth/LoginForm";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth/login")({
-  component: RouteComponent,
+  component: LoginPage,
 });
 
-function RouteComponent() {
-  return <div>Hello "/auth/signin"!</div>;
+function LoginPage() {
+  return (
+    <div id="fuck" className="flex w-full items-center justify-center">
+      <LoginForm />
+    </div>
+  );
 }

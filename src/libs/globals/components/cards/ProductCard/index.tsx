@@ -1,4 +1,4 @@
-import { joinClass } from "@/globals/utilities/joinClass";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { FC, MouseEventHandler } from "react";
 import { ShoppingCart } from "react-feather";
 import { FormattedNumber } from "react-intl";

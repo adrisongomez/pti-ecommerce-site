@@ -1,13 +1,13 @@
 import { ReactNode } from "@tanstack/react-router";
 import { FC } from "react";
-import Navigation from "../navigations/Navigation";
-import Footer from "../footers/Footer";
-import { joinClass } from "@/globals/utilities/joinClass";
-import MainHeader from "../headers/MainHeader";
+import Navigation from "../../navigations/Navigation";
+import Footer from "../../footers/Footer";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
+import MainHeader from "../../headers/MainHeader";
 import { Smartphone, User } from "react-feather";
 
 type MainLayoutProps = {
-  children: ReactNode[];
+  children: ReactNode | ReactNode[];
 };
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {

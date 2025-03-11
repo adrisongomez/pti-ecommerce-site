@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import ProductCard from "@/globals/components/cards/ProductCard";
+import ProductCard from "@/libs/globals/components/cards/ProductCard";
 import { PRODUCTS } from "@/assets/data";
 import { IntlProvider } from "react-intl";
 

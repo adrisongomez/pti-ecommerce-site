@@ -1,4 +1,4 @@
-import { joinClass } from "@/globals/utilities/joinClass";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { ButtonHTMLAttributes, FC } from "react";
 
 type ButtonVariantType = "contained" | "outline";

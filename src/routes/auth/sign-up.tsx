@@ -1,15 +1,15 @@
 import SimpleCenterLayout from "@/libs/globals/components/layouts/SimpleCenterLayout";
-import LoginForm from "@/libs/routes/auth/LoginForm";
+import SignUpForm from "@/libs/routes/auth/SignUpForm";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/auth/login")({
-  component: LoginPage,
+export const Route = createFileRoute("/auth/sign-up")({
+  component: RouteComponent,
 });
 
-function LoginPage() {
+function RouteComponent() {
   return (
     <SimpleCenterLayout>
-      <LoginForm />
+      <SignUpForm />
     </SimpleCenterLayout>
   );
 }

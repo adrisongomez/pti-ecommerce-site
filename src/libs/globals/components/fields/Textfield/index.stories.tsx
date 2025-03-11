@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Textfield from "@/globals/components/fields/Textfield";
+import Textfield from "@/libs/globals/components/fields/Textfield";
 
 type TextfieldType = typeof Textfield;
 type Story = StoryObj<TextfieldType>;

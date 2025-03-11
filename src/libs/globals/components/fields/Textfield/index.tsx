@@ -1,4 +1,4 @@
-import { joinClass } from "@/globals/utilities/joinClass";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { FC, InputHTMLAttributes } from "react";
 
 type TextfieldProps = {

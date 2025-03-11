@@ -1,4 +1,4 @@
-import { joinClass } from "@/globals/utilities/joinClass";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { FC, Fragment } from "react";
 import { Facebook, Instagram, Youtube } from "react-feather";
 import FooterIcon from "./FooterIcon";

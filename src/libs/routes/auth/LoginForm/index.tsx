@@ -1,6 +1,6 @@
-import Button from "@/globals/components/buttons/Button";
-import Card from "@/globals/components/cards/Card/index";
-import Textfield from "@/globals/components/fields/Textfield";
+import Button from "@/libs/globals/components/buttons/Button";
+import Card from "@/libs/globals/components/cards/Card/index";
+import Textfield from "@/libs/globals/components/fields/Textfield";
 import { useRouter } from "@tanstack/react-router";
 import { useFormik } from "formik";
 import { FC } from "react";
@@ -28,14 +28,14 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
     },
     onReset() {
       router.navigate({
-        to: "/",
+        to: "/auth/sign-up",
       });
     },
   });
   return (
     <Card className="w-full max-w-lg bg-(--bg-light) px-10">
       <form
-        className="flex w-full flex-1 flex-col gap-2 px-4 py-6"
+        className="flex w-full flex-col gap-2 px-4 py-6"
         onSubmit={formik.handleSubmit}
         onReset={formik.handleReset}
       >

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Card from "@/globals/components/cards/Card/index";
+import Card from "@/libs/globals/components/cards/Card/index";
 
 type CardType = typeof Card;
 type Story = StoryObj<CardType>;

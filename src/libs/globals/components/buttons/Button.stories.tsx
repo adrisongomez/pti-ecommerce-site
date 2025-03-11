@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import Button from "@/globals/components/buttons/Button";
+import Button from "@/libs/globals/components/buttons/Button";
 
 type ButtonType = typeof Button;
 

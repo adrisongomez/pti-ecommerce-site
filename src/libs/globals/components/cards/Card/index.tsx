@@ -1,4 +1,4 @@
-import { joinClass } from "@/globals/utilities/joinClass";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { ReactNode } from "@tanstack/react-router";
 import { FC, HTMLAttributes } from "react";
 

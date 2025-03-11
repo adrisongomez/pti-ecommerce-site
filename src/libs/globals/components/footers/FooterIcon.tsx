@@ -1,4 +1,4 @@
-import { joinClass } from "@/globals/utilities/joinClass";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { FC } from "react";
 import { Icon } from "react-feather";
 import Button from "../buttons/Button";

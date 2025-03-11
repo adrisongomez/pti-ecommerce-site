@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import HeroComponent from "@/globals/components/heros/Hero";
+import HeroComponent from "@/libs/globals/components/heros/Hero";
 
 type Story = StoryObj<typeof HeroComponent>;
 

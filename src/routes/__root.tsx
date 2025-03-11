@@ -1,4 +1,3 @@
-import MainLayout from "@/globals/components/layouts/MainLayout";
 import { createRootRoute, HeadContent, Outlet } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 
@@ -17,10 +16,8 @@ export const Route = createRootRoute({
   }),
   component: () => (
     <>
-      <MainLayout>
-        <HeadContent />
-        <Outlet />
-      </MainLayout>
+      <HeadContent />
+      <Outlet />
       <Suspense>
         <TanStackRouterDevtools />
       </Suspense>

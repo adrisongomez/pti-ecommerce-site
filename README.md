@@ -61,3 +61,17 @@ Otras herramienta de desarrollo utilizadas son `husky`, `prettier` y `eslint`.
 - `husky` es una herramienta que permite ejecutar codigo arbitrario basado en eventos de git. En este caso, se utilizo en el event de `pre-commit` para asegurar que el codigo enviado a produccion, satisface las reglas y el formato establecidas por `eslint` y `prettier`.
 
 Como CSS framework se utilizo `tailwindcss`.
+
+Para routing en la aplicacion se utilizo [Tankstack Router](https://tanstack.com/router/latest), una alternativa a [React-Router](https://reactrouter.com/), este provee muchas ventajas como code split automatico lo que hace que el `page-load` de la pagina sea mas eficiente, File-base routes lo que permite organizar mejor el proyecto.
+
+Para validacion se utilizo [Yup](https://www.npmjs.com/package/yup) que es una libreria que permite crear validationSchemas para validar los objectos que se van a construir en nuestros formulario.
+
+Para form state management se utilizo [Formik](https://formik.org/) provee una API simple y intuitiva a la hora de manejar form state, ademas que presenta soporte para los validationSchema creados com **Yup**.
+
+Tambien se utilizo como UI Sanbox and Testing Tool. [Storybook](https://storybook.js.org/). Una herramient que permite ir desarrollando los components de nuestra App de manera individual, ademas proveer un playground donde probar nuestros components.
+
+## Demo video de los forms para Login y Sign Up
+
+https://github.com/user-attachments/assets/ad119461-e6d6-44fc-98f9-733600ce36c6
+
+

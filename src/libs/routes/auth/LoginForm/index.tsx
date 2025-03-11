@@ -51,6 +51,7 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.email && Boolean(formik.errors.email)}
         />
         <Textfield
           required
@@ -61,6 +62,7 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
         />
         <div className="mt-6 flex gap-3">
           <Button className="flex-1 py-1.5" type="submit" variant="contained">

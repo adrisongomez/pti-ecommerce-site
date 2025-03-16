@@ -5,7 +5,11 @@ type SignUpFormType = typeof SignUpForm;
 type Story = StoryObj<SignUpFormType>;
 
 const meta: Meta<SignUpFormType> = {
-  component: SignUpForm,
+  component: (props) => (
+    <div className="flex w-full items-center justify-center">
+      <SignUpForm {...props} />
+    </div>
+  ),
 };
 
 export const DefaultSignUpForm: Story = {};

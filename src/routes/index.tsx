@@ -2,6 +2,8 @@ import { PRODUCTS } from "@/assets/data";
 import ProductCard from "@/libs/globals/components/cards/ProductCard";
 import Hero from "@/libs/globals/components/heros/Hero";
 import MainLayout from "@/libs/globals/components/layouts/MainLayout";
+import SectionTitle from "@/libs/globals/components/sections/SectionTitle";
+import CollectionsSection from "@/libs/routes/home/CollectionsSection";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -23,9 +25,9 @@ function HomePage() {
           onActionClick={console.log}
         />
         <section className="flex w-full flex-col items-start md:gap-3 xl:gap-6 2xl:flex-row">
-          <h3 className="mb-3 text-2xl font-medium text-(--text-accent) uppercase md:mr-[inherit] xl:mr-56">
+          <SectionTitle className="mb-3 md:mr-[inherit] xl:mr-56">
             Products
-          </h3>
+          </SectionTitle>
           <div className="flex w-full flex-1 flex-col flex-wrap items-stretch gap-6 sm:flex-row lg:gap-6">
             {PRODUCTS.map((p, i) => (
               <ProductCard
@@ -39,6 +41,11 @@ function HomePage() {
               />
             ))}
           </div>
+        </section>
+
+        <section>
+          <SectionTitle className="mb-4">Categories</SectionTitle>
+          <CollectionsSection />
         </section>
       </div>
     </MainLayout>

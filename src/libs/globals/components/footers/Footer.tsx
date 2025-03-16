@@ -17,7 +17,7 @@ const Footer: FC = () => {
           "bg-(--bg-main) px-12 py-8 md:flex-row",
         )}
       >
-        <div className="flex w-full flex-2 flex-col gap-2">
+        <div className="flex w-full flex-2 flex-col gap-2 md:mr-36">
           <FooterTitle label="Follow Us" />
           <div className="flex flex-row gap-4 text-black">
             <FooterIcon Icon={Facebook} />

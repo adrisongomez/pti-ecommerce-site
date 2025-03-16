@@ -8,13 +8,13 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [{ title: "Home Page" }],
   }),
-  component: RouteComponent,
+  component: HomePage,
 });
 
-function RouteComponent() {
+function HomePage() {
   return (
     <MainLayout>
-      <div className="w-full">
+      <div className="w-full p-6 lg:p-[auto]">
         <Hero
           title="Lights up Your Home"
           actionText="Read more"
@@ -22,14 +22,14 @@ function RouteComponent() {
           imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
           onActionClick={console.log}
         />
-        <section className="w-full md:flex-col md:gap-3 xl:flex-row xl:gap-6">
-          <h3 className="text-2xl text-(--text-accent) uppercase">Products</h3>
-          <div
-            id="collection-section"
-            className="mt-6 flex flex-1 flex-wrap gap-6"
-          >
-            {PRODUCTS.map((p) => (
+        <section className="flex w-full flex-col items-start md:gap-3 xl:gap-6 2xl:flex-row">
+          <h3 className="mb-3 text-2xl font-medium text-(--text-accent) uppercase md:mr-[inherit] xl:mr-56">
+            Products
+          </h3>
+          <div className="flex w-full flex-1 flex-col flex-wrap items-stretch gap-6 sm:flex-row lg:gap-6">
+            {PRODUCTS.map((p, i) => (
               <ProductCard
+                key={`product-card-${i}`}
                 title={p.name}
                 variants={p.colorOptions.map((v) => ({
                   imageUrl: v.imageUrl,

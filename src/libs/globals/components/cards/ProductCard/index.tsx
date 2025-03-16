@@ -28,10 +28,9 @@ const ProductCard: FC<ProductCardProps> = ({
   ];
   const imageUrl = variants.at(0)?.imageUrl;
   return (
-    <article className="w-4xs flex flex-col gap-3">
+    <article className="mb-6 flex w-fit flex-col gap-3">
       <img
-        width="100%"
-        className="h-[240px] object-contain object-top"
+        className="w-lg object-cover object-top sm:w-xs md:w-2xs lg:w-3xs"
         src={imageUrl}
       />
       <div className="flex items-center justify-between">
@@ -68,9 +67,9 @@ const ProductCard: FC<ProductCardProps> = ({
         </div>
         <button
           onClick={onAddToCarcClick}
-          className="cursor-pointer rounded-md border-none bg-white p-1 shadow shadow-black outline-none"
+          className="cursor-pointer rounded-md border-none bg-white p-2 shadow outline-none"
         >
-          <ShoppingCart className="color-(--bg-main) fill-(--bg-main)" />
+          <ShoppingCart size={12} className="fill-(--bg-main)" />
         </button>
       </div>
     </article>

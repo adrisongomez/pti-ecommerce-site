@@ -1,5 +1,6 @@
 import { PRODUCTS } from "@/assets/data";
 import ProductCard from "@/libs/globals/components/cards/ProductCard";
+import Gallery from "@/libs/globals/components/galleries/Gallery";
 import Hero from "@/libs/globals/components/heros/Hero";
 import MainLayout from "@/libs/globals/components/layouts/MainLayout";
 import SectionTitle from "@/libs/globals/components/sections/SectionTitle";
@@ -16,15 +17,31 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   return (
     <MainLayout>
-      <div className="w-full p-6 lg:p-[auto]">
-        <Hero
-          title="Lights up Your Home"
-          actionText="Read more"
-          captionText="They can easily highlight your dining room decor and area a great accessory."
-          imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
-          onActionClick={console.log}
-        />
-        <section className="mb-8 flex w-full flex-col items-start md:gap-3 xl:gap-6 2xl:flex-row">
+      <div className="flex w-full flex-col gap-20 p-6 lg:p-[auto]">
+        <Gallery>
+          <Hero
+            title="Lights up Your Home"
+            actionText="Read more"
+            captionText="They can easily highlight your dining room decor and area a great accessory."
+            imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
+            onActionClick={console.log}
+          />
+          <Hero
+            title="Lights up Your Home"
+            actionText="Read more"
+            captionText="They can easily highlight your dining room decor and area a great accessory."
+            imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
+            onActionClick={console.log}
+          />
+          <Hero
+            title="Lights up Your Home"
+            actionText="Read more"
+            captionText="They can easily highlight your dining room decor and area a great accessory."
+            imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
+            onActionClick={console.log}
+          />
+        </Gallery>
+        <section className="flex w-full flex-col items-start md:gap-3 xl:gap-6 2xl:flex-row">
           <SectionTitle className="mb-3 md:mr-[inherit] xl:mr-56">
             Products
           </SectionTitle>
@@ -42,9 +59,12 @@ function HomePage() {
             ))}
           </div>
         </section>
-        <section className="mb-8">
-          <SectionTitle className="mb-4">Categories</SectionTitle>
+        <section>
+          <SectionTitle className="mb-12">Categories</SectionTitle>
           <CollectionsSection />
+        </section>
+        <section>
+          <SectionTitle className="mb-12">Clearance Sale</SectionTitle>
         </section>
       </div>
     </MainLayout>

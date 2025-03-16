@@ -1,5 +1,5 @@
 import { joinClass } from "@/libs/globals/utilities/joinClass";
-import { FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 import { ShoppingCart } from "react-feather";
 import { FormattedNumber } from "react-intl";
 
@@ -21,18 +21,38 @@ const ProductCard: FC<ProductCardProps> = ({
   variants,
   title,
   onAddToCarcClick,
+  label,
 }) => {
+  const [currentPosition, setCurrentPosition] = useState<number | null>();
   const [lower, max] = [
     Math.min(...variants.map((v) => v.price)),
     Math.max(...variants.map((v) => v.price)),
   ];
-  const imageUrl = variants.at(0)?.imageUrl;
+  const currentVariant = variants.at(currentPosition ?? 0);
+  const imageUrl = currentVariant?.imageUrl ?? "placeholder";
   return (
-    <article className="mb-6 flex w-fit flex-col gap-3">
+    <article className="relative mb-6 flex w-fit flex-col gap-3">
+      {label && (
+        <span
+          className="absolute top-4 -left-3 w-[10ch] text-center font-bold tracking-widest text-white uppercase"
+          style={{ background: label.color }}
+        >
+          {label.labelTitle}
+        </span>
+      )}
       <img
         className="w-lg object-cover object-top sm:w-xs md:w-2xs lg:w-3xs"
         src={imageUrl}
       />
+      <div className="flex flex-row gap-4">
+        {variants.map((v, i) => (
+          <div
+            onClick={() => setCurrentPosition(i)}
+            style={{ background: v.colorSwatch }}
+            className={joinClass(`size-4 rounded-full`, "cursor-pointer")}
+          />
+        ))}
+      </div>
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-start gap-0.5">
           <span
@@ -52,24 +72,34 @@ const ProductCard: FC<ProductCardProps> = ({
             )}
           >
             ${" "}
-            <FormattedNumber
-              value={lower}
-              maximumSignificantDigits={2}
-              minimumFractionDigits={2}
-            />{" "}
-            -{" "}
-            <FormattedNumber
-              value={max}
-              maximumSignificantDigits={2}
-              minimumFractionDigits={2}
-            />
+            {currentVariant && currentPosition !== null ? (
+              <FormattedNumber
+                value={currentVariant.price}
+                maximumSignificantDigits={2}
+                minimumFractionDigits={2}
+              />
+            ) : (
+              <>
+                <FormattedNumber
+                  value={lower}
+                  maximumSignificantDigits={2}
+                  minimumFractionDigits={2}
+                />{" "}
+                -{" "}
+                <FormattedNumber
+                  value={max}
+                  maximumSignificantDigits={2}
+                  minimumFractionDigits={2}
+                />{" "}
+              </>
+            )}
           </span>
         </div>
         <button
           onClick={onAddToCarcClick}
           className="cursor-pointer rounded-md border-none bg-white p-2 shadow outline-none"
         >
-          <ShoppingCart size={12} className="fill-(--bg-main)" />
+          <ShoppingCart size={18} className="fill-(--bg-main)" />
         </button>
       </div>
     </article>

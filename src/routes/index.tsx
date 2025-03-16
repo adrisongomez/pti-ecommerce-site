@@ -28,8 +28,8 @@ function HomePage() {
           <SectionTitle className="mb-3 md:mr-[inherit] xl:mr-56">
             Products
           </SectionTitle>
-          <div className="flex w-full flex-1 flex-col flex-wrap items-stretch gap-6 sm:flex-row lg:gap-6">
-            {PRODUCTS.map((p, i) => (
+          <div className="mb-6 flex w-full flex-1 flex-col flex-wrap items-stretch gap-6 sm:flex-row lg:gap-6">
+            {PRODUCTS.slice(0, 6).map((p, i) => (
               <ProductCard
                 key={`product-card-${i}`}
                 title={p.name}
@@ -42,7 +42,6 @@ function HomePage() {
             ))}
           </div>
         </section>
-
         <section>
           <SectionTitle className="mb-4">Categories</SectionTitle>
           <CollectionsSection />

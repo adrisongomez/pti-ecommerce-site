@@ -1,7 +1,8 @@
 import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { FC, MouseEventHandler, useState } from "react";
-import { ShoppingCart } from "react-feather";
+import { Heart, ShoppingCart } from "react-feather";
 import { FormattedNumber } from "react-intl";
+import IconButton from "../../buttons/IconButton";
 
 type ProductCardProps = {
   onAddToCarcClick?: MouseEventHandler<HTMLButtonElement>;
@@ -40,6 +41,11 @@ const ProductCard: FC<ProductCardProps> = ({
           {label.labelTitle}
         </span>
       )}
+      <div className="absolute top-3 right-2">
+        <IconButton>
+          <Heart size={16} />
+        </IconButton>
+      </div>
       <img
         className="w-lg object-cover object-top sm:w-xs md:w-2xs lg:w-3xs"
         src={imageUrl}

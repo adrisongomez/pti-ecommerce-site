@@ -18,7 +18,7 @@ const Button: FC<ButtonProps> = ({
       {...props}
       className={joinClass(
         props.className ?? "",
-        "box-content cursor-pointer uppercase",
+        "box-content cursor-pointer px-4 uppercase",
         "transition-all duration-300 ease-in-out",
         !disabled ? "border border-solid border-(--bg-dark)" : "",
         ...(disabled

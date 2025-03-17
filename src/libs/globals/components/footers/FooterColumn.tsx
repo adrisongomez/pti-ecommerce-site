@@ -9,9 +9,9 @@ type FooterColumnProps = {
 
 const FooterColumn: FC<FooterColumnProps> = ({ label, children }) => {
   return (
-    <div className="flex-1">
+    <div className="flex flex-1 flex-col gap-3">
       <FooterTitle label={label} />
-      <div className="flex flex-col">{children}</div>
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
 };

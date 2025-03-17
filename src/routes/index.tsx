@@ -3,6 +3,8 @@ import ProductCard from "@/libs/globals/components/cards/ProductCard";
 import MainLayout from "@/libs/globals/components/layouts/MainLayout";
 import SectionTitle from "@/libs/globals/components/sections/SectionTitle";
 import CollectionsSection from "@/libs/routes/home/CollectionsSection";
+import FeatureProductsGallery from "@/libs/routes/home/FeatureProductsGallery";
+import InstagramFeed from "@/libs/routes/home/InstagramFeed";
 import MainHeroGallery from "@/libs/routes/home/MainHeroGallery";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -39,11 +41,16 @@ function HomePage() {
           </div>
         </section>
         <section>
-          <SectionTitle className="mb-12">Categories</SectionTitle>
+          <SectionTitle>Categories</SectionTitle>
           <CollectionsSection />
         </section>
         <section>
-          <SectionTitle className="mb-12">Clearance Sale</SectionTitle>
+          <SectionTitle>Clearance Sale</SectionTitle>
+          <FeatureProductsGallery />
+        </section>
+        <section>
+          <SectionTitle>Our Instagram</SectionTitle>
+          <InstagramFeed />
         </section>
       </div>
     </MainLayout>

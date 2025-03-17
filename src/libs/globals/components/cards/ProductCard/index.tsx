@@ -47,7 +47,7 @@ const ProductCard: FC<ProductCardProps> = ({
         </IconButton>
       </div>
       <img
-        className="w-lg object-cover object-top sm:w-xs md:w-2xs lg:w-3xs"
+        className="w-lg rounded object-cover object-top sm:w-xs md:w-2xs lg:w-3xs"
         src={imageUrl}
       />
       <div className="flex flex-row gap-4">

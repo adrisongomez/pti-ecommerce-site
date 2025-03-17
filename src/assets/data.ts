@@ -228,3 +228,36 @@ export const PRODUCTS = [
     ],
   },
 ];
+
+export const FEED_INSTAGRAM = [
+  {
+    imageUrl: "https://m.media-amazon.com/images/I/71xaR3qz7TL.jpg",
+    hieght: 300,
+    width: 200,
+  },
+  {
+    imageUrl: "https://m.media-amazon.com/images/I/71xaR3qz7TL.jpg",
+    hieght: 300,
+    width: 200,
+  },
+  {
+    imageUrl: "https://m.media-amazon.com/images/I/71xaR3qz7TL.jpg",
+    hieght: 300,
+    width: 200,
+  },
+  {
+    imageUrl: "https://m.media-amazon.com/images/I/71xaR3qz7TL.jpg",
+    hieght: 300,
+    width: 200,
+  },
+  {
+    imageUrl: "https://m.media-amazon.com/images/I/71xaR3qz7TL.jpg",
+    hieght: 300,
+    width: 200,
+  },
+  {
+    imageUrl: "https://m.media-amazon.com/images/I/71xaR3qz7TL.jpg",
+    hieght: 300,
+    width: 200,
+  },
+];

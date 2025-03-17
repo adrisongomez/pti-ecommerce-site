@@ -8,7 +8,7 @@ const SectionTitle: FC<{ children: ReactNode; className?: string }> = ({
   <h3
     className={joinClass(
       className,
-      "text-2xl font-medium text-(--text-accent) uppercase",
+      "mb-12 text-2xl font-medium text-(--text-accent) uppercase",
     )}
   >
     {children}

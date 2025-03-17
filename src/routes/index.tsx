@@ -1,10 +1,9 @@
 import { PRODUCTS } from "@/assets/data";
 import ProductCard from "@/libs/globals/components/cards/ProductCard";
-import Gallery from "@/libs/globals/components/galleries/Gallery";
-import Hero from "@/libs/globals/components/heros/Hero";
 import MainLayout from "@/libs/globals/components/layouts/MainLayout";
 import SectionTitle from "@/libs/globals/components/sections/SectionTitle";
 import CollectionsSection from "@/libs/routes/home/CollectionsSection";
+import MainHeroGallery from "@/libs/routes/home/MainHeroGallery";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -18,29 +17,9 @@ function HomePage() {
   return (
     <MainLayout>
       <div className="flex w-full flex-col gap-20 p-6 lg:p-[auto]">
-        <Gallery>
-          <Hero
-            title="Lights up Your Home"
-            actionText="Read more"
-            captionText="They can easily highlight your dining room decor and area a great accessory."
-            imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
-            onActionClick={console.log}
-          />
-          <Hero
-            title="Lights up Your Home"
-            actionText="Read more"
-            captionText="They can easily highlight your dining room decor and area a great accessory."
-            imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
-            onActionClick={console.log}
-          />
-          <Hero
-            title="Lights up Your Home"
-            actionText="Read more"
-            captionText="They can easily highlight your dining room decor and area a great accessory."
-            imageUrl="https://shop.getty.edu/cdn/shop/products/G019AH_1200x.jpg?v=1621057374"
-            onActionClick={console.log}
-          />
-        </Gallery>
+        <section className="w-full">
+          <MainHeroGallery />
+        </section>
         <section className="flex w-full flex-col items-start md:gap-3 xl:gap-6 2xl:flex-row">
           <SectionTitle className="mb-3 md:mr-[inherit] xl:mr-56">
             Products

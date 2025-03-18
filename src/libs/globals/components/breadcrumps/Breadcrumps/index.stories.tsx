@@ -10,7 +10,7 @@ const meta: Meta<BreadcrumpsType> = {
 
 export const DefaultBreadcrumps: Story = {
   args: {
-    crumps: [{ label: "Previous", path: "/previous" }],
+    crumps: [{ label: "Previous", to: "/" }],
     currentCrump: "Current",
   },
 };

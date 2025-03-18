@@ -26,7 +26,7 @@ const Button: FC<ButtonProps> = ({
           : variant === "contained"
             ? [
                 "bg-(--bg-dark)",
-                "text-white active:bg-(--bg-light) active:text-(--bg-dark)",
+                "text-white hover:bg-(--bg-main) hover:text-(--bg-dark) active:bg-(--bg-light) active:text-(--bg-dark)",
               ]
             : [
                 "text-(--bg-dark)",

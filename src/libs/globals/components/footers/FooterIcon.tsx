@@ -13,14 +13,11 @@ const FooterIcon: FC<FooterIconProps> = ({ Icon }) => {
       variant="contained"
       className={joinClass(
         "flex",
-        "w-fit items-center justify-center rounded-full p-2",
+        "size-6 items-center justify-center rounded-full p-4 shadow transition-all duration-100 ease-in-out hover:bg-white",
+        "text-white hover:text-(--bg-dark)",
       )}
     >
-      <Icon
-        color="white"
-        className="shadow transition-all duration-300 ease-in-out active:invert-100"
-        size={18}
-      />
+      <Icon />
     </Button>
   );
 };

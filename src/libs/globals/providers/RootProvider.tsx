@@ -5,7 +5,13 @@ import { IntlProvider } from "react-intl";
 import { routeTree } from "@/routeTree.gen";
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  basepath:
+    process.env.NODE_ENV !== "development"
+      ? "/programming-the-internet-tarea-2/"
+      : undefined, // this is just for enable github pages
+});
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {

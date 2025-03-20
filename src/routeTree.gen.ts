@@ -16,6 +16,7 @@ import { Route as UsersIndexImport } from "./routes/users/index";
 import { Route as CheckoutIndexImport } from "./routes/checkout/index";
 import { Route as CategoriesIndexImport } from "./routes/categories/index";
 import { Route as CartsIndexImport } from "./routes/carts/index";
+import { Route as ProductsProductIdImport } from "./routes/products.$productId";
 import { Route as AuthSignUpImport } from "./routes/auth/sign-up";
 import { Route as AuthLoginImport } from "./routes/auth/login";
 import { Route as UsersOrdersIndexImport } from "./routes/users/orders/index";
@@ -54,6 +55,12 @@ const CategoriesIndexRoute = CategoriesIndexImport.update({
 const CartsIndexRoute = CartsIndexImport.update({
   id: "/carts/",
   path: "/carts/",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const ProductsProductIdRoute = ProductsProductIdImport.update({
+  id: "/products/$productId",
+  path: "/products/$productId",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -132,6 +139,13 @@ declare module "@tanstack/react-router" {
       path: "/auth/sign-up";
       fullPath: "/auth/sign-up";
       preLoaderRoute: typeof AuthSignUpImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/products/$productId": {
+      id: "/products/$productId";
+      path: "/products/$productId";
+      fullPath: "/products/$productId";
+      preLoaderRoute: typeof ProductsProductIdImport;
       parentRoute: typeof rootRoute;
     };
     "/carts/": {
@@ -213,6 +227,7 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/auth/login": typeof AuthLoginRoute;
   "/auth/sign-up": typeof AuthSignUpRoute;
+  "/products/$productId": typeof ProductsProductIdRoute;
   "/carts": typeof CartsIndexRoute;
   "/categories": typeof CategoriesIndexRoute;
   "/checkout": typeof CheckoutIndexRoute;
@@ -229,6 +244,7 @@ export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/auth/login": typeof AuthLoginRoute;
   "/auth/sign-up": typeof AuthSignUpRoute;
+  "/products/$productId": typeof ProductsProductIdRoute;
   "/carts": typeof CartsIndexRoute;
   "/categories": typeof CategoriesIndexRoute;
   "/checkout": typeof CheckoutIndexRoute;
@@ -246,6 +262,7 @@ export interface FileRoutesById {
   "/": typeof IndexRoute;
   "/auth/login": typeof AuthLoginRoute;
   "/auth/sign-up": typeof AuthSignUpRoute;
+  "/products/$productId": typeof ProductsProductIdRoute;
   "/carts/": typeof CartsIndexRoute;
   "/categories/": typeof CategoriesIndexRoute;
   "/checkout/": typeof CheckoutIndexRoute;
@@ -264,6 +281,7 @@ export interface FileRouteTypes {
     | "/"
     | "/auth/login"
     | "/auth/sign-up"
+    | "/products/$productId"
     | "/carts"
     | "/categories"
     | "/checkout"
@@ -279,6 +297,7 @@ export interface FileRouteTypes {
     | "/"
     | "/auth/login"
     | "/auth/sign-up"
+    | "/products/$productId"
     | "/carts"
     | "/categories"
     | "/checkout"
@@ -294,6 +313,7 @@ export interface FileRouteTypes {
     | "/"
     | "/auth/login"
     | "/auth/sign-up"
+    | "/products/$productId"
     | "/carts/"
     | "/categories/"
     | "/checkout/"
@@ -311,6 +331,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   AuthLoginRoute: typeof AuthLoginRoute;
   AuthSignUpRoute: typeof AuthSignUpRoute;
+  ProductsProductIdRoute: typeof ProductsProductIdRoute;
   CartsIndexRoute: typeof CartsIndexRoute;
   CategoriesIndexRoute: typeof CategoriesIndexRoute;
   CheckoutIndexRoute: typeof CheckoutIndexRoute;
@@ -327,6 +348,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignUpRoute: AuthSignUpRoute,
+  ProductsProductIdRoute: ProductsProductIdRoute,
   CartsIndexRoute: CartsIndexRoute,
   CategoriesIndexRoute: CategoriesIndexRoute,
   CheckoutIndexRoute: CheckoutIndexRoute,
@@ -355,6 +377,7 @@ export const routeTree = rootRoute
         "/",
         "/auth/login",
         "/auth/sign-up",
+        "/products/$productId",
         "/carts/",
         "/categories/",
         "/checkout/",
@@ -375,6 +398,9 @@ export const routeTree = rootRoute
     },
     "/auth/sign-up": {
       "filePath": "auth/sign-up.tsx"
+    },
+    "/products/$productId": {
+      "filePath": "products.$productId.tsx"
     },
     "/carts/": {
       "filePath": "carts/index.tsx"

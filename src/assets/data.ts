@@ -1,5 +1,6 @@
 export const PRODUCTS = [
   {
+    id: 1,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "rgb(0,0,0)",
@@ -19,6 +20,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 2,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "#00FF00",
@@ -38,6 +40,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 3,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "rgb(0,0,0)",
@@ -57,6 +60,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 4,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "#00FF00",
@@ -76,6 +80,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 5,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "rgb(0,0,0)",
@@ -95,6 +100,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 6,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "#00FF00",
@@ -114,6 +120,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 7,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "rgb(0,0,0)",
@@ -133,6 +140,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 8,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "#00FF00",
@@ -152,6 +160,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 9,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "rgb(0,0,0)",
@@ -171,6 +180,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 10,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "#00FF00",
@@ -190,6 +200,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 11,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "rgb(0,0,0)",
@@ -209,6 +220,7 @@ export const PRODUCTS = [
     ],
   },
   {
+    id: 12,
     name: "Bedside Lamp Grey Lima",
     priceRange: "268 - 315",
     mainColor: "#00FF00",

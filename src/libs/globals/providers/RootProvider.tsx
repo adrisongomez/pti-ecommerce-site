@@ -1,8 +1,12 @@
-import { FC, Fragment } from "react";
+import { FC } from "react";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { IntlProvider } from "react-intl";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 // Import the generated route tree
 import { routeTree } from "@/routeTree.gen";
+
+const queryClient = new QueryClient({});
 
 // Create a new router instance
 const router = createRouter({
@@ -11,6 +15,9 @@ const router = createRouter({
     process.env.NODE_ENV !== "development"
       ? "/programming-the-internet-tarea-2/"
       : undefined, // this is just for enable github pages
+  context: {
+    queryClient,
+  },
 });
 
 // Register the router instance for type safety
@@ -22,11 +29,11 @@ declare module "@tanstack/react-router" {
 
 const RootProvider: FC = () => {
   return (
-    <Fragment>
+    <QueryClientProvider client={queryClient}>
       <IntlProvider locale="en" defaultLocale="en">
         <RouterProvider router={router} />
       </IntlProvider>
-    </Fragment>
+    </QueryClientProvider>
   );
 };
 

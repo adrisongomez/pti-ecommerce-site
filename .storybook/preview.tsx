@@ -9,6 +9,9 @@ import {
   createRootRoute,
   createRouter,
 } from "@tanstack/react-router";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+initialize();
 
 const preview: Preview = {
   parameters: {
@@ -19,6 +22,7 @@ const preview: Preview = {
       },
     },
   },
+  loaders: [mswLoader],
   decorators: [
     (Story) => {
       return (

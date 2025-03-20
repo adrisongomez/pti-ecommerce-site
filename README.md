@@ -54,3 +54,9 @@ Para validacion se utilizo [Yup](https://www.npmjs.com/package/yup) que es una l
 Para form state management se utilizo [Formik](https://formik.org/) provee una API simple y intuitiva a la hora de manejar form state, ademas que presenta soporte para los validationSchema creados com **Yup**.
 
 Tambien se utilizo como UI Sanbox and Testing Tool. [Storybook](https://storybook.js.org/). Una herramient que permite ir desarrollando los components de nuestra App de manera individual, ademas proveer un playground donde probar nuestros components.
+
+### TODOs
+
+- [ ] Implement [TankStack Query](https://tanstack.com/query/latest)
+- [ ] Implement [OpenAPI Client generation]()
+- [x] Implement [Mock Service Worker](https://mswjs.io/)

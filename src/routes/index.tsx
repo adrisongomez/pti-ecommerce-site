@@ -6,7 +6,7 @@ import CollectionsSection from "@/libs/routes/home/CollectionsSection";
 import FeatureProductsGallery from "@/libs/routes/home/FeatureProductsGallery";
 import InstagramFeed from "@/libs/routes/home/InstagramFeed";
 import MainHeroGallery from "@/libs/routes/home/MainHeroGallery";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,15 +28,23 @@ function HomePage() {
           </SectionTitle>
           <div className="flex w-full flex-1 flex-col flex-wrap items-stretch gap-6 sm:flex-row lg:gap-6">
             {PRODUCTS.slice(0, 6).map((p, i) => (
-              <ProductCard
+              <Link
                 key={`product-card-${i}`}
-                title={p.name}
-                variants={p.colorOptions.map((v) => ({
-                  imageUrl: v.imageUrl,
-                  colorSwatch: v.colorSwatch,
-                  price: 100.0 * Math.random(),
-                }))}
-              />
+                to="/products/$productId"
+                params={{ productId: p.id.toString() }}
+              >
+                <ProductCard
+                  title={p.name}
+                  variants={p.colorOptions.map((v) => ({
+                    imageUrl: v.imageUrl,
+                    colorSwatch: v.colorSwatch,
+                    price: 100.0 * Math.random(),
+                  }))}
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                />
+              </Link>
             ))}
           </div>
         </section>

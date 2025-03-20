@@ -5,6 +5,7 @@ import { FormattedNumber } from "react-intl";
 import IconButton from "../../buttons/IconButton";
 
 type ProductCardProps = {
+  onClick?: MouseEventHandler<HTMLDivElement>;
   onAddToCarcClick?: MouseEventHandler<HTMLButtonElement>;
   title: string;
   variants: {
@@ -23,6 +24,7 @@ const ProductCard: FC<ProductCardProps> = ({
   title,
   onAddToCarcClick,
   label,
+  onClick,
 }) => {
   const [currentPosition, setCurrentPosition] = useState<number | null>();
   const [lower, max] = [
@@ -32,7 +34,10 @@ const ProductCard: FC<ProductCardProps> = ({
   const currentVariant = variants.at(currentPosition ?? 0);
   const imageUrl = currentVariant?.imageUrl ?? "placeholder";
   return (
-    <article className="relative mb-6 flex w-fit flex-col gap-3">
+    <article
+      className="relative mb-6 flex w-fit flex-col gap-3"
+      onClick={onClick}
+    >
       {label && (
         <span
           className="absolute top-4 -left-3 w-[10ch] text-center font-bold tracking-widest text-white uppercase"

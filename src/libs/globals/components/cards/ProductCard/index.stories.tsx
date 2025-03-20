@@ -28,6 +28,10 @@ export const ProductCardDefault: Story = {
       colorSwatch: v.colorSwatch,
       price: Math.random() * 100.0,
     })),
+    label: {
+      color: PRODUCT.labelColor,
+      labelTitle: PRODUCT.label,
+    },
   },
 };
 

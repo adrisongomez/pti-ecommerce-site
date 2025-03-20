@@ -15,7 +15,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     <div
       className={joinClass(
         "font-monserat flex h-full min-h-screen",
-        "flex-col justify-between",
+        "flex-col justify-between gap-4",
       )}
     >
       <MainHeader

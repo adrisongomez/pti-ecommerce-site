@@ -18,7 +18,7 @@ const Button: FC<ButtonProps> = ({
       {...props}
       className={joinClass(
         props.className ?? "",
-        "box-content cursor-pointer uppercase",
+        "box-content cursor-pointer px-4 uppercase",
         "transition-all duration-300 ease-in-out",
         !disabled ? "border border-solid border-(--bg-dark)" : "",
         ...(disabled
@@ -26,7 +26,7 @@ const Button: FC<ButtonProps> = ({
           : variant === "contained"
             ? [
                 "bg-(--bg-dark)",
-                "text-white active:bg-(--bg-light) active:text-(--bg-dark)",
+                "text-white hover:bg-(--bg-main) hover:text-(--bg-dark) active:bg-(--bg-light) active:text-(--bg-dark)",
               ]
             : [
                 "text-(--bg-dark)",

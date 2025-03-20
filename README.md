@@ -2,33 +2,18 @@
 
 ## Decripcion de la tarea
 
-Crear un validador de formularios dinámico utilizando JavaScript ES6+ o TypeScript (puede usar frameworks moderno como React, Vue.js o Angular para mejorar la aplicación). Esta tarea tiene como fin aplicar los conocimientos avanzados en JavaScript, TypeScript y el uso de un framework para construir una aplicación web que realice validaciones de formularios de manera eficiente y dinámica.
+Convertir el frontend de la plataforma e-Commerce en una SPA (Single Page Application) utilizando AngularJS. Esta aplicación permitirá a los usuarios gestionar una lista de productos, incluyendo operaciones como agregar, editar, eliminar y buscar productos. El proyecto deberá demostrar competencias en la arquitectura de AngularJS, manejo de datos con AJAX, navegación con rutas, validación de formularios y animaciones.
 
-### Requerimientos:
+### Requerimientos
 
-- Implementar un formulario web con varios campos como nombre, correo electrónico, contraseña, fecha nacimiento, cantidad numérica, y otros campos relevantes.
-
-- Utilizar JavaScript ES6+ para agregar funcionalidades dinámicas al formulario.
-
-- Integrar TypeScript para mejorar la estructura y tipado del código.
-
-- Elegir y utilizar `React`, `Vue.js` o `Angular` para estructurar el proyecto y gestionar el estado del formulario.
-
-### Funcionalidades de Validación:
-
-- Validar los datos ingresados en tiempo real, proporcionando retroalimentación instantánea al usuario, por ejemplo: verificación de formato de correo electrónico, fortaleza de la contraseña, contraseñas iguales, fecha de nacimiento válida.
-
-- Asegurar que todas las validaciones sean coherentes y proporcionen mensajes claros de error o confirmación.
-
-- Validar que todos los datos estén ingresados y de manera correcta, considerar los campos obligatorios y opcionales
-
-- Mostrar mensajes de alertas con la descripción de los mensajes
-
-Crear un `README` detallado en el repositorio de GitHub, explicando el propósito del proyecto, las tecnologías usadas y cómo se implementaron las validaciones.
-
-Incluir capturas de pantalla que muestren las diferentes etapas de validación del formulario.
-
-Documentar los desafíos y soluciones encontrados durante el desarrollo.
+- Implementar una interfaz de usuario para gestionar productos (nombre, categoría, valor, etc.).
+- Utilizar componentes de AngularJS para estructurar la aplicación (4.1).
+- Crear servicios que utilicen AJAX para recuperar y almacenar datos (4.2), a través de una API RESTful. De momento Use JSON Server para crear una API propia o consuma la API del Sitio JSONPlaceholder
+- Aplicar el sistema de rutas de AngularJS (4.3) para cambiar entre la visualización de la lista de contactos y el formulario de edición de contactos.
+- Desarrollar formularios con validación (4.4) para la entrada de datos de contacto.
+- Incorporar animaciones (4.5) para mejorar la interacción del usuario con la aplicación.
+- La aplicación debe ser responsiva y funcional en diferentes dispositivos.
+- Asegurar una experiencia de usuario fluida y dinámica.
 
 ## Detalles del proyecto
 
@@ -70,8 +55,8 @@ Para form state management se utilizo [Formik](https://formik.org/) provee una A
 
 Tambien se utilizo como UI Sanbox and Testing Tool. [Storybook](https://storybook.js.org/). Una herramient que permite ir desarrollando los components de nuestra App de manera individual, ademas proveer un playground donde probar nuestros components.
 
-## Demo video de los forms para Login y Sign Up
+### TODOs
 
-https://github.com/user-attachments/assets/ad119461-e6d6-44fc-98f9-733600ce36c6
-
-
+- [ ] Implement [TankStack Query](https://tanstack.com/query/latest)
+- [ ] Implement [OpenAPI Client generation]()
+- [x] Implement [Mock Service Worker](https://mswjs.io/)

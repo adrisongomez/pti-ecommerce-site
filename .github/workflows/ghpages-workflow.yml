@@ -57,6 +57,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build
+        working-directory: ./frontends/ecommerce/
         run: pnpm build
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -64,7 +65,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
-          path: "./dist"
+          path: "./ecommerce/dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

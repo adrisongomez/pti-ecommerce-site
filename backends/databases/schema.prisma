@@ -1,0 +1,216 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator db {
+  provider = "go run github.com/steebchen/prisma-client-go"
+}
+
+model Collection {
+
+  id      Int    @id @default(autoincrement())
+  name    String
+  handler String
+
+  products Product[]
+
+  ProductCollection ProductCollection[]
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@map("collections")
+}
+
+model Product {
+
+  id          Int           @id @default(autoincrement())
+  title       String        @db.VarChar(200)
+  description String        @db.Text()
+  handler     String        @unique
+  status      ProductStatus
+  vendorId    Int           @map("vendor_id")
+
+  variants    ProductVariant[]
+  tags        Tag[]
+  vendor      Vendor           @relation(fields: [vendorId], references: [id])
+  medias      ProductMedia[]
+  collections Collection[]
+
+  ProductTag        ProductTag[]
+  ProductCollection ProductCollection[]
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@index([id, title, handler])
+  @@map("products")
+}
+
+model ProductCollection {
+
+  productId    Int @map("product_id")
+  collectionId Int @map("collection_id")
+
+  product    Product    @relation(fields: [productId], references: [id])
+  collection Collection @relation(fields: [collectionId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@id([productId, collectionId])
+  @@map("product_collections")
+}
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  products ProductTag[]
+
+  Product Product[]
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@map("tags")
+}
+
+model ProductTag {
+  productId Int @map("product_id")
+  tagId     Int @map("tag_id")
+
+  Tag     Tag     @relation(fields: [tagId], references: [id])
+  Product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@id([productId, tagId])
+  @@map("product_tags")
+}
+
+model Vendor {
+
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  Product Product[]
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@index([name])
+  @@map("vendors")
+}
+
+model ProductVariant {
+
+  id             Int     @id @default(autoincrement())
+  colorName      String  @map("color_name")
+  price          Int
+  colorHex       String? @map("color_hex")
+  productId      Int     @map("product_id")
+  featureMediaId Int     @unique() @map("feature_media_id")
+
+  product      Product      @relation(fields: [productId], references: [id])
+  featureMedia ProductMedia @relation(fields: [featureMediaId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model ProductMedia {
+
+  id         Int @id @default(autoincrement())
+  productId  Int @map("product_id")
+  mediaId    Int @unique @map("media_id")
+  sortNumber Int @map("sort_number")
+
+  product        Product         @relation(fields: [productId], references: [id])
+  ProductVariant ProductVariant?
+  Media          Media?          @relation(fields: [mediaId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@index([productId])
+  @@map("product_medias")
+}
+
+model Media {
+
+  id       Int       @id @default(autoincrement())
+  filename String
+  type     MediaType
+  mimeType String    @map("mime_type")
+  bucket   String
+  key      String
+
+  productMedia ProductMedia?
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@map("medias")
+}
+
+model User {
+
+  id        Int     @id @default(autoincrement())
+  firstName String  @map("first_name")
+  lastName  String? @map("last_name")
+  email     String
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@map("users")
+}
+
+model Address {
+
+  id     Int @id @default(autoincrement())
+  userId Int @map("user_id")
+
+  addressLine1 String @map("address_line_1")
+  addressLine2 String @map("address_line_2")
+  city         String
+  province     String
+  country      String
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+
+  @@map("addresses")
+}
+
+model Credential {
+
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  email     String
+  password  String?
+  verfiedAt DateTime? @map("verfied_at") @db.Timestamptz()
+
+  @@map("credentials")
+}
+
+enum AuthMethod {
+  EMAIL_PASSWORD
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  UNKNOWN
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+}

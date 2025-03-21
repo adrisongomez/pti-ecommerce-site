@@ -160,28 +160,40 @@ model Media {
 }
 
 model User {
+  @@map("users")
 
   id        Int     @id @default(autoincrement())
   firstName String  @map("first_name")
   lastName  String? @map("last_name")
   email     String
+  billingAddressId Int @map("billing_address_id")
+  shippingAddressId Int @map("shipping_address_id")
+
+  shippingAddress Address @relation("shipping_address_id_fk", fields:[shippingAddressId], references: [id])
+    billingAddress Address @relation("billing_address_id", fields: [billingAddressId], references: [id])
+
+  Credential Credential[]
+  address Address[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @map("updated_at") @db.Timestamptz()
 
-  @@map("users")
 }
 
 model Address {
 
   id     Int @id @default(autoincrement())
-  userId Int @map("user_id")
+  userId Int @map("user_id") @unique
 
   addressLine1 String @map("address_line_1")
   addressLine2 String @map("address_line_2")
   city         String
   province     String
   country      String
+
+  user User @relation(fields: [userId], references: [id])
+  shipping_fk User[] @relation("shipping_address_id_fk")
+  billing_fk User[] @relation("billing_address_id")
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @map("updated_at") @db.Timestamptz()
@@ -192,10 +204,12 @@ model Address {
 model Credential {
 
   id        Int       @id @default(autoincrement())
-  userId    Int
+  userId    Int       @map("user_id") @unique 
   email     String
   password  String?
   verfiedAt DateTime? @map("verfied_at") @db.Timestamptz()
+
+  user  User @relation(fields:[userId], references:[id])
 
   @@map("credentials")
 }

@@ -1,5 +1,5 @@
 {
-  "name": "programing-the-internet-tarea-2",
+  "name": "ecommerce",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -68,24 +68,8 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.7"
   },
-  "lint-staged": {
-    "**/*.(ts|js)x?": [
-      "pnpm prettier",
-      "pnpm lint"
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
-  },
   "pnpm": {
-    "ignoredBuiltDependencies": [
+    "onlyBuiltDependencies": [
       "@swc/core",
       "esbuild",
       "msw"

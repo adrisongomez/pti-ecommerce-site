@@ -8,7 +8,6 @@ generator db {
 }
 
 model Collection {
-
   id      Int    @id @default(autoincrement())
   name    String
   handler String
@@ -24,7 +23,6 @@ model Collection {
 }
 
 model Product {
-
   id          Int           @id @default(autoincrement())
   title       String        @db.VarChar(200)
   description String        @db.Text()
@@ -33,12 +31,11 @@ model Product {
   vendorId    Int           @map("vendor_id")
 
   variants    ProductVariant[]
-  tags        Tag[]
+  tags        String[]
   vendor      Vendor           @relation(fields: [vendorId], references: [id])
   medias      ProductMedia[]
   collections Collection[]
 
-  ProductTag        ProductTag[]
   ProductCollection ProductCollection[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
@@ -49,7 +46,6 @@ model Product {
 }
 
 model ProductCollection {
-
   productId    Int @map("product_id")
   collectionId Int @map("collection_id")
 
@@ -63,36 +59,7 @@ model ProductCollection {
   @@map("product_collections")
 }
 
-model Tag {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  products ProductTag[]
-
-  Product Product[]
-
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
-
-  @@map("tags")
-}
-
-model ProductTag {
-  productId Int @map("product_id")
-  tagId     Int @map("tag_id")
-
-  Tag     Tag     @relation(fields: [tagId], references: [id])
-  Product Product @relation(fields: [productId], references: [id])
-
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
-
-  @@id([productId, tagId])
-  @@map("product_tags")
-}
-
 model Vendor {
-
   id   Int    @id @default(autoincrement())
   name String @unique
 
@@ -106,16 +73,15 @@ model Vendor {
 }
 
 model ProductVariant {
-
   id             Int     @id @default(autoincrement())
   colorName      String  @map("color_name")
   price          Int
   colorHex       String? @map("color_hex")
   productId      Int     @map("product_id")
-  featureMediaId Int     @unique() @map("feature_media_id")
+  featureMediaId Int?    @unique() @map("feature_media_id")
 
-  product      Product      @relation(fields: [productId], references: [id])
-  featureMedia ProductMedia @relation(fields: [featureMediaId], references: [id])
+  product      Product       @relation(fields: [productId], references: [id])
+  featureMedia ProductMedia? @relation(fields: [featureMediaId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @map("updated_at") @db.Timestamptz()
@@ -125,11 +91,11 @@ model ProductVariant {
 }
 
 model ProductMedia {
-
-  id         Int @id @default(autoincrement())
-  productId  Int @map("product_id")
-  mediaId    Int @unique @map("media_id")
-  sortNumber Int @map("sort_number")
+  id         Int     @id @default(autoincrement())
+  productId  Int     @map("product_id")
+  mediaId    Int     @unique @map("media_id")
+  sortNumber Int     @map("sort_number")
+  alt        String?
 
   product        Product         @relation(fields: [productId], references: [id])
   ProductVariant ProductVariant?
@@ -143,9 +109,9 @@ model ProductMedia {
 }
 
 model Media {
-
   id       Int       @id @default(autoincrement())
   filename String
+  size     Int
   type     MediaType
   mimeType String    @map("mime_type")
   bucket   String
@@ -160,30 +126,29 @@ model Media {
 }
 
 model User {
-  @@map("users")
 
-  id        Int     @id @default(autoincrement())
-  firstName String  @map("first_name")
-  lastName  String? @map("last_name")
-  email     String
-  billingAddressId Int @map("billing_address_id")
-  shippingAddressId Int @map("shipping_address_id")
+  id                Int     @id @default(autoincrement())
+  firstName         String  @map("first_name")
+  lastName          String? @map("last_name")
+  email             String
+  billingAddressId  Int     @map("billing_address_id")
+  shippingAddressId Int     @map("shipping_address_id")
 
-  shippingAddress Address @relation("shipping_address_id_fk", fields:[shippingAddressId], references: [id])
-    billingAddress Address @relation("billing_address_id", fields: [billingAddressId], references: [id])
+  shippingAddress Address @relation("shipping_address_id_fk", fields: [shippingAddressId], references: [id])
+  billingAddress  Address @relation("billing_address_id", fields: [billingAddressId], references: [id])
 
   Credential Credential[]
-  address Address[]
+  address    Address[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @map("updated_at") @db.Timestamptz()
 
+  @@map("users")
 }
 
 model Address {
-
   id     Int @id @default(autoincrement())
-  userId Int @map("user_id") @unique
+  userId Int @unique @map("user_id")
 
   addressLine1 String @map("address_line_1")
   addressLine2 String @map("address_line_2")
@@ -191,9 +156,9 @@ model Address {
   province     String
   country      String
 
-  user User @relation(fields: [userId], references: [id])
+  user        User   @relation(fields: [userId], references: [id])
   shipping_fk User[] @relation("shipping_address_id_fk")
-  billing_fk User[] @relation("billing_address_id")
+  billing_fk  User[] @relation("billing_address_id")
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @map("updated_at") @db.Timestamptz()
@@ -202,14 +167,13 @@ model Address {
 }
 
 model Credential {
-
   id        Int       @id @default(autoincrement())
-  userId    Int       @map("user_id") @unique 
+  userId    Int       @unique @map("user_id")
   email     String
   password  String?
   verfiedAt DateTime? @map("verfied_at") @db.Timestamptz()
 
-  user  User @relation(fields:[userId], references:[id])
+  user User @relation(fields: [userId], references: [id])
 
   @@map("credentials")
 }

@@ -26,3 +26,6 @@ dist-ssr
 bin/
 
 *storybook.log
+
+.env*
+!.env.example

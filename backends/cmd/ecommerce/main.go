@@ -29,8 +29,9 @@ func main() {
 	productSvc := svc.NewProductService()
 	healthcheckSvc := svc.NewHealthcheckService()
 	vendorSvc := svc.NewVendorService(client)
+	mediaSvc := svc.NewMediaService(client)
 	mux := goahttp.NewMuxer()
-
+	svc.MountMediaSVC(mux, mediaSvc)
 	svc.MountHealtcheckSVC(mux, healthcheckSvc)
 	svc.MountProductSVC(mux, productSvc)
 	svc.MountVendorSVC(mux, vendorSvc)

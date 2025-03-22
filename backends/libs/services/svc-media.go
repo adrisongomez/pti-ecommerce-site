@@ -3,10 +3,13 @@ package services
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	svcHttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_media/server"
 	media "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_media"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
+	mediaUtils "github.com/adrisongomez/pti-ecommerce-site/backends/libs/utils"
 
 	goaHttp "goa.design/goa/v3/http"
 )
@@ -34,8 +37,60 @@ func (m *MediaService) mapDBToOutput(model *db.MediaModel) *media.Media {
 	}
 }
 
+func (m *MediaService) count(ctx context.Context, payload *media.ListPayload) (int, error) {
+	var rows []struct {
+		Count db.BigInt `json:"count"`
+	}
+	err := m.client.Prisma.QueryRaw(
+		"SELECT count(*) FROM project.medias WHERE bucket like CONCAT('%', ?, '%')",
+		payload.Bucket,
+	).Exec(ctx, &rows)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if len(rows) == 0 {
+		return 0, nil
+	}
+
+	count := int(rows[0].Count)
+	return count, nil
+}
+
 func (m *MediaService) List(ctx context.Context, payload *media.ListPayload) (*media.MediaList, error) {
-	return nil, nil
+	records, err := m.client.Media.FindMany(
+		db.Media.Bucket.Contains(payload.Bucket),
+	).Take(payload.PageSize).Skip(payload.After).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var mediaList media.MediaCollection = []*media.Media{}
+
+	for _, record := range records {
+		mediaList = append(mediaList, m.mapDBToOutput(&record))
+	}
+
+	count, err := m.count(ctx, payload)
+
+	if err != nil {
+		return nil, err
+	}
+
+	nextPageCursor := utils.MinInt(count, payload.After+payload.PageSize)
+	pageInfo := &media.PageInfo{
+		StartCursor:   payload.After,
+		EndCursor:     nextPageCursor,
+		TotalResource: count,
+		HasMore:       nextPageCursor < count,
+	}
+
+	response := &media.MediaList{
+		Data:     mediaList,
+		PageInfo: pageInfo,
+	}
+	return response, nil
 }
 
 func (m *MediaService) GetByID(ctx context.Context, payload *media.GetByIDPayload) (*media.Media, error) {
@@ -50,7 +105,7 @@ func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*
 	createdMedia, err := m.client.Media.CreateOne(
 		db.Media.Filename.Set(payload.Filename),
 		db.Media.Size.Set(payload.Size),
-		db.Media.Type.Set(""),
+		db.Media.Type.Set(db.MediaType(mediaUtils.GetMediaTypeByMimeType(payload.MimeType))),
 		db.Media.MimeType.Set(payload.MimeType),
 		db.Media.Bucket.Set(payload.Bucket),
 		db.Media.Key.Set(payload.Key),
@@ -63,15 +118,22 @@ func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*
 }
 
 func (m *MediaService) DeleteByID(ctx context.Context, payload *media.DeleteByIDPayload) (bool, error) {
-	return false, nil
+	record, err := m.client.Media.FindUnique(db.Media.ID.Equals(*payload.MediaID)).Delete().Exec(ctx)
+	log.Println(fmt.Sprintf("Delete media record: %v", record))
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
-func MountMediaSVC(mux *goaHttp.Muxer, svc *MediaService) {
+func MountMediaSVC(mux goaHttp.Muxer, svc *MediaService) {
 	endpoints := media.NewEndpoints(svc)
 	req := goaHttp.RequestDecoder
 	res := goaHttp.ResponseEncoder
-	handler := svcHttp.New(endpoints, *mux, req, res, nil, nil)
-	svcHttp.Mount(*mux, handler)
+	handler := svcHttp.New(endpoints, mux, req, res, nil, nil)
+	svcHttp.Mount(mux, handler)
 
 	go func() {
 		for _, mount := range handler.Mounts {

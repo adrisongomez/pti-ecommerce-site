@@ -7,7 +7,7 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	svchttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_vendor/server"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_vendor"
-	"github.com/adrisongomez/pti-ecommerce-site/backends/libs/utils"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
 	goahttp "goa.design/goa/v3/http"
 )
 

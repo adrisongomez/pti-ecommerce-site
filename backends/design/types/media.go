@@ -16,13 +16,16 @@ var MediaInput = Type("MediaInput", func() {
 
 var Media = ResultType("application/vnd.media+json", func() {
 	ContentType("application/json")
+	Extend(TypeFooter)
 	Attributes(func() {
 		Attribute("id", Int, fieldID)
 		Attribute("mediaType", MediaType)
 		Attribute("url", String)
-		Reference(MediaInput)
-		Reference(TypeFooter)
-
+		Attribute("filename", String)
+		Attribute("mimeType", String)
+		Attribute("size", Int)
+		Attribute("bucket", String)
+		Attribute("key", String)
 		Required("id", "mediaType", "url")
 	})
 })

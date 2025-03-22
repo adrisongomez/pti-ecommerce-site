@@ -17,7 +17,7 @@ model Collection {
   ProductCollection ProductCollection[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@map("collections")
 }
@@ -39,7 +39,7 @@ model Product {
   ProductCollection ProductCollection[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([id, title, handler])
   @@map("products")
@@ -53,7 +53,7 @@ model ProductCollection {
   collection Collection @relation(fields: [collectionId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@id([productId, collectionId])
   @@map("product_collections")
@@ -66,7 +66,7 @@ model Vendor {
   Product Product[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([name])
   @@map("vendors")
@@ -84,7 +84,7 @@ model ProductVariant {
   featureMedia ProductMedia? @relation(fields: [featureMediaId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([productId])
   @@map("product_variants")
@@ -102,7 +102,7 @@ model ProductMedia {
   Media          Media?          @relation(fields: [mediaId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([productId])
   @@map("product_medias")
@@ -120,7 +120,7 @@ model Media {
   productMedia ProductMedia?
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@map("medias")
 }
@@ -140,7 +140,7 @@ model User {
   address    Address[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@map("users")
 }
@@ -160,7 +160,7 @@ model Address {
   billing_fk  User[] @relation("billing_address_id")
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@map("addresses")
 }

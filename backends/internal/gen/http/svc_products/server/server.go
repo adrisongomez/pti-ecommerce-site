@@ -19,10 +19,12 @@ import (
 
 // Server lists the svc-products service endpoint HTTP handlers.
 type Server struct {
-	Mounts         []*MountPoint
-	ListProduct    http.Handler
-	GetProductByID http.Handler
-	CreateProduct  http.Handler
+	Mounts            []*MountPoint
+	ListProduct       http.Handler
+	GetProductByID    http.Handler
+	CreateProduct     http.Handler
+	UpdateProductByID http.Handler
+	DeleteProductByID http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -55,10 +57,14 @@ func New(
 			{"ListProduct", "GET", "/api/products"},
 			{"GetProductByID", "GET", "/api/products/{productId}"},
 			{"CreateProduct", "POST", "/api/products"},
+			{"UpdateProductByID", "PUT", "/api/products/{productId}"},
+			{"DeleteProductByID", "PUT", "/api/products/{productId}"},
 		},
-		ListProduct:    NewListProductHandler(e.ListProduct, mux, decoder, encoder, errhandler, formatter),
-		GetProductByID: NewGetProductByIDHandler(e.GetProductByID, mux, decoder, encoder, errhandler, formatter),
-		CreateProduct:  NewCreateProductHandler(e.CreateProduct, mux, decoder, encoder, errhandler, formatter),
+		ListProduct:       NewListProductHandler(e.ListProduct, mux, decoder, encoder, errhandler, formatter),
+		GetProductByID:    NewGetProductByIDHandler(e.GetProductByID, mux, decoder, encoder, errhandler, formatter),
+		CreateProduct:     NewCreateProductHandler(e.CreateProduct, mux, decoder, encoder, errhandler, formatter),
+		UpdateProductByID: NewUpdateProductByIDHandler(e.UpdateProductByID, mux, decoder, encoder, errhandler, formatter),
+		DeleteProductByID: NewDeleteProductByIDHandler(e.DeleteProductByID, mux, decoder, encoder, errhandler, formatter),
 	}
 }
 
@@ -70,6 +76,8 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.ListProduct = m(s.ListProduct)
 	s.GetProductByID = m(s.GetProductByID)
 	s.CreateProduct = m(s.CreateProduct)
+	s.UpdateProductByID = m(s.UpdateProductByID)
+	s.DeleteProductByID = m(s.DeleteProductByID)
 }
 
 // MethodNames returns the methods served.
@@ -80,6 +88,8 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountListProductHandler(mux, h.ListProduct)
 	MountGetProductByIDHandler(mux, h.GetProductByID)
 	MountCreateProductHandler(mux, h.CreateProduct)
+	MountUpdateProductByIDHandler(mux, h.UpdateProductByID)
+	MountDeleteProductByIDHandler(mux, h.DeleteProductByID)
 }
 
 // Mount configures the mux to serve the svc-products endpoints.
@@ -219,6 +229,108 @@ func NewCreateProductHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "createProduct")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "svc-products")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountUpdateProductByIDHandler configures the mux to serve the "svc-products"
+// service "updateProductById" endpoint.
+func MountUpdateProductByIDHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("PUT", "/api/products/{productId}", f)
+}
+
+// NewUpdateProductByIDHandler creates a HTTP handler which loads the HTTP
+// request and calls the "svc-products" service "updateProductById" endpoint.
+func NewUpdateProductByIDHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeUpdateProductByIDRequest(mux, decoder)
+		encodeResponse = EncodeUpdateProductByIDResponse(encoder)
+		encodeError    = EncodeUpdateProductByIDError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "updateProductById")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "svc-products")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountDeleteProductByIDHandler configures the mux to serve the "svc-products"
+// service "deleteProductById" endpoint.
+func MountDeleteProductByIDHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("PUT", "/api/products/{productId}", f)
+}
+
+// NewDeleteProductByIDHandler creates a HTTP handler which loads the HTTP
+// request and calls the "svc-products" service "deleteProductById" endpoint.
+func NewDeleteProductByIDHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeDeleteProductByIDRequest(mux, decoder)
+		encodeResponse = EncodeDeleteProductByIDResponse(encoder)
+		encodeError    = EncodeDeleteProductByIDError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "deleteProductById")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "svc-products")
 		payload, err := decodeRequest(r)
 		if err != nil {

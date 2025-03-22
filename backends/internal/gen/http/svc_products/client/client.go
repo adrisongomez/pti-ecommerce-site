@@ -30,6 +30,14 @@ type Client struct {
 	// createProduct endpoint.
 	CreateProductDoer goahttp.Doer
 
+	// UpdateProductByID Doer is the HTTP client used to make requests to the
+	// updateProductById endpoint.
+	UpdateProductByIDDoer goahttp.Doer
+
+	// DeleteProductByID Doer is the HTTP client used to make requests to the
+	// deleteProductById endpoint.
+	DeleteProductByIDDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -50,14 +58,16 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		ListProductDoer:     doer,
-		GetProductByIDDoer:  doer,
-		CreateProductDoer:   doer,
-		RestoreResponseBody: restoreBody,
-		scheme:              scheme,
-		host:                host,
-		decoder:             dec,
-		encoder:             enc,
+		ListProductDoer:       doer,
+		GetProductByIDDoer:    doer,
+		CreateProductDoer:     doer,
+		UpdateProductByIDDoer: doer,
+		DeleteProductByIDDoer: doer,
+		RestoreResponseBody:   restoreBody,
+		scheme:                scheme,
+		host:                  host,
+		decoder:               dec,
+		encoder:               enc,
 	}
 }
 
@@ -123,6 +133,49 @@ func (c *Client) CreateProduct() goa.Endpoint {
 		resp, err := c.CreateProductDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("svc-products", "createProduct", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// UpdateProductByID returns an endpoint that makes HTTP requests to the
+// svc-products service updateProductById server.
+func (c *Client) UpdateProductByID() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeUpdateProductByIDRequest(c.encoder)
+		decodeResponse = DecodeUpdateProductByIDResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildUpdateProductByIDRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.UpdateProductByIDDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("svc-products", "updateProductById", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// DeleteProductByID returns an endpoint that makes HTTP requests to the
+// svc-products service deleteProductById server.
+func (c *Client) DeleteProductByID() goa.Endpoint {
+	var (
+		decodeResponse = DecodeDeleteProductByIDResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildDeleteProductByIDRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.DeleteProductByIDDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("svc-products", "deleteProductById", err)
 		}
 		return decodeResponse(resp)
 	}

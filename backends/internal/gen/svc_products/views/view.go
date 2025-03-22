@@ -42,7 +42,7 @@ type ProductCollectionView []*ProductView
 // ProductView is a type that runs validations on a projected type.
 type ProductView struct {
 	// Key ID
-	ID *string
+	ID *int
 	// Title
 	Title *string
 	// Product description
@@ -60,6 +60,8 @@ type ProductView struct {
 
 // VendorView is a type that runs validations on a projected type.
 type VendorView struct {
+	// Key ID
+	ID   *int
 	Name *string
 }
 
@@ -69,7 +71,7 @@ type ProductStatusView string
 // ProductVariantView is a type that runs validations on a projected type.
 type ProductVariantView struct {
 	// Key ID
-	ID *string
+	ID *int
 	// Color variant option
 	ColorName *string
 	// Color in HEX value that would be used on the variant picker
@@ -85,7 +87,7 @@ type ProductVariantView struct {
 // ProductMediaView is a type that runs validations on a projected type.
 type ProductMediaView struct {
 	// Key ID
-	ID *string
+	ID *int
 	// URL to the media
 	URL       *string
 	MediaType *string
@@ -144,6 +146,7 @@ var (
 	// VendorMap is a map indexing the attribute names of Vendor by view name.
 	VendorMap = map[string][]string{
 		"default": {
+			"id",
 			"name",
 		},
 	}
@@ -286,6 +289,11 @@ func ValidateProductView(result *ProductView) (err error) {
 func ValidateVendorView(result *VendorView) (err error) {
 	if result.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
+	}
+	if result.ID != nil {
+		if *result.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
+		}
 	}
 	return
 }

@@ -16,17 +16,21 @@ import (
 
 // Client is the "svc-products" service client.
 type Client struct {
-	ListProductEndpoint    goa.Endpoint
-	GetProductByIDEndpoint goa.Endpoint
-	CreateProductEndpoint  goa.Endpoint
+	ListProductEndpoint       goa.Endpoint
+	GetProductByIDEndpoint    goa.Endpoint
+	CreateProductEndpoint     goa.Endpoint
+	UpdateProductByIDEndpoint goa.Endpoint
+	DeleteProductByIDEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "svc-products" service client given the endpoints.
-func NewClient(listProduct, getProductByID, createProduct goa.Endpoint) *Client {
+func NewClient(listProduct, getProductByID, createProduct, updateProductByID, deleteProductByID goa.Endpoint) *Client {
 	return &Client{
-		ListProductEndpoint:    listProduct,
-		GetProductByIDEndpoint: getProductByID,
-		CreateProductEndpoint:  createProduct,
+		ListProductEndpoint:       listProduct,
+		GetProductByIDEndpoint:    getProductByID,
+		CreateProductEndpoint:     createProduct,
+		UpdateProductByIDEndpoint: updateProductByID,
+		DeleteProductByIDEndpoint: deleteProductByID,
 	}
 }
 
@@ -75,4 +79,36 @@ func (c *Client) CreateProduct(ctx context.Context, p *ProductInput) (res *Produ
 		return
 	}
 	return ires.(*Product), nil
+}
+
+// UpdateProductByID calls the "updateProductById" endpoint of the
+// "svc-products" service.
+// UpdateProductByID may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - "Conflict" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) UpdateProductByID(ctx context.Context, p *UpdateProductByIDPayload) (res *Product, err error) {
+	var ires any
+	ires, err = c.UpdateProductByIDEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*Product), nil
+}
+
+// DeleteProductByID calls the "deleteProductById" endpoint of the
+// "svc-products" service.
+// DeleteProductByID may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - "Conflict" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) DeleteProductByID(ctx context.Context, p *DeleteProductByIDPayload) (res bool, err error) {
+	var ires any
+	ires, err = c.DeleteProductByIDEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(bool), nil
 }

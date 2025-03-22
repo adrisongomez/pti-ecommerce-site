@@ -11,6 +11,7 @@ var VendorInput = Type("VendorInput", func() {
 
 var Vendor = ResultType("application/vnd.vendor+json", func() {
 	Attributes(func() {
+		Attribute("id", Int, fieldID)
 		Attribute("name")
 
 		Reference(TypeFooter)

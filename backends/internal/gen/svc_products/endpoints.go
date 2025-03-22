@@ -16,17 +16,21 @@ import (
 
 // Endpoints wraps the "svc-products" service endpoints.
 type Endpoints struct {
-	ListProduct    goa.Endpoint
-	GetProductByID goa.Endpoint
-	CreateProduct  goa.Endpoint
+	ListProduct       goa.Endpoint
+	GetProductByID    goa.Endpoint
+	CreateProduct     goa.Endpoint
+	UpdateProductByID goa.Endpoint
+	DeleteProductByID goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "svc-products" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
-		ListProduct:    NewListProductEndpoint(s),
-		GetProductByID: NewGetProductByIDEndpoint(s),
-		CreateProduct:  NewCreateProductEndpoint(s),
+		ListProduct:       NewListProductEndpoint(s),
+		GetProductByID:    NewGetProductByIDEndpoint(s),
+		CreateProduct:     NewCreateProductEndpoint(s),
+		UpdateProductByID: NewUpdateProductByIDEndpoint(s),
+		DeleteProductByID: NewDeleteProductByIDEndpoint(s),
 	}
 }
 
@@ -35,6 +39,8 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.ListProduct = m(e.ListProduct)
 	e.GetProductByID = m(e.GetProductByID)
 	e.CreateProduct = m(e.CreateProduct)
+	e.UpdateProductByID = m(e.UpdateProductByID)
+	e.DeleteProductByID = m(e.DeleteProductByID)
 }
 
 // NewListProductEndpoint returns an endpoint function that calls the method
@@ -76,5 +82,28 @@ func NewCreateProductEndpoint(s Service) goa.Endpoint {
 		}
 		vres := NewViewedProduct(res, "default")
 		return vres, nil
+	}
+}
+
+// NewUpdateProductByIDEndpoint returns an endpoint function that calls the
+// method "updateProductById" of service "svc-products".
+func NewUpdateProductByIDEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*UpdateProductByIDPayload)
+		res, err := s.UpdateProductByID(ctx, p)
+		if err != nil {
+			return nil, err
+		}
+		vres := NewViewedProduct(res, "default")
+		return vres, nil
+	}
+}
+
+// NewDeleteProductByIDEndpoint returns an endpoint function that calls the
+// method "deleteProductById" of service "svc-products".
+func NewDeleteProductByIDEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*DeleteProductByIDPayload)
+		return s.DeleteProductByID(ctx, p)
 	}
 }

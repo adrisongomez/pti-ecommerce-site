@@ -15,7 +15,7 @@ var ProductVariantInput = Type("ProductVariantInput", func() {
 var ProductVariant = ResultType("application/vnd.product-variant+json", func() {
 	Description("Definition of product variants")
 	Attributes(func() {
-		Attribute("id", fieldID)
+		Attribute("id", Int, fieldID)
 		Attribute("colorName", String, "Color variant option")
 		Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 		Attribute("price", Int, "Price on cents")

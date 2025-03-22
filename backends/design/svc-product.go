@@ -68,4 +68,39 @@ var _ = Service(servicePrefix+"-products", func() {
 		})
 	})
 
+	Method("updateProductById", func() {
+		Description("Create a new product")
+
+		Payload(func() {
+			Attribute("productId", Int, "Unique product identifier")
+			Attribute("payload", types.ProductInput)
+			Required("productId")
+		})
+		Result(types.Product)
+
+		HTTP(func() {
+			PUT("/{productId}")
+			Param("productId")
+			Body("payload")
+			Response(StatusOK)
+			Response("Conflict", StatusConflict)
+		})
+	})
+
+	Method("deleteProductById", func() {
+		Description("Create a new product")
+
+		Payload(func() {
+			Attribute("productId", Int, "Unique product identifier")
+			Required("productId")
+		})
+		Result(Boolean)
+
+		HTTP(func() {
+			PUT("/{productId}")
+			Param("productId")
+			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
+		})
+	})
 })

@@ -287,6 +287,183 @@ func DecodeCreateProductResponse(decoder func(*http.Response) goahttp.Decoder, r
 	}
 }
 
+// BuildUpdateProductByIDRequest instantiates a HTTP request object with method
+// and path set to call the "svc-products" service "updateProductById" endpoint
+func (c *Client) BuildUpdateProductByIDRequest(ctx context.Context, v any) (*http.Request, error) {
+	var (
+		productID int
+	)
+	{
+		p, ok := v.(*svcproducts.UpdateProductByIDPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("svc-products", "updateProductById", "*svcproducts.UpdateProductByIDPayload", v)
+		}
+		productID = p.ProductID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateProductByIDSvcProductsPath(productID)}
+	req, err := http.NewRequest("PUT", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("svc-products", "updateProductById", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeUpdateProductByIDRequest returns an encoder for requests sent to the
+// svc-products updateProductById server.
+func EncodeUpdateProductByIDRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*svcproducts.UpdateProductByIDPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("svc-products", "updateProductById", "*svcproducts.UpdateProductByIDPayload", v)
+		}
+		body := NewUpdateProductByIDRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("svc-products", "updateProductById", err)
+		}
+		return nil
+	}
+}
+
+// DecodeUpdateProductByIDResponse returns a decoder for responses returned by
+// the svc-products updateProductById endpoint. restoreBody controls whether
+// the response body should be restored after having been read.
+// DecodeUpdateProductByIDResponse may return the following errors:
+//   - "Conflict" (type *goa.ServiceError): http.StatusConflict
+//   - error: internal error
+func DecodeUpdateProductByIDResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body UpdateProductByIDResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("svc-products", "updateProductById", err)
+			}
+			p := NewUpdateProductByIDProductOK(&body)
+			view := "default"
+			vres := &svcproductsviews.Product{Projected: p, View: view}
+			if err = svcproductsviews.ValidateProduct(vres); err != nil {
+				return nil, goahttp.ErrValidationError("svc-products", "updateProductById", err)
+			}
+			res := svcproducts.NewProduct(vres)
+			return res, nil
+		case http.StatusConflict:
+			var (
+				body UpdateProductByIDConflictResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("svc-products", "updateProductById", err)
+			}
+			err = ValidateUpdateProductByIDConflictResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("svc-products", "updateProductById", err)
+			}
+			return nil, NewUpdateProductByIDConflict(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("svc-products", "updateProductById", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildDeleteProductByIDRequest instantiates a HTTP request object with method
+// and path set to call the "svc-products" service "deleteProductById" endpoint
+func (c *Client) BuildDeleteProductByIDRequest(ctx context.Context, v any) (*http.Request, error) {
+	var (
+		productID int
+	)
+	{
+		p, ok := v.(*svcproducts.DeleteProductByIDPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("svc-products", "deleteProductById", "*svcproducts.DeleteProductByIDPayload", v)
+		}
+		productID = p.ProductID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteProductByIDSvcProductsPath(productID)}
+	req, err := http.NewRequest("PUT", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("svc-products", "deleteProductById", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// DecodeDeleteProductByIDResponse returns a decoder for responses returned by
+// the svc-products deleteProductById endpoint. restoreBody controls whether
+// the response body should be restored after having been read.
+// DecodeDeleteProductByIDResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
+func DecodeDeleteProductByIDResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body bool
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("svc-products", "deleteProductById", err)
+			}
+			return body, nil
+		case http.StatusNotFound:
+			var (
+				body DeleteProductByIDNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("svc-products", "deleteProductById", err)
+			}
+			err = ValidateDeleteProductByIDNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("svc-products", "deleteProductById", err)
+			}
+			return nil, NewDeleteProductByIDNotFound(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("svc-products", "deleteProductById", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // unmarshalProductResponseBodyToSvcproductsviewsProductView builds a value of
 // type *svcproductsviews.ProductView from a value of type *ProductResponseBody.
 func unmarshalProductResponseBodyToSvcproductsviewsProductView(v *ProductResponseBody) *svcproductsviews.ProductView {
@@ -333,6 +510,7 @@ func unmarshalVendorResponseBodyToSvcproductsviewsVendorView(v *VendorResponseBo
 		return nil
 	}
 	res := &svcproductsviews.VendorView{
+		ID:   v.ID,
 		Name: v.Name,
 	}
 
@@ -443,6 +621,70 @@ func marshalProductVariantInputRequestBodyToSvcproductsProductVariantInput(v *Pr
 // value of type *svcproducts.ProductMediaInput from a value of type
 // *ProductMediaInputRequestBody.
 func marshalProductMediaInputRequestBodyToSvcproductsProductMediaInput(v *ProductMediaInputRequestBody) *svcproducts.ProductMediaInput {
+	if v == nil {
+		return nil
+	}
+	res := &svcproducts.ProductMediaInput{
+		MediaID:    v.MediaID,
+		SortNumber: v.SortNumber,
+		Alt:        v.Alt,
+	}
+
+	return res
+}
+
+// marshalSvcproductsProductVariantInputToProductVariantInputRequestBodyRequestBody
+// builds a value of type *ProductVariantInputRequestBodyRequestBody from a
+// value of type *svcproducts.ProductVariantInput.
+func marshalSvcproductsProductVariantInputToProductVariantInputRequestBodyRequestBody(v *svcproducts.ProductVariantInput) *ProductVariantInputRequestBodyRequestBody {
+	if v == nil {
+		return nil
+	}
+	res := &ProductVariantInputRequestBodyRequestBody{
+		ColorName: v.ColorName,
+		ColorHex:  v.ColorHex,
+		Price:     v.Price,
+	}
+
+	return res
+}
+
+// marshalSvcproductsProductMediaInputToProductMediaInputRequestBodyRequestBody
+// builds a value of type *ProductMediaInputRequestBodyRequestBody from a value
+// of type *svcproducts.ProductMediaInput.
+func marshalSvcproductsProductMediaInputToProductMediaInputRequestBodyRequestBody(v *svcproducts.ProductMediaInput) *ProductMediaInputRequestBodyRequestBody {
+	if v == nil {
+		return nil
+	}
+	res := &ProductMediaInputRequestBodyRequestBody{
+		MediaID:    v.MediaID,
+		SortNumber: v.SortNumber,
+		Alt:        v.Alt,
+	}
+
+	return res
+}
+
+// marshalProductVariantInputRequestBodyRequestBodyToSvcproductsProductVariantInput
+// builds a value of type *svcproducts.ProductVariantInput from a value of type
+// *ProductVariantInputRequestBodyRequestBody.
+func marshalProductVariantInputRequestBodyRequestBodyToSvcproductsProductVariantInput(v *ProductVariantInputRequestBodyRequestBody) *svcproducts.ProductVariantInput {
+	if v == nil {
+		return nil
+	}
+	res := &svcproducts.ProductVariantInput{
+		ColorName: v.ColorName,
+		ColorHex:  v.ColorHex,
+		Price:     v.Price,
+	}
+
+	return res
+}
+
+// marshalProductMediaInputRequestBodyRequestBodyToSvcproductsProductMediaInput
+// builds a value of type *svcproducts.ProductMediaInput from a value of type
+// *ProductMediaInputRequestBodyRequestBody.
+func marshalProductMediaInputRequestBodyRequestBodyToSvcproductsProductMediaInput(v *ProductMediaInputRequestBodyRequestBody) *svcproducts.ProductMediaInput {
 	if v == nil {
 		return nil
 	}

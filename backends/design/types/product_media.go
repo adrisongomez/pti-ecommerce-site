@@ -14,7 +14,7 @@ var ProductMediaInput = Type("ProductMediaInput", func() {
 
 var ProductMedia = ResultType("application/vnd.product-media+json", func() {
 	Attributes(func() {
-		Attribute("id", fieldID)
+		Attribute("id", Int, fieldID)
 		Attribute("url", String, "URL to the media")
 		Attribute("mediaType", String)
 		Reference(TypeFooter)

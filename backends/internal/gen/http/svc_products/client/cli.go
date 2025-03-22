@@ -134,3 +134,91 @@ func BuildCreateProductPayload(svcProductsCreateProductBody string) (*svcproduct
 
 	return v, nil
 }
+
+// BuildUpdateProductByIDPayload builds the payload for the svc-products
+// updateProductById endpoint from CLI flags.
+func BuildUpdateProductByIDPayload(svcProductsUpdateProductByIDBody string, svcProductsUpdateProductByIDProductID string) (*svcproducts.UpdateProductByIDPayload, error) {
+	var err error
+	var body UpdateProductByIDRequestBody
+	{
+		err = json.Unmarshal([]byte(svcProductsUpdateProductByIDBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"description\": \"Beatae dignissimos repellat.\",\n      \"handle\": \"Sint sint.\",\n      \"medias\": [\n         {\n            \"alt\": \"At quaerat non perferendis odit commodi aut.\",\n            \"mediaId\": \"Nostrum distinctio quia aut animi quis quod.\",\n            \"sortNumber\": 9107037954132454170\n         },\n         {\n            \"alt\": \"At quaerat non perferendis odit commodi aut.\",\n            \"mediaId\": \"Nostrum distinctio quia aut animi quis quod.\",\n            \"sortNumber\": 9107037954132454170\n         }\n      ],\n      \"status\": \"DRAFT\",\n      \"tags\": [\n         \"Iste consequatur minima similique nulla tempore.\",\n         \"Perferendis distinctio non.\",\n         \"Ut numquam voluptatem quia molestiae eligendi consequuntur.\",\n         \"Vero aut.\"\n      ],\n      \"title\": \"Qui ut accusantium dolorum sit.\",\n      \"variants\": [\n         {\n            \"colorHex\": \"Ut natus porro eaque eius sint.\",\n            \"colorName\": \"Dolorem molestias nam ad.\",\n            \"price\": 3281393361508820864\n         },\n         {\n            \"colorHex\": \"Ut natus porro eaque eius sint.\",\n            \"colorName\": \"Dolorem molestias nam ad.\",\n            \"price\": 3281393361508820864\n         },\n         {\n            \"colorHex\": \"Ut natus porro eaque eius sint.\",\n            \"colorName\": \"Dolorem molestias nam ad.\",\n            \"price\": 3281393361508820864\n         }\n      ],\n      \"vendorId\": \"Error autem enim.\"\n   }'")
+		}
+		if body.Tags == nil {
+			err = goa.MergeErrors(err, goa.MissingFieldError("tags", "body"))
+		}
+		if body.Status != nil {
+			if !(*body.Status == "ACTIVE" || *body.Status == "DRAFT") {
+				err = goa.MergeErrors(err, goa.InvalidEnumValueError("body.status", *body.Status, []any{"ACTIVE", "DRAFT"}))
+			}
+		}
+		if err != nil {
+			return nil, err
+		}
+	}
+	var productID int
+	{
+		var v int64
+		v, err = strconv.ParseInt(svcProductsUpdateProductByIDProductID, 10, strconv.IntSize)
+		productID = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for productID, must be INT")
+		}
+	}
+	v := &svcproducts.ProductInput{
+		Title:       body.Title,
+		Description: body.Description,
+		Handle:      body.Handle,
+		VendorID:    body.VendorID,
+	}
+	if body.Status != nil {
+		status := svcproducts.ProductStatus(*body.Status)
+		v.Status = &status
+	}
+	if body.Tags != nil {
+		v.Tags = make([]string, len(body.Tags))
+		for i, val := range body.Tags {
+			v.Tags[i] = val
+		}
+	} else {
+		v.Tags = []string{}
+	}
+	if body.Variants != nil {
+		v.Variants = make([]*svcproducts.ProductVariantInput, len(body.Variants))
+		for i, val := range body.Variants {
+			v.Variants[i] = marshalProductVariantInputRequestBodyRequestBodyToSvcproductsProductVariantInput(val)
+		}
+	}
+	if body.Medias != nil {
+		v.Medias = make([]*svcproducts.ProductMediaInput, len(body.Medias))
+		for i, val := range body.Medias {
+			v.Medias[i] = marshalProductMediaInputRequestBodyRequestBodyToSvcproductsProductMediaInput(val)
+		}
+	}
+	res := &svcproducts.UpdateProductByIDPayload{
+		Payload: v,
+	}
+	res.ProductID = productID
+
+	return res, nil
+}
+
+// BuildDeleteProductByIDPayload builds the payload for the svc-products
+// deleteProductById endpoint from CLI flags.
+func BuildDeleteProductByIDPayload(svcProductsDeleteProductByIDProductID string) (*svcproducts.DeleteProductByIDPayload, error) {
+	var err error
+	var productID int
+	{
+		var v int64
+		v, err = strconv.ParseInt(svcProductsDeleteProductByIDProductID, 10, strconv.IntSize)
+		productID = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for productID, must be INT")
+		}
+	}
+	v := &svcproducts.DeleteProductByIDPayload{}
+	v.ProductID = productID
+
+	return v, nil
+}

@@ -26,3 +26,13 @@ func GetProductByIDSvcProductsPath(productID int) string {
 func CreateProductSvcProductsPath() string {
 	return "/api/products"
 }
+
+// UpdateProductByIDSvcProductsPath returns the URL path to the svc-products service updateProductById HTTP endpoint.
+func UpdateProductByIDSvcProductsPath(productID int) string {
+	return fmt.Sprintf("/api/products/%v", productID)
+}
+
+// DeleteProductByIDSvcProductsPath returns the URL path to the svc-products service deleteProductById HTTP endpoint.
+func DeleteProductByIDSvcProductsPath(productID int) string {
+	return fmt.Sprintf("/api/products/%v", productID)
+}

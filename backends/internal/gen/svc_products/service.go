@@ -23,6 +23,10 @@ type Service interface {
 	GetProductByID(context.Context, *GetProductByIDPayload) (res *Product, err error)
 	// Create a new product
 	CreateProduct(context.Context, *ProductInput) (res *Product, err error)
+	// Create a new product
+	UpdateProductByID(context.Context, *UpdateProductByIDPayload) (res *Product, err error)
+	// Create a new product
+	DeleteProductByID(context.Context, *DeleteProductByIDPayload) (res bool, err error)
 }
 
 // APIName is the name of the API as defined in the design.
@@ -39,7 +43,14 @@ const ServiceName = "svc-products"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [3]string{"listProduct", "getProductById", "createProduct"}
+var MethodNames = [5]string{"listProduct", "getProductById", "createProduct", "updateProductById", "deleteProductById"}
+
+// DeleteProductByIDPayload is the payload type of the svc-products service
+// deleteProductById method.
+type DeleteProductByIDPayload struct {
+	// Unique product identifier
+	ProductID int
+}
 
 // GetProductByIDPayload is the payload type of the svc-products service
 // getProductById method.
@@ -72,7 +83,7 @@ type PageInfo struct {
 // Product is the result type of the svc-products service getProductById method.
 type Product struct {
 	// Key ID
-	ID string
+	ID int
 	// Title
 	Title string
 	// Product description
@@ -112,7 +123,7 @@ type ProductInput struct {
 
 type ProductMedia struct {
 	// Key ID
-	ID *string
+	ID *int
 	// URL to the media
 	URL       *string
 	MediaType *string
@@ -133,7 +144,7 @@ type ProductStatus string
 // Definition of product variants
 type ProductVariant struct {
 	// Key ID
-	ID *string
+	ID *int
 	// Color variant option
 	ColorName *string
 	// Color in HEX value that would be used on the variant picker
@@ -164,7 +175,17 @@ type ProductsList struct {
 	PageInfo *PageInfo
 }
 
+// UpdateProductByIDPayload is the payload type of the svc-products service
+// updateProductById method.
+type UpdateProductByIDPayload struct {
+	// Unique product identifier
+	ProductID int
+	Payload   *ProductInput
+}
+
 type Vendor struct {
+	// Key ID
+	ID   *int
 	Name string
 }
 
@@ -336,7 +357,9 @@ func newProductView(res *Product) *svcproductsviews.ProductView {
 
 // newVendor converts projected type Vendor to service type Vendor.
 func newVendor(vres *svcproductsviews.VendorView) *Vendor {
-	res := &Vendor{}
+	res := &Vendor{
+		ID: vres.ID,
+	}
 	if vres.Name != nil {
 		res.Name = *vres.Name
 	}
@@ -347,6 +370,7 @@ func newVendor(vres *svcproductsviews.VendorView) *Vendor {
 // the "default" view.
 func newVendorView(res *Vendor) *svcproductsviews.VendorView {
 	vres := &svcproductsviews.VendorView{
+		ID:   res.ID,
 		Name: &res.Name,
 	}
 	return vres

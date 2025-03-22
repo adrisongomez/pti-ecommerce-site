@@ -23,13 +23,13 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `svc-products (list-product|get-product-by-id|create-product)
+	return `svc-products (list-product|get-product-by-id|create-product|update-product-by-id|delete-product-by-id)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` svc-products list-product --page-size 44 --after 7841910540487710407` + "\n" +
+	return os.Args[0] + ` svc-products list-product --page-size 64 --after 667857055606350253` + "\n" +
 		""
 }
 
@@ -54,11 +54,20 @@ func ParseEndpoint(
 
 		svcProductsCreateProductFlags    = flag.NewFlagSet("create-product", flag.ExitOnError)
 		svcProductsCreateProductBodyFlag = svcProductsCreateProductFlags.String("body", "REQUIRED", "")
+
+		svcProductsUpdateProductByIDFlags         = flag.NewFlagSet("update-product-by-id", flag.ExitOnError)
+		svcProductsUpdateProductByIDBodyFlag      = svcProductsUpdateProductByIDFlags.String("body", "REQUIRED", "")
+		svcProductsUpdateProductByIDProductIDFlag = svcProductsUpdateProductByIDFlags.String("product-id", "REQUIRED", "Unique product identifier")
+
+		svcProductsDeleteProductByIDFlags         = flag.NewFlagSet("delete-product-by-id", flag.ExitOnError)
+		svcProductsDeleteProductByIDProductIDFlag = svcProductsDeleteProductByIDFlags.String("product-id", "REQUIRED", "Unique product identifier")
 	)
 	svcProductsFlags.Usage = svcProductsUsage
 	svcProductsListProductFlags.Usage = svcProductsListProductUsage
 	svcProductsGetProductByIDFlags.Usage = svcProductsGetProductByIDUsage
 	svcProductsCreateProductFlags.Usage = svcProductsCreateProductUsage
+	svcProductsUpdateProductByIDFlags.Usage = svcProductsUpdateProductByIDUsage
+	svcProductsDeleteProductByIDFlags.Usage = svcProductsDeleteProductByIDUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -103,6 +112,12 @@ func ParseEndpoint(
 			case "create-product":
 				epf = svcProductsCreateProductFlags
 
+			case "update-product-by-id":
+				epf = svcProductsUpdateProductByIDFlags
+
+			case "delete-product-by-id":
+				epf = svcProductsDeleteProductByIDFlags
+
 			}
 
 		}
@@ -137,6 +152,12 @@ func ParseEndpoint(
 			case "create-product":
 				endpoint = c.CreateProduct()
 				data, err = svcproductsc.BuildCreateProductPayload(*svcProductsCreateProductBodyFlag)
+			case "update-product-by-id":
+				endpoint = c.UpdateProductByID()
+				data, err = svcproductsc.BuildUpdateProductByIDPayload(*svcProductsUpdateProductByIDBodyFlag, *svcProductsUpdateProductByIDProductIDFlag)
+			case "delete-product-by-id":
+				endpoint = c.DeleteProductByID()
+				data, err = svcproductsc.BuildDeleteProductByIDPayload(*svcProductsDeleteProductByIDProductIDFlag)
 			}
 		}
 	}
@@ -158,6 +179,8 @@ COMMAND:
     list-product: List products
     get-product-by-id: Get a product by its id
     create-product: Create a new product
+    update-product-by-id: Create a new product
+    delete-product-by-id: Create a new product
 
 Additional help:
     %[1]s svc-products COMMAND --help
@@ -171,7 +194,7 @@ List products
     -after INT: 
 
 Example:
-    %[1]s svc-products list-product --page-size 44 --after 7841910540487710407
+    %[1]s svc-products list-product --page-size 64 --after 667857055606350253
 `, os.Args[0])
 }
 
@@ -250,5 +273,69 @@ Example:
       ],
       "vendorId": "Recusandae in aliquid accusamus occaecati."
    }'
+`, os.Args[0])
+}
+
+func svcProductsUpdateProductByIDUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] svc-products update-product-by-id -body JSON -product-id INT
+
+Create a new product
+    -body JSON: 
+    -product-id INT: Unique product identifier
+
+Example:
+    %[1]s svc-products update-product-by-id --body '{
+      "description": "Beatae dignissimos repellat.",
+      "handle": "Sint sint.",
+      "medias": [
+         {
+            "alt": "At quaerat non perferendis odit commodi aut.",
+            "mediaId": "Nostrum distinctio quia aut animi quis quod.",
+            "sortNumber": 9107037954132454170
+         },
+         {
+            "alt": "At quaerat non perferendis odit commodi aut.",
+            "mediaId": "Nostrum distinctio quia aut animi quis quod.",
+            "sortNumber": 9107037954132454170
+         }
+      ],
+      "status": "DRAFT",
+      "tags": [
+         "Iste consequatur minima similique nulla tempore.",
+         "Perferendis distinctio non.",
+         "Ut numquam voluptatem quia molestiae eligendi consequuntur.",
+         "Vero aut."
+      ],
+      "title": "Qui ut accusantium dolorum sit.",
+      "variants": [
+         {
+            "colorHex": "Ut natus porro eaque eius sint.",
+            "colorName": "Dolorem molestias nam ad.",
+            "price": 3281393361508820864
+         },
+         {
+            "colorHex": "Ut natus porro eaque eius sint.",
+            "colorName": "Dolorem molestias nam ad.",
+            "price": 3281393361508820864
+         },
+         {
+            "colorHex": "Ut natus porro eaque eius sint.",
+            "colorName": "Dolorem molestias nam ad.",
+            "price": 3281393361508820864
+         }
+      ],
+      "vendorId": "Error autem enim."
+   }' --product-id 455149376014392049
+`, os.Args[0])
+}
+
+func svcProductsDeleteProductByIDUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] svc-products delete-product-by-id -product-id INT
+
+Create a new product
+    -product-id INT: Unique product identifier
+
+Example:
+    %[1]s svc-products delete-product-by-id --product-id 2862713782046866292
 `, os.Args[0])
 }

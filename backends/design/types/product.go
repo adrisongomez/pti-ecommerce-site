@@ -28,7 +28,7 @@ var Product = ResultType("application/vnd.product+json", func() {
 	Reference(TypeFooter)
 
 	Attributes(func() {
-		Attribute("id", fieldID)
+		Attribute("id", Int, fieldID)
 		Attribute("title", String, "Title")
 		Attribute("description", String, "Product description")
 		Attribute("handle", String, "Handle")

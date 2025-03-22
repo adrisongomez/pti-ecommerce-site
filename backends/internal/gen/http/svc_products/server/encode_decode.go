@@ -250,6 +250,163 @@ func EncodeCreateProductError(encoder func(context.Context, http.ResponseWriter)
 	}
 }
 
+// EncodeUpdateProductByIDResponse returns an encoder for responses returned by
+// the svc-products updateProductById endpoint.
+func EncodeUpdateProductByIDResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
+	return func(ctx context.Context, w http.ResponseWriter, v any) error {
+		res := v.(*svcproductsviews.Product)
+		ctx = context.WithValue(ctx, goahttp.ContentTypeKey, "application/json")
+		enc := encoder(ctx, w)
+		body := NewUpdateProductByIDResponseBody(res.Projected)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeUpdateProductByIDRequest returns a decoder for requests sent to the
+// svc-products updateProductById endpoint.
+func DecodeUpdateProductByIDRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
+	return func(r *http.Request) (any, error) {
+		var (
+			body UpdateProductByIDRequestBody
+			err  error
+		)
+		err = decoder(r).Decode(&body)
+		if err != nil {
+			if err == io.EOF {
+				err = nil
+			} else {
+				var gerr *goa.ServiceError
+				if errors.As(err, &gerr) {
+					return nil, gerr
+				}
+				return nil, goa.DecodePayloadError(err.Error())
+			}
+		}
+		err = ValidateUpdateProductByIDRequestBody(&body)
+		if err != nil {
+			return nil, err
+		}
+
+		var (
+			productID int
+
+			params = mux.Vars(r)
+		)
+		{
+			productIDRaw := params["productId"]
+			v, err2 := strconv.ParseInt(productIDRaw, 10, strconv.IntSize)
+			if err2 != nil {
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("productId", productIDRaw, "integer"))
+			}
+			productID = int(v)
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewUpdateProductByIDPayload(&body, productID)
+
+		return payload, nil
+	}
+}
+
+// EncodeUpdateProductByIDError returns an encoder for errors returned by the
+// updateProductById svc-products endpoint.
+func EncodeUpdateProductByIDError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "Conflict":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body any
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewUpdateProductByIDConflictResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusConflict)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
+// EncodeDeleteProductByIDResponse returns an encoder for responses returned by
+// the svc-products deleteProductById endpoint.
+func EncodeDeleteProductByIDResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
+	return func(ctx context.Context, w http.ResponseWriter, v any) error {
+		res, _ := v.(bool)
+		enc := encoder(ctx, w)
+		body := res
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeDeleteProductByIDRequest returns a decoder for requests sent to the
+// svc-products deleteProductById endpoint.
+func DecodeDeleteProductByIDRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
+	return func(r *http.Request) (any, error) {
+		var (
+			productID int
+			err       error
+
+			params = mux.Vars(r)
+		)
+		{
+			productIDRaw := params["productId"]
+			v, err2 := strconv.ParseInt(productIDRaw, 10, strconv.IntSize)
+			if err2 != nil {
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("productId", productIDRaw, "integer"))
+			}
+			productID = int(v)
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewDeleteProductByIDPayload(productID)
+
+		return payload, nil
+	}
+}
+
+// EncodeDeleteProductByIDError returns an encoder for errors returned by the
+// deleteProductById svc-products endpoint.
+func EncodeDeleteProductByIDError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "NotFound":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body any
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewDeleteProductByIDNotFoundResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusNotFound)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
 // marshalSvcproductsviewsProductViewToProductResponseBody builds a value of
 // type *ProductResponseBody from a value of type *svcproductsviews.ProductView.
 func marshalSvcproductsviewsProductViewToProductResponseBody(v *svcproductsviews.ProductView) *ProductResponseBody {
@@ -295,6 +452,7 @@ func marshalSvcproductsviewsVendorViewToVendorResponseBody(v *svcproductsviews.V
 		return nil
 	}
 	res := &VendorResponseBody{
+		ID:   v.ID,
 		Name: *v.Name,
 	}
 
@@ -373,6 +531,38 @@ func unmarshalProductVariantInputRequestBodyToSvcproductsProductVariantInput(v *
 // value of type *svcproducts.ProductMediaInput from a value of type
 // *ProductMediaInputRequestBody.
 func unmarshalProductMediaInputRequestBodyToSvcproductsProductMediaInput(v *ProductMediaInputRequestBody) *svcproducts.ProductMediaInput {
+	if v == nil {
+		return nil
+	}
+	res := &svcproducts.ProductMediaInput{
+		MediaID:    *v.MediaID,
+		SortNumber: *v.SortNumber,
+		Alt:        v.Alt,
+	}
+
+	return res
+}
+
+// unmarshalProductVariantInputRequestBodyRequestBodyToSvcproductsProductVariantInput
+// builds a value of type *svcproducts.ProductVariantInput from a value of type
+// *ProductVariantInputRequestBodyRequestBody.
+func unmarshalProductVariantInputRequestBodyRequestBodyToSvcproductsProductVariantInput(v *ProductVariantInputRequestBodyRequestBody) *svcproducts.ProductVariantInput {
+	if v == nil {
+		return nil
+	}
+	res := &svcproducts.ProductVariantInput{
+		ColorName: *v.ColorName,
+		ColorHex:  v.ColorHex,
+		Price:     *v.Price,
+	}
+
+	return res
+}
+
+// unmarshalProductMediaInputRequestBodyRequestBodyToSvcproductsProductMediaInput
+// builds a value of type *svcproducts.ProductMediaInput from a value of type
+// *ProductMediaInputRequestBodyRequestBody.
+func unmarshalProductMediaInputRequestBodyRequestBodyToSvcproductsProductMediaInput(v *ProductMediaInputRequestBodyRequestBody) *svcproducts.ProductMediaInput {
 	if v == nil {
 		return nil
 	}

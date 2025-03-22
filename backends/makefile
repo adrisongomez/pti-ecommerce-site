@@ -14,3 +14,9 @@ migrate-dev:
 
 migrate-depoy:
 	go run github.com/steebchen/prisma-client-go migrate deploy --schema ./databases/schema.prisma
+
+generate-svc:
+	goa gen github.com/adrisongomez/pti-ecommerce-site/backends/design -o ./internal
+
+format-prisma:
+	go run github.com/steebchen/prisma-client-go format --schema ./databases/schema.prisma

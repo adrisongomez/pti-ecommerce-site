@@ -126,7 +126,6 @@ model Media {
 }
 
 model User {
-
   id                Int     @id @default(autoincrement())
   firstName         String  @map("first_name")
   lastName          String? @map("last_name")

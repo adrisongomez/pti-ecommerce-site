@@ -53,17 +53,17 @@ type ListPayload struct {
 	// Record per page
 	PageSize int
 	// Start listing after this resource
-	After *int
+	After int
 }
 
 // Pagination information
 type PageInfo struct {
 	// The starting cursor for pagination
-	StartCursor string
+	StartCursor int
 	// The ending cursor for pagination
-	EndCursor string
+	EndCursor int
 	// Indicates if there are more results available
-	HasMore bool
+	HasMore int
 	// Total number of resources available
 	TotalResource int
 }

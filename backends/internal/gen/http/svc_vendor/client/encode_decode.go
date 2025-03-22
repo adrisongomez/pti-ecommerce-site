@@ -46,9 +46,7 @@ func EncodeListRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.R
 		}
 		values := req.URL.Query()
 		values.Add("pageSize", fmt.Sprintf("%v", p.PageSize))
-		if p.After != nil {
-			values.Add("after", fmt.Sprintf("%v", *p.After))
-		}
+		values.Add("after", fmt.Sprintf("%v", p.After))
 		req.URL.RawQuery = values.Encode()
 		return nil
 	}

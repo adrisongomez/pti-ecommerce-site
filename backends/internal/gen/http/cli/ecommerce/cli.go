@@ -35,7 +35,7 @@ svc-vendor (list|create|delete-by-id)
 func UsageExamples() string {
 	return os.Args[0] + ` svc-healthcheck check` + "\n" +
 		os.Args[0] + ` svc-products list-product --page-size 11 --after 1507823738322435300` + "\n" +
-		os.Args[0] + ` svc-vendor list --page-size 61 --after 823592245598267839` + "\n" +
+		os.Args[0] + ` svc-vendor list --page-size 10 --after 711176392184519448` + "\n" +
 		""
 }
 
@@ -302,7 +302,7 @@ Get a product by its id
     -product-id INT: Unique product identifier
 
 Example:
-    %[1]s svc-products get-product-by-id --product-id 7382141355489381514
+    %[1]s svc-products get-product-by-id --product-id 5638492269528418154
 `, os.Args[0])
 }
 
@@ -314,51 +314,61 @@ Create a new product
 
 Example:
     %[1]s svc-products create-product --body '{
-      "description": "Voluptatem ad sunt voluptatem doloribus tempora neque.",
-      "handle": "Eveniet vitae aperiam velit quas rerum.",
+      "description": "Consectetur enim numquam iste dolorem possimus voluptatem.",
+      "handle": "Sunt voluptatem doloribus tempora neque reprehenderit eveniet.",
       "medias": [
          {
-            "alt": "Tenetur qui consequuntur.",
-            "mediaId": "Soluta animi aliquam eaque et.",
-            "sortNumber": 6570939598249231544
+            "alt": "Sed quis.",
+            "mediaId": "Tenetur qui consequuntur.",
+            "sortNumber": 2548002682993232380
          },
          {
-            "alt": "Tenetur qui consequuntur.",
-            "mediaId": "Soluta animi aliquam eaque et.",
-            "sortNumber": 6570939598249231544
+            "alt": "Sed quis.",
+            "mediaId": "Tenetur qui consequuntur.",
+            "sortNumber": 2548002682993232380
+         },
+         {
+            "alt": "Sed quis.",
+            "mediaId": "Tenetur qui consequuntur.",
+            "sortNumber": 2548002682993232380
+         },
+         {
+            "alt": "Sed quis.",
+            "mediaId": "Tenetur qui consequuntur.",
+            "sortNumber": 2548002682993232380
          }
       ],
-      "status": "ACTIVE",
+      "status": "DRAFT",
       "tags": [
-         "Et dolor esse.",
-         "Voluptatem est iure.",
-         "Unde sapiente.",
-         "Inventore laboriosam neque."
+         "Quas rerum voluptatem quas dolorem et.",
+         "Esse nemo voluptatem est.",
+         "Nam unde sapiente et inventore.",
+         "Neque ut."
       ],
-      "title": "Necessitatibus consectetur enim numquam iste dolorem.",
+      "title": "Ut ut in eaque in in veniam.",
       "variants": [
          {
-            "colorHex": "Numquam ad.",
-            "colorName": "Impedit sequi.",
-            "price": 5605191480377568692
+            "colorHex": "Molestiae et soluta animi aliquam eaque.",
+            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
+            "price": 9013296666552782995
          },
          {
-            "colorHex": "Numquam ad.",
-            "colorName": "Impedit sequi.",
-            "price": 5605191480377568692
+            "colorHex": "Molestiae et soluta animi aliquam eaque.",
+            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
+            "price": 9013296666552782995
          },
          {
-            "colorHex": "Numquam ad.",
-            "colorName": "Impedit sequi.",
-            "price": 5605191480377568692
+            "colorHex": "Molestiae et soluta animi aliquam eaque.",
+            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
+            "price": 9013296666552782995
          },
          {
-            "colorHex": "Numquam ad.",
-            "colorName": "Impedit sequi.",
-            "price": 5605191480377568692
+            "colorHex": "Molestiae et soluta animi aliquam eaque.",
+            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
+            "price": 9013296666552782995
          }
       ],
-      "vendorId": "Omnis recusandae in aliquid accusamus occaecati et."
+      "vendorId": "Recusandae in aliquid accusamus occaecati."
    }'
 `, os.Args[0])
 }
@@ -372,46 +382,47 @@ Create a new product
 
 Example:
     %[1]s svc-products update-product-by-id --body '{
-      "description": "Ut accusantium.",
-      "handle": "Sit et beatae.",
+      "description": "Beatae dignissimos repellat.",
+      "handle": "Sint sint.",
       "medias": [
          {
-            "alt": "Ut natus porro eaque eius sint.",
-            "mediaId": "Dolorem dolorem molestias nam.",
-            "sortNumber": 6693284239779247650
+            "alt": "At quaerat non perferendis odit commodi aut.",
+            "mediaId": "Nostrum distinctio quia aut animi quis quod.",
+            "sortNumber": 9107037954132454170
          },
          {
-            "alt": "Ut natus porro eaque eius sint.",
-            "mediaId": "Dolorem dolorem molestias nam.",
-            "sortNumber": 6693284239779247650
+            "alt": "At quaerat non perferendis odit commodi aut.",
+            "mediaId": "Nostrum distinctio quia aut animi quis quod.",
+            "sortNumber": 9107037954132454170
          }
       ],
-      "status": "ACTIVE",
+      "status": "DRAFT",
       "tags": [
-         "Sint sint.",
-         "Illum officiis iste consequatur.",
-         "Similique nulla."
+         "Iste consequatur minima similique nulla tempore.",
+         "Perferendis distinctio non.",
+         "Ut numquam voluptatem quia molestiae eligendi consequuntur.",
+         "Vero aut."
       ],
-      "title": "Molestias aut sit hic autem.",
+      "title": "Qui ut accusantium dolorum sit.",
       "variants": [
          {
-            "colorHex": "Voluptates error.",
-            "colorName": "Molestiae eligendi consequuntur in vero.",
-            "price": 4481215871489952671
+            "colorHex": "Ut natus porro eaque eius sint.",
+            "colorName": "Dolorem molestias nam ad.",
+            "price": 3281393361508820864
          },
          {
-            "colorHex": "Voluptates error.",
-            "colorName": "Molestiae eligendi consequuntur in vero.",
-            "price": 4481215871489952671
+            "colorHex": "Ut natus porro eaque eius sint.",
+            "colorName": "Dolorem molestias nam ad.",
+            "price": 3281393361508820864
          },
          {
-            "colorHex": "Voluptates error.",
-            "colorName": "Molestiae eligendi consequuntur in vero.",
-            "price": 4481215871489952671
+            "colorHex": "Ut natus porro eaque eius sint.",
+            "colorName": "Dolorem molestias nam ad.",
+            "price": 3281393361508820864
          }
       ],
-      "vendorId": "Modi perferendis distinctio non nobis ut numquam."
-   }' --product-id 3281393361508820864
+      "vendorId": "Error autem enim."
+   }' --product-id 455149376014392049
 `, os.Args[0])
 }
 
@@ -422,7 +433,7 @@ Create a new product
     -product-id INT: Unique product identifier
 
 Example:
-    %[1]s svc-products delete-product-by-id --product-id 8528879750237703595
+    %[1]s svc-products delete-product-by-id --product-id 2862713782046866292
 `, os.Args[0])
 }
 
@@ -450,7 +461,7 @@ List vendors
     -after INT: 
 
 Example:
-    %[1]s svc-vendor list --page-size 61 --after 823592245598267839
+    %[1]s svc-vendor list --page-size 10 --after 711176392184519448
 `, os.Args[0])
 }
 
@@ -462,7 +473,7 @@ Create a new product
 
 Example:
     %[1]s svc-vendor create --body '{
-      "name": "Deleniti dicta qui."
+      "name": "Qui voluptatum quia unde tenetur."
    }'
 `, os.Args[0])
 }
@@ -474,6 +485,6 @@ Create a new product
     -vendor-id INT: Unique product identifier
 
 Example:
-    %[1]s svc-vendor delete-by-id --vendor-id 6510212265065747319
+    %[1]s svc-vendor delete-by-id --vendor-id 5689702070507757669
 `, os.Args[0])
 }

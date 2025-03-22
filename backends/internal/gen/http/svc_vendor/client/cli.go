@@ -41,13 +41,12 @@ func BuildListPayload(svcVendorListPageSize string, svcVendorListAfter string) (
 			}
 		}
 	}
-	var after *int
+	var after int
 	{
 		if svcVendorListAfter != "" {
 			var v int64
 			v, err = strconv.ParseInt(svcVendorListAfter, 10, strconv.IntSize)
-			val := int(v)
-			after = &val
+			after = int(v)
 			if err != nil {
 				return nil, fmt.Errorf("invalid value for after, must be INT")
 			}
@@ -68,7 +67,7 @@ func BuildCreatePayload(svcVendorCreateBody string) (*svcvendor.VendorInput, err
 	{
 		err = json.Unmarshal([]byte(svcVendorCreateBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"name\": \"Deleniti dicta qui.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"name\": \"Qui voluptatum quia unde tenetur.\"\n   }'")
 		}
 	}
 	v := &svcvendor.VendorInput{

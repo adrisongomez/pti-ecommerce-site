@@ -38,7 +38,7 @@ func DecodeListRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.De
 	return func(r *http.Request) (any, error) {
 		var (
 			pageSize int
-			after    *int
+			after    int
 			err      error
 		)
 		qp := r.URL.Query()
@@ -67,8 +67,7 @@ func DecodeListRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.De
 				if err2 != nil {
 					err = goa.MergeErrors(err, goa.InvalidFieldTypeError("after", afterRaw, "integer"))
 				}
-				pv := int(v)
-				after = &pv
+				after = int(v)
 			}
 		}
 		if err != nil {

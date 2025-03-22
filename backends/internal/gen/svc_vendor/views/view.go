@@ -49,11 +49,11 @@ type VendorView struct {
 // PageInfoView is a type that runs validations on a projected type.
 type PageInfoView struct {
 	// The starting cursor for pagination
-	StartCursor *string
+	StartCursor *int
 	// The ending cursor for pagination
-	EndCursor *string
+	EndCursor *int
 	// Indicates if there are more results available
-	HasMore *bool
+	HasMore *int
 	// Total number of resources available
 	TotalResource *int
 }

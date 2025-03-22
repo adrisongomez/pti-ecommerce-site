@@ -173,6 +173,7 @@ paths:
                   description: Start listing after this resource
                   required: false
                   type: integer
+                  default: 0
             responses:
                 "200":
                     description: OK response.
@@ -236,37 +237,40 @@ definitions:
         properties:
             status:
                 type: string
-                example: Nulla aut sunt nobis sed qui vitae.
+                example: Aut ut itaque ut harum quos architecto.
         description: CheckResponseBody result type (default view)
         example:
-            status: Aspernatur deleniti et voluptate sunt.
+            status: Culpa et quisquam.
     PageInfoResponseBody:
         title: 'Mediatype identifier: application/vnd.page-info+.json; view=default'
         type: object
         properties:
             endCursor:
-                type: string
+                type: integer
                 description: The ending cursor for pagination
-                example: Iure libero reiciendis quae aut repudiandae voluptatem.
+                example: 2127890220536452045
+                format: int64
             hasMore:
-                type: boolean
+                type: integer
                 description: Indicates if there are more results available
-                example: false
+                example: 3799512259741182586
+                format: int64
             startCursor:
-                type: string
+                type: integer
                 description: The starting cursor for pagination
-                example: Qui aut ipsum architecto.
+                example: 7455631693051039977
+                format: int64
             totalResource:
                 type: integer
                 description: Total number of resources available
-                example: 7776217852295499949
+                example: 7508793723908068031
                 format: int64
         description: Pagination information (default view)
         example:
-            endCursor: Tempore debitis voluptatum.
-            hasMore: true
-            startCursor: Ut eaque.
-            totalResource: 7984555976830251701
+            endCursor: 6050478291760407808
+            hasMore: 7984555976830251701
+            startCursor: 3624921645173067619
+            totalResource: 2923796999026764601
         required:
             - startCursor
             - endCursor
@@ -279,11 +283,11 @@ definitions:
             description:
                 type: string
                 description: Product description
-                example: Cumque aut soluta hic.
+                example: Et cumque aut soluta hic aspernatur est.
             handle:
                 type: string
                 description: Handle
-                example: Est totam.
+                example: Dolorum assumenda illum quibusdam.
             id:
                 type: integer
                 description: Key ID
@@ -307,7 +311,7 @@ definitions:
             status:
                 type: string
                 description: The product's status on ecommerce site
-                example: ACTIVE
+                example: DRAFT
                 enum:
                     - ACTIVE
                     - DRAFT
@@ -315,17 +319,17 @@ definitions:
                 type: array
                 items:
                     type: string
-                    example: Assumenda illum quibusdam labore similique aperiam.
+                    example: Similique aperiam aperiam autem qui inventore est.
                 description: Product tags
                 example:
-                    - Qui inventore.
-                    - Possimus repellat magni tempore asperiores blanditiis.
-                    - Quisquam est rerum omnis.
-                    - Deleniti in quia sint repudiandae.
+                    - Magni tempore asperiores blanditiis optio quisquam est.
+                    - Omnis quo deleniti in quia sint.
+                    - Et sed voluptatem velit fuga iste aut.
+                    - Eos eos repellendus voluptatibus laudantium iusto.
             title:
                 type: string
                 description: Title
-                example: Possimus eos ad et iste assumenda.
+                example: Eos ad et iste.
             variants:
                 type: array
                 items:
@@ -353,8 +357,8 @@ definitions:
                 $ref: '#/definitions/VendorResponseBody'
         description: GetProductByIdResponseBody result type (default view)
         example:
-            description: Voluptatibus laudantium iusto debitis nihil.
-            handle: Repellendus soluta ut.
+            description: Qui saepe.
+            handle: Non vel.
             id: 10
             medias:
                 - id: 10
@@ -366,13 +370,15 @@ definitions:
                 - id: 10
                   mediaType: Facere sed qui.
                   url: Dolorem error voluptate molestiae blanditiis expedita qui.
+                - id: 10
+                  mediaType: Facere sed qui.
+                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
             status: ACTIVE
             tags:
-                - Saepe autem non vel aut asperiores aut.
-                - Laborum odio sunt optio enim corporis.
-                - Laboriosam eveniet voluptas molestiae.
-                - Facilis neque vero.
-            title: Fuga iste aut est eos eos.
+                - Aut unde laborum odio sunt optio.
+                - Corporis in laboriosam eveniet.
+                - Molestiae consequatur.
+            title: Soluta ut.
             variants:
                 - colorHex: Tempore sit deserunt dolores.
                   colorName: Voluptatem et quia modi dolore.
@@ -402,22 +408,28 @@ definitions:
             description:
                 type: string
                 description: Product description
-                example: Blanditiis architecto.
+                example: Repudiandae sit veritatis blanditiis architecto aut accusantium.
             handle:
                 type: string
                 description: Last part of the url which use to idepntify the user
-                example: Accusantium nemo sunt distinctio placeat fugit aut.
+                example: Sunt distinctio placeat fugit aut et.
             medias:
                 type: array
                 items:
                     $ref: '#/definitions/ProductMediaInput'
                 example:
-                    - alt: Tenetur qui consequuntur.
-                      mediaId: Soluta animi aliquam eaque et.
-                      sortNumber: 6570939598249231544
-                    - alt: Tenetur qui consequuntur.
-                      mediaId: Soluta animi aliquam eaque et.
-                      sortNumber: 6570939598249231544
+                    - alt: Sed quis.
+                      mediaId: Tenetur qui consequuntur.
+                      sortNumber: 2548002682993232380
+                    - alt: Sed quis.
+                      mediaId: Tenetur qui consequuntur.
+                      sortNumber: 2548002682993232380
+                    - alt: Sed quis.
+                      mediaId: Tenetur qui consequuntur.
+                      sortNumber: 2548002682993232380
+                    - alt: Sed quis.
+                      mediaId: Tenetur qui consequuntur.
+                      sortNumber: 2548002682993232380
             status:
                 type: string
                 description: Product's status
@@ -429,59 +441,63 @@ definitions:
                 type: array
                 items:
                     type: string
-                    example: Et nostrum sit fugit dolores.
+                    example: Nostrum sit fugit dolores est.
                 description: Product tags
                 example:
-                    - Inventore eaque et.
-                    - Ea eos rem incidunt fuga.
-                    - Ducimus voluptatum fugit.
-                    - Voluptas qui quod quam sunt.
+                    - Eaque et et ea.
+                    - Rem incidunt fuga recusandae ducimus voluptatum.
             title:
                 type: string
                 description: Title's product
-                example: Maiores perspiciatis eos itaque repudiandae sit.
+                example: Perferendis architecto eligendi maiores perspiciatis eos.
             variants:
                 type: array
                 items:
                     $ref: '#/definitions/ProductVariantInput'
                 description: Product variants
                 example:
-                    - colorHex: Numquam ad.
-                      colorName: Impedit sequi.
-                      price: 5605191480377568692
-                    - colorHex: Numquam ad.
-                      colorName: Impedit sequi.
-                      price: 5605191480377568692
+                    - colorHex: Molestiae et soluta animi aliquam eaque.
+                      colorName: Veritatis impedit sequi tenetur numquam ad.
+                      price: 9013296666552782995
+                    - colorHex: Molestiae et soluta animi aliquam eaque.
+                      colorName: Veritatis impedit sequi tenetur numquam ad.
+                      price: 9013296666552782995
+                    - colorHex: Molestiae et soluta animi aliquam eaque.
+                      colorName: Veritatis impedit sequi tenetur numquam ad.
+                      price: 9013296666552782995
+                    - colorHex: Molestiae et soluta animi aliquam eaque.
+                      colorName: Veritatis impedit sequi tenetur numquam ad.
+                      price: 9013296666552782995
             vendorId:
                 type: string
                 description: Vendor's product
-                example: Consequuntur neque repellat id praesentium soluta.
+                example: Dolores voluptas qui.
         example:
-            description: Deserunt ut explicabo non repellat doloribus dolor.
-            handle: Asperiores neque non accusantium ex autem.
+            description: Rerum numquam qui ut rerum.
+            handle: Et aut perspiciatis.
             medias:
-                - alt: Tenetur qui consequuntur.
-                  mediaId: Soluta animi aliquam eaque et.
-                  sortNumber: 6570939598249231544
-                - alt: Tenetur qui consequuntur.
-                  mediaId: Soluta animi aliquam eaque et.
-                  sortNumber: 6570939598249231544
+                - alt: Sed quis.
+                  mediaId: Tenetur qui consequuntur.
+                  sortNumber: 2548002682993232380
+                - alt: Sed quis.
+                  mediaId: Tenetur qui consequuntur.
+                  sortNumber: 2548002682993232380
             status: DRAFT
             tags:
-                - Et mollitia nam.
-                - Itaque ut pariatur id.
-            title: Et fugiat enim rem quos.
+                - Ab et fugiat.
+                - Rem quos ullam deserunt.
+            title: Quia nam.
             variants:
-                - colorHex: Numquam ad.
-                  colorName: Impedit sequi.
-                  price: 5605191480377568692
-                - colorHex: Numquam ad.
-                  colorName: Impedit sequi.
-                  price: 5605191480377568692
-                - colorHex: Numquam ad.
-                  colorName: Impedit sequi.
-                  price: 5605191480377568692
-            vendorId: Architecto placeat est id unde delectus consequatur.
+                - colorHex: Molestiae et soluta animi aliquam eaque.
+                  colorName: Veritatis impedit sequi tenetur numquam ad.
+                  price: 9013296666552782995
+                - colorHex: Molestiae et soluta animi aliquam eaque.
+                  colorName: Veritatis impedit sequi tenetur numquam ad.
+                  price: 9013296666552782995
+                - colorHex: Molestiae et soluta animi aliquam eaque.
+                  colorName: Veritatis impedit sequi tenetur numquam ad.
+                  price: 9013296666552782995
+            vendorId: Explicabo non repellat doloribus.
         required:
             - title
             - description
@@ -494,20 +510,20 @@ definitions:
             alt:
                 type: string
                 description: Alt text that would show in case the image does not render
-                example: Rerum amet occaecati quia nam qui.
+                example: Accusantium magnam.
             mediaId:
                 type: string
                 description: ID of the media record where the resource has being upload
-                example: Ullam molestias animi et necessitatibus a aut.
+                example: Ut eum est eos.
             sortNumber:
                 type: integer
                 description: Position on the images of the product
-                example: 2007185614006316366
+                example: 2233140007862944632
                 format: int64
         example:
-            alt: Commodi asperiores.
-            mediaId: Numquam qui ut rerum cupiditate et.
-            sortNumber: 3912813882709573896
+            alt: Et necessitatibus a aut et vel rerum.
+            mediaId: Debitis et impedit tempora ullam.
+            sortNumber: 8207000959097953743
         required:
             - mediaId
             - sortNumber
@@ -523,16 +539,16 @@ definitions:
                 minimum: 1
             mediaType:
                 type: string
-                example: Modi aut facere.
+                example: Qui rerum qui.
             url:
                 type: string
                 description: URL to the media
-                example: Veniam voluptatem sit.
+                example: Et minima dicta alias minus.
         description: Product-MediaResponseBody result type (default view)
         example:
             id: 10
-            mediaType: Dicta alias.
-            url: Doloribus et.
+            mediaType: Consequuntur animi repellat enim nihil.
+            url: Maxime qui quasi aspernatur dolorem.
     ProductResponseBody:
         title: 'Mediatype identifier: application/vnd.product+json; view=default'
         type: object
@@ -540,11 +556,11 @@ definitions:
             description:
                 type: string
                 description: Product description
-                example: Voluptatem sequi tempora consequatur libero.
+                example: Exercitationem labore aut et itaque.
             handle:
                 type: string
                 description: Handle
-                example: Necessitatibus non voluptatem qui explicabo.
+                example: Quam sit sit porro laudantium repellendus.
             id:
                 type: integer
                 description: Key ID
@@ -562,12 +578,6 @@ definitions:
                     - id: 10
                       mediaType: Facere sed qui.
                       url: Dolorem error voluptate molestiae blanditiis expedita qui.
-                    - id: 10
-                      mediaType: Facere sed qui.
-                      url: Dolorem error voluptate molestiae blanditiis expedita qui.
-                    - id: 10
-                      mediaType: Facere sed qui.
-                      url: Dolorem error voluptate molestiae blanditiis expedita qui.
             status:
                 type: string
                 description: The product's status on ecommerce site
@@ -579,17 +589,15 @@ definitions:
                 type: array
                 items:
                     type: string
-                    example: Aut et itaque et.
+                    example: Sit animi mollitia voluptatibus iure vitae molestias.
                 description: Product tags
                 example:
-                    - Sit porro laudantium repellendus autem.
-                    - Dolor illum asperiores sit ea est quisquam.
-                    - Deserunt maxime error accusantium ut velit ut.
-                    - Animi mollitia voluptatibus.
+                    - Hic ea sed nam molestiae quia.
+                    - Laboriosam qui enim ex voluptates.
             title:
                 type: string
                 description: Title
-                example: Eius ut dolores.
+                example: At facilis repudiandae et ab culpa.
             variants:
                 type: array
                 items:
@@ -607,18 +615,12 @@ definitions:
                       id: 10
                       price: 7935072096624681393
                       productId: Eos praesentium ipsa.
-                    - colorHex: Tempore sit deserunt dolores.
-                      colorName: Voluptatem et quia modi dolore.
-                      featureMediaId: Omnis rerum molestiae omnis adipisci quidem laudantium.
-                      id: 10
-                      price: 7935072096624681393
-                      productId: Eos praesentium ipsa.
             vendor:
                 $ref: '#/definitions/VendorResponseBody'
         description: Product information (default view)
         example:
-            description: Maxime qui quasi aspernatur dolorem.
-            handle: Consequuntur animi repellat enim nihil.
+            description: Eum iste.
+            handle: Blanditiis sint.
             id: 10
             medias:
                 - id: 10
@@ -627,21 +629,12 @@ definitions:
                 - id: 10
                   mediaType: Facere sed qui.
                   url: Dolorem error voluptate molestiae blanditiis expedita qui.
-                - id: 10
-                  mediaType: Facere sed qui.
-                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
             status: DRAFT
             tags:
-                - Provident non quibusdam.
-                - Eum iste.
-            title: Qui rerum qui.
+                - Qui aut ipsum architecto.
+                - Iure libero reiciendis quae aut repudiandae voluptatem.
+            title: Provident non quibusdam.
             variants:
-                - colorHex: Tempore sit deserunt dolores.
-                  colorName: Voluptatem et quia modi dolore.
-                  featureMediaId: Omnis rerum molestiae omnis adipisci quidem laudantium.
-                  id: 10
-                  price: 7935072096624681393
-                  productId: Eos praesentium ipsa.
                 - colorHex: Tempore sit deserunt dolores.
                   colorName: Voluptatem et quia modi dolore.
                   featureMediaId: Omnis rerum molestiae omnis adipisci quidem laudantium.
@@ -744,6 +737,74 @@ definitions:
               vendor:
                 id: 10
                 name: Blanditiis deserunt quis suscipit.
+            - description: At magni eaque quia.
+              handle: Voluptas nostrum est a error.
+              id: 10
+              medias:
+                - id: 10
+                  mediaType: Facere sed qui.
+                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
+                - id: 10
+                  mediaType: Facere sed qui.
+                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
+                - id: 10
+                  mediaType: Facere sed qui.
+                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
+              status: ACTIVE
+              tags:
+                - Quod facilis quod impedit et tempora libero.
+                - Laboriosam eum dicta.
+              title: A reprehenderit.
+              variants:
+                - colorHex: Tempore sit deserunt dolores.
+                  colorName: Voluptatem et quia modi dolore.
+                  featureMediaId: Omnis rerum molestiae omnis adipisci quidem laudantium.
+                  id: 10
+                  price: 7935072096624681393
+                  productId: Eos praesentium ipsa.
+                - colorHex: Tempore sit deserunt dolores.
+                  colorName: Voluptatem et quia modi dolore.
+                  featureMediaId: Omnis rerum molestiae omnis adipisci quidem laudantium.
+                  id: 10
+                  price: 7935072096624681393
+                  productId: Eos praesentium ipsa.
+              vendor:
+                id: 10
+                name: Blanditiis deserunt quis suscipit.
+            - description: At magni eaque quia.
+              handle: Voluptas nostrum est a error.
+              id: 10
+              medias:
+                - id: 10
+                  mediaType: Facere sed qui.
+                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
+                - id: 10
+                  mediaType: Facere sed qui.
+                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
+                - id: 10
+                  mediaType: Facere sed qui.
+                  url: Dolorem error voluptate molestiae blanditiis expedita qui.
+              status: ACTIVE
+              tags:
+                - Quod facilis quod impedit et tempora libero.
+                - Laboriosam eum dicta.
+              title: A reprehenderit.
+              variants:
+                - colorHex: Tempore sit deserunt dolores.
+                  colorName: Voluptatem et quia modi dolore.
+                  featureMediaId: Omnis rerum molestiae omnis adipisci quidem laudantium.
+                  id: 10
+                  price: 7935072096624681393
+                  productId: Eos praesentium ipsa.
+                - colorHex: Tempore sit deserunt dolores.
+                  colorName: Voluptatem et quia modi dolore.
+                  featureMediaId: Omnis rerum molestiae omnis adipisci quidem laudantium.
+                  id: 10
+                  price: 7935072096624681393
+                  productId: Eos praesentium ipsa.
+              vendor:
+                id: 10
+                name: Blanditiis deserunt quis suscipit.
     ProductVariantInput:
         title: ProductVariantInput
         type: object
@@ -751,20 +812,20 @@ definitions:
             colorHex:
                 type: string
                 description: Color in HEX value that would be used on the variant picker
-                example: Distinctio est.
+                example: Neque repellat id praesentium soluta maiores.
             colorName:
                 type: string
                 description: Color variant option
-                example: Expedita expedita dolorum ex saepe a ex.
+                example: Quam sunt molestiae.
             price:
                 type: integer
                 description: Price on cents
-                example: 7019682821450365712
+                example: 5713756882601342783
                 format: int64
         example:
-            colorHex: Nam accusantium magnam nesciunt debitis.
-            colorName: Ut eum est eos.
-            price: 5435801383477123509
+            colorHex: Ex fugiat distinctio.
+            colorName: Dolorum ex saepe.
+            price: 389676155150752658
         required:
             - colorName
             - price
@@ -775,15 +836,15 @@ definitions:
             colorHex:
                 type: string
                 description: Color in HEX value that would be used on the variant picker
-                example: Sed nam molestiae quia occaecati laboriosam qui.
+                example: Dolor et cumque sed officia corrupti.
             colorName:
                 type: string
                 description: Color variant option
-                example: Molestias ad enim hic.
+                example: Impedit qui quidem.
             featureMediaId:
                 type: string
                 description: ProductMedia which would be focus when a variant is picked by the user
-                example: Qui quidem et dolor et cumque sed.
+                example: Et sapiente voluptatem.
             id:
                 type: integer
                 description: Key ID
@@ -793,20 +854,20 @@ definitions:
             price:
                 type: integer
                 description: Price on cents
-                example: 1219544057631634519
+                example: 4919779202387477858
                 format: int64
             productId:
                 type: string
                 description: Product where the variant belongs to
-                example: Voluptates nisi eveniet.
+                example: Iste vel ut iure recusandae incidunt.
         description: Definition of product variants (default view)
         example:
-            colorHex: Incidunt corrupti et sapiente voluptatem sit.
-            colorName: Corrupti facilis mollitia iste vel ut iure.
-            featureMediaId: Laudantium explicabo provident consequatur saepe facere id.
+            colorHex: Earum eligendi dolorum eum suscipit.
+            colorName: Eius voluptatum ea.
+            featureMediaId: Voluptatem sit a modi aut facere.
             id: 10
-            price: 8385608967186261681
-            productId: Ea id earum eligendi dolorum eum.
+            price: 1458580563529902855
+            productId: Provident consequatur saepe facere id maiores voluptas.
     ProductsList:
         title: 'Mediatype identifier: application/vnd.products-list+json; view=default'
         type: object
@@ -921,10 +982,10 @@ definitions:
                     id: 10
                     name: Blanditiis deserunt quis suscipit.
             pageInfo:
-                endCursor: Repellat praesentium voluptas sint voluptas debitis.
-                hasMore: false
-                startCursor: Quis deleniti et itaque sapiente debitis.
-                totalResource: 3611108466135392965
+                endCursor: 347974875663052432
+                hasMore: 6275484723573813870
+                startCursor: 583995469136965926
+                totalResource: 551664605136913490
     SvcProductsCreateProductConflictResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -932,7 +993,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -959,8 +1020,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: true
+            temporary: true
+            timeout: false
         required:
             - name
             - id
@@ -1003,7 +1064,7 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: false
-            timeout: false
+            timeout: true
         required:
             - name
             - id
@@ -1034,19 +1095,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: getProductById_NotFound_response_body result type (default view)
         example:
             fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: false
+            temporary: false
+            timeout: true
         required:
             - name
             - id
@@ -1061,7 +1122,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1077,7 +1138,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -1088,8 +1149,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: true
+            temporary: true
+            timeout: false
         required:
             - name
             - id
@@ -1104,7 +1165,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1127,12 +1188,12 @@ definitions:
                 example: false
         description: updateProductById_Conflict_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: true
+            timeout: false
         required:
             - name
             - id
@@ -1147,7 +1208,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1174,8 +1235,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: true
+            temporary: false
+            timeout: false
         required:
             - name
             - id
@@ -1206,19 +1267,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: list_BadRequest_response_body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -1238,11 +1299,11 @@ definitions:
                 minimum: 1
             name:
                 type: string
-                example: Aut quia tempora aut ut.
+                example: Est id unde delectus consequatur.
         description: CreateResponseBody result type (default view)
         example:
             id: 10
-            name: Ut harum quos architecto.
+            name: Nulla incidunt rerum dolorum doloribus.
         required:
             - name
     VendorInput:
@@ -1251,9 +1312,9 @@ definitions:
         properties:
             name:
                 type: string
-                example: Culpa et quisquam.
+                example: Aliquid dicta neque suscipit repellat fuga.
         example:
-            name: Rerum vel numquam illum culpa possimus atque.
+            name: Nihil consequatur rerum aliquid.
         required:
             - name
     VendorList:
@@ -1274,10 +1335,10 @@ definitions:
                 - id: 10
                   name: Blanditiis deserunt quis suscipit.
             pageInfo:
-                endCursor: Repellat praesentium voluptas sint voluptas debitis.
-                hasMore: false
-                startCursor: Quis deleniti et itaque sapiente debitis.
-                totalResource: 3611108466135392965
+                endCursor: 347974875663052432
+                hasMore: 6275484723573813870
+                startCursor: 583995469136965926
+                totalResource: 551664605136913490
     VendorResponseBody:
         title: 'Mediatype identifier: application/vnd.vendor+json; view=default'
         type: object
@@ -1290,11 +1351,11 @@ definitions:
                 minimum: 1
             name:
                 type: string
-                example: Dolor sit at.
+                example: Laborum dolor illum asperiores sit ea est.
         description: VendorResponseBody result type (default view)
         example:
             id: 10
-            name: Repudiandae et ab culpa corporis exercitationem.
+            name: Ut deserunt maxime error accusantium ut velit.
         required:
             - name
     VendorResponseBodyCollection:
@@ -1304,6 +1365,8 @@ definitions:
             $ref: '#/definitions/VendorResponseBody'
         description: VendorCollectionResponseBody is the result type for an array of VendorResponseBody (default view)
         example:
+            - id: 10
+              name: Blanditiis deserunt quis suscipit.
             - id: 10
               name: Blanditiis deserunt quis suscipit.
             - id: 10

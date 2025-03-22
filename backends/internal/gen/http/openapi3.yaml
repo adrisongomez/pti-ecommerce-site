@@ -24,7 +24,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HealthcheckResponse'
                             example:
-                                status: Quia eveniet.
+                                status: Qui explicabo doloremque dolor.
     /api/openapi.json:
         get:
             tags:
@@ -50,11 +50,11 @@ paths:
                     type: integer
                     description: Record per page
                     default: 10
-                    example: 69
+                    example: 30
                     format: int64
                     minimum: 10
                     maximum: 100
-                  example: 64
+                  example: 79
                 - name: after
                   in: query
                   description: Start listing after this resource
@@ -62,9 +62,9 @@ paths:
                   schema:
                     type: integer
                     description: Start listing after this resource
-                    example: 1981632045376676388
+                    example: 3301538866607468256
                     format: int64
-                  example: 5232067748935988172
+                  example: 4614331473357006938
             responses:
                 "200":
                     description: OK response.
@@ -167,10 +167,10 @@ paths:
                                         id: 10
                                         name: Nulla qui consequatur.
                                 pageInfo:
-                                    endCursor: Perspiciatis iste facilis nulla omnis ipsam sapiente.
-                                    hasMore: false
-                                    startCursor: Accusamus eligendi in dolorem.
-                                    totalResource: 2933164967761451750
+                                    endCursor: 246023972922226725
+                                    hasMore: 5365731106541910194
+                                    startCursor: 4605218461337653783
+                                    totalResource: 1969407321580159685
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -190,36 +190,42 @@ paths:
                         schema:
                             $ref: '#/components/schemas/ProductInput'
                         example:
-                            description: Voluptatem ad sunt voluptatem doloribus tempora neque.
-                            handle: Eveniet vitae aperiam velit quas rerum.
+                            description: Consectetur enim numquam iste dolorem possimus voluptatem.
+                            handle: Sunt voluptatem doloribus tempora neque reprehenderit eveniet.
                             medias:
-                                - alt: Tenetur qui consequuntur.
-                                  mediaId: Soluta animi aliquam eaque et.
-                                  sortNumber: 6570939598249231544
-                                - alt: Tenetur qui consequuntur.
-                                  mediaId: Soluta animi aliquam eaque et.
-                                  sortNumber: 6570939598249231544
-                            status: ACTIVE
+                                - alt: Sed quis.
+                                  mediaId: Tenetur qui consequuntur.
+                                  sortNumber: 2548002682993232380
+                                - alt: Sed quis.
+                                  mediaId: Tenetur qui consequuntur.
+                                  sortNumber: 2548002682993232380
+                                - alt: Sed quis.
+                                  mediaId: Tenetur qui consequuntur.
+                                  sortNumber: 2548002682993232380
+                                - alt: Sed quis.
+                                  mediaId: Tenetur qui consequuntur.
+                                  sortNumber: 2548002682993232380
+                            status: DRAFT
                             tags:
-                                - Et dolor esse.
-                                - Voluptatem est iure.
-                                - Unde sapiente.
-                                - Inventore laboriosam neque.
-                            title: Necessitatibus consectetur enim numquam iste dolorem.
+                                - Quas rerum voluptatem quas dolorem et.
+                                - Esse nemo voluptatem est.
+                                - Nam unde sapiente et inventore.
+                                - Neque ut.
+                            title: Ut ut in eaque in in veniam.
                             variants:
-                                - colorHex: Numquam ad.
-                                  colorName: Impedit sequi.
-                                  price: 5605191480377568692
-                                - colorHex: Numquam ad.
-                                  colorName: Impedit sequi.
-                                  price: 5605191480377568692
-                                - colorHex: Numquam ad.
-                                  colorName: Impedit sequi.
-                                  price: 5605191480377568692
-                                - colorHex: Numquam ad.
-                                  colorName: Impedit sequi.
-                                  price: 5605191480377568692
-                            vendorId: Omnis recusandae in aliquid accusamus occaecati et.
+                                - colorHex: Molestiae et soluta animi aliquam eaque.
+                                  colorName: Veritatis impedit sequi tenetur numquam ad.
+                                  price: 9013296666552782995
+                                - colorHex: Molestiae et soluta animi aliquam eaque.
+                                  colorName: Veritatis impedit sequi tenetur numquam ad.
+                                  price: 9013296666552782995
+                                - colorHex: Molestiae et soluta animi aliquam eaque.
+                                  colorName: Veritatis impedit sequi tenetur numquam ad.
+                                  price: 9013296666552782995
+                                - colorHex: Molestiae et soluta animi aliquam eaque.
+                                  colorName: Veritatis impedit sequi tenetur numquam ad.
+                                  price: 9013296666552782995
+                            vendorId: Recusandae in aliquid accusamus occaecati.
             responses:
                 "201":
                     description: Created response.
@@ -228,8 +234,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Product'
                             example:
-                                description: Soluta reprehenderit illum rerum.
-                                handle: Molestiae illum necessitatibus.
+                                description: A molestiae illum.
+                                handle: Quibusdam laborum quod consequuntur consectetur sit voluptas.
                                 id: 10
                                 medias:
                                     - id: 10
@@ -238,14 +244,32 @@ paths:
                                     - id: 10
                                       mediaType: A at.
                                       url: Inventore non neque.
+                                    - id: 10
+                                      mediaType: A at.
+                                      url: Inventore non neque.
+                                    - id: 10
+                                      mediaType: A at.
+                                      url: Inventore non neque.
                                 status: DRAFT
                                 tags:
-                                    - Quod consequuntur consectetur sit.
-                                    - Doloremque est quo aut esse.
-                                    - Et minima enim suscipit rerum.
-                                    - Autem totam saepe.
-                                title: Accusamus sed quis optio.
+                                    - Quo aut esse saepe et.
+                                    - Enim suscipit.
+                                    - Et autem totam saepe ad nobis.
+                                    - Culpa doloremque.
+                                title: Eum soluta reprehenderit illum.
                                 variants:
+                                    - colorHex: Aut dolorem aut distinctio impedit.
+                                      colorName: Ad illum a voluptatem praesentium.
+                                      featureMediaId: Sit rerum nemo.
+                                      id: 10
+                                      price: 7460281273177024408
+                                      productId: Aut vel ut voluptatum et.
+                                    - colorHex: Aut dolorem aut distinctio impedit.
+                                      colorName: Ad illum a voluptatem praesentium.
+                                      featureMediaId: Sit rerum nemo.
+                                      id: 10
+                                      price: 7460281273177024408
+                                      productId: Aut vel ut voluptatum et.
                                     - colorHex: Aut dolorem aut distinctio impedit.
                                       colorName: Ad illum a voluptatem praesentium.
                                       featureMediaId: Sit rerum nemo.
@@ -282,9 +306,9 @@ paths:
                   schema:
                     type: integer
                     description: Unique product identifier
-                    example: 6064501306859006779
+                    example: 3146103184758491182
                     format: int64
-                  example: 7620694062500350826
+                  example: 937746172392332505
             responses:
                 "200":
                     description: OK response.
@@ -293,8 +317,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Product'
                             example:
-                                description: Quaerat harum.
-                                handle: Neque quo sed rerum est.
+                                description: Optio sint quis quia.
+                                handle: Vitae et a veniam molestiae impedit.
                                 id: 10
                                 medias:
                                     - id: 10
@@ -311,11 +335,11 @@ paths:
                                       url: Inventore non neque.
                                 status: ACTIVE
                                 tags:
-                                    - Enim veritatis porro non eos inventore dolorem.
-                                    - Sed et voluptatem consequatur facilis.
-                                    - Rem ratione voluptas.
-                                    - Enim possimus.
-                                title: Molestiae impedit esse.
+                                    - Quaerat harum.
+                                    - Neque quo sed rerum est.
+                                    - Ut enim veritatis porro non eos.
+                                    - Dolorem cumque sed et voluptatem consequatur facilis.
+                                title: Debitis neque.
                                 variants:
                                     - colorHex: Aut dolorem aut distinctio impedit.
                                       colorName: Ad illum a voluptatem praesentium.
@@ -364,9 +388,9 @@ paths:
                   schema:
                     type: integer
                     description: Unique product identifier
-                    example: 8322937204456264219
+                    example: 1722692782888312515
                     format: int64
-                  example: 3963085242613517451
+                  example: 4324462011569977630
             responses:
                 "200":
                     description: OK response.
@@ -398,11 +422,11 @@ paths:
                     type: integer
                     description: Record per page
                     default: 10
-                    example: 76
+                    example: 83
                     format: int64
                     minimum: 10
                     maximum: 100
-                  example: 27
+                  example: 80
                 - name: after
                   in: query
                   description: Start listing after this resource
@@ -410,9 +434,10 @@ paths:
                   schema:
                     type: integer
                     description: Start listing after this resource
-                    example: 3912865152560289432
+                    default: 0
+                    example: 5607871385736650401
                     format: int64
-                  example: 1464674788629092274
+                  example: 4828309694880017190
             responses:
                 "200":
                     description: OK response.
@@ -429,10 +454,10 @@ paths:
                                     - id: 10
                                       name: Nulla qui consequatur.
                                 pageInfo:
-                                    endCursor: Perspiciatis iste facilis nulla omnis ipsam sapiente.
-                                    hasMore: false
-                                    startCursor: Accusamus eligendi in dolorem.
-                                    totalResource: 2933164967761451750
+                                    endCursor: 246023972922226725
+                                    hasMore: 5365731106541910194
+                                    startCursor: 4605218461337653783
+                                    totalResource: 1969407321580159685
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -452,7 +477,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/VendorInput'
                         example:
-                            name: Deleniti dicta qui.
+                            name: Qui voluptatum quia unde tenetur.
             responses:
                 "201":
                     description: Created response.
@@ -462,7 +487,7 @@ paths:
                                 $ref: '#/components/schemas/Vendor'
                             example:
                                 id: 10
-                                name: Natus est sit architecto ratione velit et.
+                                name: Dolorem delectus quo at culpa.
     /api/vendors/{vendorId}:
         put:
             tags:
@@ -478,9 +503,9 @@ paths:
                   schema:
                     type: integer
                     description: Unique product identifier
-                    example: 6716841789306774391
+                    example: 8603705364432951962
                     format: int64
-                  example: 2195651720249039743
+                  example: 6166169392272191567
             responses:
                 "200":
                     description: OK response.
@@ -489,7 +514,7 @@ paths:
                             schema:
                                 type: boolean
                                 example: true
-                            example: false
+                            example: true
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -504,7 +529,7 @@ components:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: false
+                    example: true
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -524,7 +549,7 @@ components:
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: false
+                    example: true
             example:
                 fault: true
                 id: 123abc
@@ -544,35 +569,38 @@ components:
             properties:
                 status:
                     type: string
-                    example: Ullam voluptas ex dicta neque dolores accusamus.
+                    example: Quaerat molestiae vitae molestiae.
             example:
-                status: Ad exercitationem quaerat qui.
+                status: Voluptatem necessitatibus aut sint sint officia.
         PageInfo:
             type: object
             properties:
                 endCursor:
-                    type: string
+                    type: integer
                     description: The ending cursor for pagination
-                    example: Ea qui officiis qui illo exercitationem voluptatem.
+                    example: 6835277577939640661
+                    format: int64
                 hasMore:
-                    type: boolean
+                    type: integer
                     description: Indicates if there are more results available
-                    example: false
+                    example: 7542584944068927465
+                    format: int64
                 startCursor:
-                    type: string
+                    type: integer
                     description: The starting cursor for pagination
-                    example: Quia consequatur placeat repellat ullam qui tempora.
+                    example: 740366897807531706
+                    format: int64
                 totalResource:
                     type: integer
                     description: Total number of resources available
-                    example: 976607505050739944
+                    example: 1558923975620397839
                     format: int64
             description: Pagination information
             example:
-                endCursor: Velit possimus non.
-                hasMore: true
-                startCursor: Corporis libero.
-                totalResource: 1165845100487330358
+                endCursor: 6354115617341648078
+                hasMore: 3196091285641001587
+                startCursor: 8352874876551454935
+                totalResource: 7502726910964200266
             required:
                 - startCursor
                 - endCursor
@@ -584,11 +612,11 @@ components:
                 description:
                     type: string
                     description: Product description
-                    example: Officia laboriosam.
+                    example: Corporis dolorum quisquam iusto.
                 handle:
                     type: string
                     description: Handle
-                    example: Numquam quos non.
+                    example: Eveniet illum voluptas est.
                 id:
                     type: integer
                     description: Key ID
@@ -609,6 +637,9 @@ components:
                         - id: 10
                           mediaType: A at.
                           url: Inventore non neque.
+                        - id: 10
+                          mediaType: A at.
+                          url: Inventore non neque.
                 status:
                     type: string
                     description: Define the status of product on the site
@@ -620,15 +651,17 @@ components:
                     type: array
                     items:
                         type: string
-                        example: Consequatur et expedita soluta reprehenderit voluptas deleniti.
+                        example: Delectus sit omnis tempore consequatur.
                     description: Product tags
                     example:
-                        - In modi repellat eos inventore quaerat molestiae.
-                        - Molestiae soluta voluptatem necessitatibus.
+                        - Doloribus et omnis voluptas voluptas.
+                        - Doloribus voluptas aut aut nostrum excepturi.
+                        - Corporis impedit aliquid possimus repellat maxime in.
+                        - Aspernatur exercitationem illo dolor.
                 title:
                     type: string
                     description: Title
-                    example: Ut voluptas inventore libero culpa in.
+                    example: Temporibus explicabo cupiditate fuga ut fugit.
                 variants:
                     type: array
                     items:
@@ -646,24 +679,12 @@ components:
                           id: 10
                           price: 7460281273177024408
                           productId: Aut vel ut voluptatum et.
-                        - colorHex: Aut dolorem aut distinctio impedit.
-                          colorName: Ad illum a voluptatem praesentium.
-                          featureMediaId: Sit rerum nemo.
-                          id: 10
-                          price: 7460281273177024408
-                          productId: Aut vel ut voluptatum et.
-                        - colorHex: Aut dolorem aut distinctio impedit.
-                          colorName: Ad illum a voluptatem praesentium.
-                          featureMediaId: Sit rerum nemo.
-                          id: 10
-                          price: 7460281273177024408
-                          productId: Aut vel ut voluptatum et.
                 vendor:
                     $ref: '#/components/schemas/Vendor'
             description: Product information
             example:
-                description: Fuga earum alias est.
-                handle: Quod voluptatem dolorem dolores qui.
+                description: Ut voluptas inventore libero culpa in.
+                handle: Officia laboriosam.
                 id: 10
                 medias:
                     - id: 10
@@ -672,15 +693,12 @@ components:
                     - id: 10
                       mediaType: A at.
                       url: Inventore non neque.
-                    - id: 10
-                      mediaType: A at.
-                      url: Inventore non neque.
                 status: Nostrum expedita fugiat.
                 tags:
-                    - Voluptatibus libero quaerat esse ex et voluptates.
-                    - Omnis non vel quisquam architecto.
-                    - Commodi et.
-                title: Deserunt atque veritatis ea.
+                    - Quos non laborum consequatur.
+                    - Expedita soluta reprehenderit voluptas deleniti.
+                    - Error in.
+                title: Nihil non quibusdam.
                 variants:
                     - colorHex: Aut dolorem aut distinctio impedit.
                       colorName: Ad illum a voluptatem praesentium.
@@ -853,22 +871,71 @@ components:
                   vendor:
                     id: 10
                     name: Nulla qui consequatur.
+                - description: Quia fugit et autem quia animi velit.
+                  handle: Est perferendis reprehenderit quo odit non a.
+                  id: 10
+                  medias:
+                    - id: 10
+                      mediaType: A at.
+                      url: Inventore non neque.
+                    - id: 10
+                      mediaType: A at.
+                      url: Inventore non neque.
+                    - id: 10
+                      mediaType: A at.
+                      url: Inventore non neque.
+                  status: Nostrum expedita fugiat.
+                  tags:
+                    - Vero ut totam delectus eum.
+                    - Sit labore ipsum magni qui qui possimus.
+                  title: Repudiandae et quod nisi eligendi eum sit.
+                  variants:
+                    - colorHex: Aut dolorem aut distinctio impedit.
+                      colorName: Ad illum a voluptatem praesentium.
+                      featureMediaId: Sit rerum nemo.
+                      id: 10
+                      price: 7460281273177024408
+                      productId: Aut vel ut voluptatum et.
+                    - colorHex: Aut dolorem aut distinctio impedit.
+                      colorName: Ad illum a voluptatem praesentium.
+                      featureMediaId: Sit rerum nemo.
+                      id: 10
+                      price: 7460281273177024408
+                      productId: Aut vel ut voluptatum et.
+                    - colorHex: Aut dolorem aut distinctio impedit.
+                      colorName: Ad illum a voluptatem praesentium.
+                      featureMediaId: Sit rerum nemo.
+                      id: 10
+                      price: 7460281273177024408
+                      productId: Aut vel ut voluptatum et.
+                    - colorHex: Aut dolorem aut distinctio impedit.
+                      colorName: Ad illum a voluptatem praesentium.
+                      featureMediaId: Sit rerum nemo.
+                      id: 10
+                      price: 7460281273177024408
+                      productId: Aut vel ut voluptatum et.
+                  vendor:
+                    id: 10
+                    name: Nulla qui consequatur.
         ProductInput:
             type: object
             properties:
                 description:
                     type: string
                     description: Product description
-                    example: Nihil velit est rem et ratione.
+                    example: Quidem et dolorum optio non impedit qui.
                 handle:
                     type: string
                     description: Last part of the url which use to idepntify the user
-                    example: Quibusdam temporibus.
+                    example: Deserunt veritatis illum.
                 medias:
                     type: array
                     items:
                         $ref: '#/components/schemas/ProductMediaInput'
                     example:
+                        - alt: Quibusdam non sunt.
+                          mediaId: Qui quaerat.
+                          sortNumber: 7977252884503095247
                         - alt: Quibusdam non sunt.
                           mediaId: Qui quaerat.
                           sortNumber: 7977252884503095247
@@ -886,43 +953,41 @@ components:
                     type: array
                     items:
                         type: string
-                        example: Ea ab aspernatur eum.
+                        example: Impedit sit ipsa vel occaecati nostrum.
                     description: Product tags
                     example:
-                        - Nulla ea neque.
-                        - Qui totam dolorem similique.
-                        - Voluptatem non ut dolor.
-                        - Eius qui et esse occaecati maiores.
+                        - Et et corrupti saepe quia.
+                        - Aut nihil velit.
                 title:
                     type: string
                     description: Title's product
-                    example: In et et corrupti saepe quia vel.
+                    example: Laborum ullam.
                 variants:
                     type: array
                     items:
                         $ref: '#/components/schemas/ProductVariantInput'
                     description: Product variants
                     example:
-                        - colorHex: Nesciunt id praesentium eveniet.
-                          colorName: Unde aperiam sit et dolores.
+                        - colorHex: Praesentium eveniet.
+                          colorName: Aperiam sit et dolores magni nesciunt.
                           price: 3222232558062686220
-                        - colorHex: Nesciunt id praesentium eveniet.
-                          colorName: Unde aperiam sit et dolores.
+                        - colorHex: Praesentium eveniet.
+                          colorName: Aperiam sit et dolores magni nesciunt.
+                          price: 3222232558062686220
+                        - colorHex: Praesentium eveniet.
+                          colorName: Aperiam sit et dolores magni nesciunt.
+                          price: 3222232558062686220
+                        - colorHex: Praesentium eveniet.
+                          colorName: Aperiam sit et dolores magni nesciunt.
                           price: 3222232558062686220
                 vendorId:
                     type: string
                     description: Vendor's product
-                    example: Odit impedit eligendi.
+                    example: Rem et ratione sit quibusdam temporibus doloremque.
             example:
-                description: Soluta voluptas similique est amet.
-                handle: Dolores non cumque molestias.
+                description: Temporibus nulla ea neque.
+                handle: Qui totam dolorem similique.
                 medias:
-                    - alt: Quibusdam non sunt.
-                      mediaId: Qui quaerat.
-                      sortNumber: 7977252884503095247
-                    - alt: Quibusdam non sunt.
-                      mediaId: Qui quaerat.
-                      sortNumber: 7977252884503095247
                     - alt: Quibusdam non sunt.
                       mediaId: Qui quaerat.
                       sortNumber: 7977252884503095247
@@ -931,23 +996,18 @@ components:
                       sortNumber: 7977252884503095247
                 status: Nostrum expedita fugiat.
                 tags:
-                    - Autem vero repellendus nemo voluptatem accusantium.
-                    - Dolores accusamus nesciunt voluptatem reprehenderit quia.
-                title: Impedit hic.
+                    - Non ut dolor.
+                    - Eius qui et esse occaecati maiores.
+                    - Odit impedit eligendi.
+                title: Aspernatur eum.
                 variants:
-                    - colorHex: Nesciunt id praesentium eveniet.
-                      colorName: Unde aperiam sit et dolores.
+                    - colorHex: Praesentium eveniet.
+                      colorName: Aperiam sit et dolores magni nesciunt.
                       price: 3222232558062686220
-                    - colorHex: Nesciunt id praesentium eveniet.
-                      colorName: Unde aperiam sit et dolores.
+                    - colorHex: Praesentium eveniet.
+                      colorName: Aperiam sit et dolores magni nesciunt.
                       price: 3222232558062686220
-                    - colorHex: Nesciunt id praesentium eveniet.
-                      colorName: Unde aperiam sit et dolores.
-                      price: 3222232558062686220
-                    - colorHex: Nesciunt id praesentium eveniet.
-                      colorName: Unde aperiam sit et dolores.
-                      price: 3222232558062686220
-                vendorId: Amet eaque nostrum quibusdam quos.
+                vendorId: Non dolores.
             required:
                 - title
                 - description
@@ -964,15 +1024,15 @@ components:
                     minimum: 1
                 mediaType:
                     type: string
-                    example: Velit culpa perspiciatis corporis rem nam voluptas.
+                    example: Amet eaque nostrum quibusdam quos.
                 url:
                     type: string
                     description: URL to the media
-                    example: Quaerat sapiente soluta eligendi ullam quia.
+                    example: Dolores accusamus nesciunt voluptatem reprehenderit quia.
             example:
                 id: 10
-                mediaType: Fuga ut fugit quisquam corporis dolorum.
-                url: Consequuntur temporibus explicabo.
+                mediaType: Ea ea deserunt.
+                url: Est consequuntur laudantium dolores accusantium iure.
             required:
                 - createdAt
         ProductMediaInput:
@@ -981,20 +1041,20 @@ components:
                 alt:
                     type: string
                     description: Alt text that would show in case the image does not render
-                    example: Voluptas et error dolore architecto.
+                    example: Ut reprehenderit sed perspiciatis et voluptas.
                 mediaId:
                     type: string
                     description: ID of the media record where the resource has being upload
-                    example: Vitae maiores vitae enim.
+                    example: Quis et quas aspernatur.
                 sortNumber:
                     type: integer
                     description: Position on the images of the product
-                    example: 949563466932443218
+                    example: 4557821736475866910
                     format: int64
             example:
-                alt: Ratione praesentium.
-                mediaId: Necessitatibus magni consequatur.
-                sortNumber: 4904452138578225081
+                alt: Dolores accusantium et laudantium ipsum.
+                mediaId: Alias voluptas et quae est.
+                sortNumber: 1419638774695841697
             required:
                 - mediaId
                 - sortNumber
@@ -1004,15 +1064,15 @@ components:
                 colorHex:
                     type: string
                     description: Color in HEX value that would be used on the variant picker
-                    example: Est rerum delectus sit omnis tempore.
+                    example: Consequatur placeat.
                 colorName:
                     type: string
                     description: Color variant option
-                    example: Iusto quam eveniet illum.
+                    example: Est voluptatem.
                 featureMediaId:
                     type: string
                     description: ProductMedia which would be focus when a variant is picked by the user
-                    example: Voluptas voluptas voluptatum.
+                    example: Officiis qui illo exercitationem voluptatem sint quis.
                 id:
                     type: integer
                     description: Key ID
@@ -1022,20 +1082,20 @@ components:
                 price:
                     type: integer
                     description: Price on cents
-                    example: 6545772797620083235
+                    example: 8161397058483374397
                     format: int64
                 productId:
                     type: string
                     description: Product where the variant belongs to
-                    example: Placeat doloribus et.
+                    example: Qui tempora ullam ea.
             description: Definition of product variants
             example:
-                colorHex: Nostrum excepturi.
-                colorName: Voluptas aut.
-                featureMediaId: Dolorem aspernatur exercitationem illo dolor.
+                colorHex: Velit possimus non.
+                colorName: Corporis libero.
+                featureMediaId: Eligendi ullam quia fuga velit culpa.
                 id: 10
-                price: 481911744744524518
-                productId: Impedit aliquid possimus repellat maxime.
+                price: 3197401224452772020
+                productId: Voluptates quaerat sapiente.
             required:
                 - createdAt
         ProductVariantInput:
@@ -1044,20 +1104,20 @@ components:
                 colorHex:
                     type: string
                     description: Color in HEX value that would be used on the variant picker
-                    example: Ullam quisquam quidem et dolorum optio non.
+                    example: Alias voluptas et.
                 colorName:
                     type: string
                     description: Color variant option
-                    example: Autem quia.
+                    example: Voluptates cupiditate quis vitae maiores vitae enim.
                 price:
                     type: integer
                     description: Price on cents
-                    example: 4065061302876275122
+                    example: 4722482215200959916
                     format: int64
             example:
-                colorHex: Sit ipsa vel occaecati.
-                colorName: Unde deserunt veritatis illum saepe voluptates.
-                price: 2702577004410082207
+                colorHex: Consequatur debitis id ratione praesentium est corporis.
+                colorName: Architecto expedita necessitatibus.
+                price: 3161023297541032354
             required:
                 - colorName
                 - price
@@ -1164,26 +1224,26 @@ components:
                         id: 10
                         name: Nulla qui consequatur.
                 pageInfo:
-                    endCursor: Perspiciatis iste facilis nulla omnis ipsam sapiente.
-                    hasMore: false
-                    startCursor: Accusamus eligendi in dolorem.
-                    totalResource: 2933164967761451750
+                    endCursor: 246023972922226725
+                    hasMore: 5365731106541910194
+                    startCursor: 4605218461337653783
+                    totalResource: 1969407321580159685
         TypeFooter:
             type: object
             properties:
                 createdAt:
                     type: string
                     description: Datetime
-                    example: "1980-09-23T00:23:30Z"
+                    example: "1980-08-27T22:40:04Z"
                     format: date-time
                 updatedAt:
                     type: string
                     description: Datetime
-                    example: "1997-06-01T16:36:58Z"
+                    example: "1992-08-28T07:17:58Z"
                     format: date-time
             example:
-                createdAt: "1991-02-24T02:11:01Z"
-                updatedAt: "1995-05-22T18:24:33Z"
+                createdAt: "1993-04-06T19:29:31Z"
+                updatedAt: "1985-10-28T03:55:37Z"
             required:
                 - createdAt
         Vendor:
@@ -1197,10 +1257,10 @@ components:
                     minimum: 1
                 name:
                     type: string
-                    example: Enim fuga.
+                    example: Corporis rem.
             example:
                 id: 10
-                name: Nihil non quibusdam.
+                name: Voluptas quaerat.
             required:
                 - name
                 - createdAt
@@ -1215,16 +1275,14 @@ components:
                   name: Nulla qui consequatur.
                 - id: 10
                   name: Nulla qui consequatur.
-                - id: 10
-                  name: Nulla qui consequatur.
         VendorInput:
             type: object
             properties:
                 name:
                     type: string
-                    example: Laudantium dolores accusantium iure enim ea.
+                    example: Soluta voluptas similique est amet.
             example:
-                name: Deserunt quo est.
+                name: Dolores non cumque molestias.
             required:
                 - name
         VendorList:
@@ -1244,10 +1302,10 @@ components:
                     - id: 10
                       name: Nulla qui consequatur.
                 pageInfo:
-                    endCursor: Perspiciatis iste facilis nulla omnis ipsam sapiente.
-                    hasMore: false
-                    startCursor: Accusamus eligendi in dolorem.
-                    totalResource: 2933164967761451750
+                    endCursor: 246023972922226725
+                    hasMore: 5365731106541910194
+                    startCursor: 4605218461337653783
+                    totalResource: 1969407321580159685
 tags:
     - name: openapi
     - name: svc-products

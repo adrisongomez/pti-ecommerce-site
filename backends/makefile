@@ -1,5 +1,8 @@
 .ONESHELL:
 
+start-server:
+	go run ./cmd/ecommerce/main.go
+
 generate-clients:
 	go run github.com/steebchen/prisma-client-go generate --schema ./databases/schema.prisma
 

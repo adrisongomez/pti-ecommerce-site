@@ -273,11 +273,11 @@ type ProductMediaResponseBody struct {
 // PageInfoResponseBody is used to define fields on response body types.
 type PageInfoResponseBody struct {
 	// The starting cursor for pagination
-	StartCursor string `form:"startCursor" json:"startCursor" xml:"startCursor"`
+	StartCursor int `form:"startCursor" json:"startCursor" xml:"startCursor"`
 	// The ending cursor for pagination
-	EndCursor string `form:"endCursor" json:"endCursor" xml:"endCursor"`
+	EndCursor int `form:"endCursor" json:"endCursor" xml:"endCursor"`
 	// Indicates if there are more results available
-	HasMore bool `form:"hasMore" json:"hasMore" xml:"hasMore"`
+	HasMore int `form:"hasMore" json:"hasMore" xml:"hasMore"`
 	// Total number of resources available
 	TotalResource int `form:"totalResource" json:"totalResource" xml:"totalResource"`
 }

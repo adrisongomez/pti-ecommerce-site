@@ -26,7 +26,9 @@ var _ = Service(servicePrefix+"-vendor", func() {
 				Maximum(100)
 				Default(10)
 			})
-			Attribute("after", Int, "Start listing after this resource")
+			Attribute("after", Int, "Start listing after this resource", func() {
+				Default(0)
+			})
 		})
 
 		Result(PaginatedVendor)

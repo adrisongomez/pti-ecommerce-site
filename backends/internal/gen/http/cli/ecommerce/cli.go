@@ -14,7 +14,9 @@ import (
 	"net/http"
 	"os"
 
+	svchealthcheckc "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_healthcheck/client"
 	svcproductsc "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_products/client"
+	svcvendorc "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_vendor/client"
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
 )
@@ -23,13 +25,17 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `svc-products (list-product|get-product-by-id|create-product|update-product-by-id|delete-product-by-id)
+	return `svc-healthcheck check
+svc-products (list-product|get-product-by-id|create-product|update-product-by-id|delete-product-by-id)
+svc-vendor (list|create|delete-by-id)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` svc-products list-product --page-size 64 --after 667857055606350253` + "\n" +
+	return os.Args[0] + ` svc-healthcheck check` + "\n" +
+		os.Args[0] + ` svc-products list-product --page-size 11 --after 1507823738322435300` + "\n" +
+		os.Args[0] + ` svc-vendor list --page-size 61 --after 823592245598267839` + "\n" +
 		""
 }
 
@@ -43,6 +49,10 @@ func ParseEndpoint(
 	restore bool,
 ) (goa.Endpoint, any, error) {
 	var (
+		svcHealthcheckFlags = flag.NewFlagSet("svc-healthcheck", flag.ContinueOnError)
+
+		svcHealthcheckCheckFlags = flag.NewFlagSet("check", flag.ExitOnError)
+
 		svcProductsFlags = flag.NewFlagSet("svc-products", flag.ContinueOnError)
 
 		svcProductsListProductFlags        = flag.NewFlagSet("list-product", flag.ExitOnError)
@@ -61,13 +71,33 @@ func ParseEndpoint(
 
 		svcProductsDeleteProductByIDFlags         = flag.NewFlagSet("delete-product-by-id", flag.ExitOnError)
 		svcProductsDeleteProductByIDProductIDFlag = svcProductsDeleteProductByIDFlags.String("product-id", "REQUIRED", "Unique product identifier")
+
+		svcVendorFlags = flag.NewFlagSet("svc-vendor", flag.ContinueOnError)
+
+		svcVendorListFlags        = flag.NewFlagSet("list", flag.ExitOnError)
+		svcVendorListPageSizeFlag = svcVendorListFlags.String("page-size", "10", "")
+		svcVendorListAfterFlag    = svcVendorListFlags.String("after", "", "")
+
+		svcVendorCreateFlags    = flag.NewFlagSet("create", flag.ExitOnError)
+		svcVendorCreateBodyFlag = svcVendorCreateFlags.String("body", "REQUIRED", "")
+
+		svcVendorDeleteByIDFlags        = flag.NewFlagSet("delete-by-id", flag.ExitOnError)
+		svcVendorDeleteByIDVendorIDFlag = svcVendorDeleteByIDFlags.String("vendor-id", "REQUIRED", "Unique product identifier")
 	)
+	svcHealthcheckFlags.Usage = svcHealthcheckUsage
+	svcHealthcheckCheckFlags.Usage = svcHealthcheckCheckUsage
+
 	svcProductsFlags.Usage = svcProductsUsage
 	svcProductsListProductFlags.Usage = svcProductsListProductUsage
 	svcProductsGetProductByIDFlags.Usage = svcProductsGetProductByIDUsage
 	svcProductsCreateProductFlags.Usage = svcProductsCreateProductUsage
 	svcProductsUpdateProductByIDFlags.Usage = svcProductsUpdateProductByIDUsage
 	svcProductsDeleteProductByIDFlags.Usage = svcProductsDeleteProductByIDUsage
+
+	svcVendorFlags.Usage = svcVendorUsage
+	svcVendorListFlags.Usage = svcVendorListUsage
+	svcVendorCreateFlags.Usage = svcVendorCreateUsage
+	svcVendorDeleteByIDFlags.Usage = svcVendorDeleteByIDUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -84,8 +114,12 @@ func ParseEndpoint(
 	{
 		svcn = flag.Arg(0)
 		switch svcn {
+		case "svc-healthcheck":
+			svcf = svcHealthcheckFlags
 		case "svc-products":
 			svcf = svcProductsFlags
+		case "svc-vendor":
+			svcf = svcVendorFlags
 		default:
 			return nil, nil, fmt.Errorf("unknown service %q", svcn)
 		}
@@ -101,6 +135,13 @@ func ParseEndpoint(
 	{
 		epn = svcf.Arg(0)
 		switch svcn {
+		case "svc-healthcheck":
+			switch epn {
+			case "check":
+				epf = svcHealthcheckCheckFlags
+
+			}
+
 		case "svc-products":
 			switch epn {
 			case "list-product":
@@ -117,6 +158,19 @@ func ParseEndpoint(
 
 			case "delete-product-by-id":
 				epf = svcProductsDeleteProductByIDFlags
+
+			}
+
+		case "svc-vendor":
+			switch epn {
+			case "list":
+				epf = svcVendorListFlags
+
+			case "create":
+				epf = svcVendorCreateFlags
+
+			case "delete-by-id":
+				epf = svcVendorDeleteByIDFlags
 
 			}
 
@@ -140,6 +194,12 @@ func ParseEndpoint(
 	)
 	{
 		switch svcn {
+		case "svc-healthcheck":
+			c := svchealthcheckc.NewClient(scheme, host, doer, enc, dec, restore)
+			switch epn {
+			case "check":
+				endpoint = c.Check()
+			}
 		case "svc-products":
 			c := svcproductsc.NewClient(scheme, host, doer, enc, dec, restore)
 			switch epn {
@@ -159,6 +219,19 @@ func ParseEndpoint(
 				endpoint = c.DeleteProductByID()
 				data, err = svcproductsc.BuildDeleteProductByIDPayload(*svcProductsDeleteProductByIDProductIDFlag)
 			}
+		case "svc-vendor":
+			c := svcvendorc.NewClient(scheme, host, doer, enc, dec, restore)
+			switch epn {
+			case "list":
+				endpoint = c.List()
+				data, err = svcvendorc.BuildListPayload(*svcVendorListPageSizeFlag, *svcVendorListAfterFlag)
+			case "create":
+				endpoint = c.Create()
+				data, err = svcvendorc.BuildCreatePayload(*svcVendorCreateBodyFlag)
+			case "delete-by-id":
+				endpoint = c.DeleteByID()
+				data, err = svcvendorc.BuildDeleteByIDPayload(*svcVendorDeleteByIDVendorIDFlag)
+			}
 		}
 	}
 	if err != nil {
@@ -166,6 +239,30 @@ func ParseEndpoint(
 	}
 
 	return endpoint, data, nil
+}
+
+// svcHealthcheckUsage displays the usage of the svc-healthcheck command and
+// its subcommands.
+func svcHealthcheckUsage() {
+	fmt.Fprintf(os.Stderr, `Service is the svc-healthcheck service interface.
+Usage:
+    %[1]s [globalflags] svc-healthcheck COMMAND [flags]
+
+COMMAND:
+    check: Check implements check.
+
+Additional help:
+    %[1]s svc-healthcheck COMMAND --help
+`, os.Args[0])
+}
+func svcHealthcheckCheckUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] svc-healthcheck check
+
+Check implements check.
+
+Example:
+    %[1]s svc-healthcheck check
+`, os.Args[0])
 }
 
 // svcProductsUsage displays the usage of the svc-products command and its
@@ -194,7 +291,7 @@ List products
     -after INT: 
 
 Example:
-    %[1]s svc-products list-product --page-size 64 --after 667857055606350253
+    %[1]s svc-products list-product --page-size 11 --after 1507823738322435300
 `, os.Args[0])
 }
 
@@ -205,7 +302,7 @@ Get a product by its id
     -product-id INT: Unique product identifier
 
 Example:
-    %[1]s svc-products get-product-by-id --product-id 559691723942643548
+    %[1]s svc-products get-product-by-id --product-id 7382141355489381514
 `, os.Args[0])
 }
 
@@ -217,61 +314,51 @@ Create a new product
 
 Example:
     %[1]s svc-products create-product --body '{
-      "description": "Possimus voluptatem ad sunt.",
-      "handle": "Doloribus tempora neque reprehenderit.",
+      "description": "Voluptatem ad sunt voluptatem doloribus tempora neque.",
+      "handle": "Eveniet vitae aperiam velit quas rerum.",
       "medias": [
          {
-            "alt": "Sed quis.",
-            "mediaId": "Tenetur qui consequuntur.",
-            "sortNumber": 2548002682993232380
+            "alt": "Tenetur qui consequuntur.",
+            "mediaId": "Soluta animi aliquam eaque et.",
+            "sortNumber": 6570939598249231544
          },
          {
-            "alt": "Sed quis.",
-            "mediaId": "Tenetur qui consequuntur.",
-            "sortNumber": 2548002682993232380
-         },
-         {
-            "alt": "Sed quis.",
-            "mediaId": "Tenetur qui consequuntur.",
-            "sortNumber": 2548002682993232380
-         },
-         {
-            "alt": "Sed quis.",
-            "mediaId": "Tenetur qui consequuntur.",
-            "sortNumber": 2548002682993232380
+            "alt": "Tenetur qui consequuntur.",
+            "mediaId": "Soluta animi aliquam eaque et.",
+            "sortNumber": 6570939598249231544
          }
       ],
-      "status": "DRAFT",
+      "status": "ACTIVE",
       "tags": [
-         "Velit quas rerum voluptatem quas dolorem et.",
-         "Esse nemo voluptatem est.",
-         "Nam unde sapiente et inventore.",
-         "Neque ut."
+         "Et dolor esse.",
+         "Voluptatem est iure.",
+         "Unde sapiente.",
+         "Inventore laboriosam neque."
       ],
-      "title": "In veniam necessitatibus consectetur enim numquam iste.",
+      "title": "Necessitatibus consectetur enim numquam iste dolorem.",
       "variants": [
          {
-            "colorHex": "Molestiae et soluta animi aliquam eaque.",
-            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
-            "price": 9013296666552782995
+            "colorHex": "Numquam ad.",
+            "colorName": "Impedit sequi.",
+            "price": 5605191480377568692
          },
          {
-            "colorHex": "Molestiae et soluta animi aliquam eaque.",
-            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
-            "price": 9013296666552782995
+            "colorHex": "Numquam ad.",
+            "colorName": "Impedit sequi.",
+            "price": 5605191480377568692
          },
          {
-            "colorHex": "Molestiae et soluta animi aliquam eaque.",
-            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
-            "price": 9013296666552782995
+            "colorHex": "Numquam ad.",
+            "colorName": "Impedit sequi.",
+            "price": 5605191480377568692
          },
          {
-            "colorHex": "Molestiae et soluta animi aliquam eaque.",
-            "colorName": "Veritatis impedit sequi tenetur numquam ad.",
-            "price": 9013296666552782995
+            "colorHex": "Numquam ad.",
+            "colorName": "Impedit sequi.",
+            "price": 5605191480377568692
          }
       ],
-      "vendorId": "Recusandae in aliquid accusamus occaecati."
+      "vendorId": "Omnis recusandae in aliquid accusamus occaecati et."
    }'
 `, os.Args[0])
 }
@@ -285,47 +372,46 @@ Create a new product
 
 Example:
     %[1]s svc-products update-product-by-id --body '{
-      "description": "Beatae dignissimos repellat.",
-      "handle": "Sint sint.",
+      "description": "Ut accusantium.",
+      "handle": "Sit et beatae.",
       "medias": [
          {
-            "alt": "At quaerat non perferendis odit commodi aut.",
-            "mediaId": "Nostrum distinctio quia aut animi quis quod.",
-            "sortNumber": 9107037954132454170
+            "alt": "Ut natus porro eaque eius sint.",
+            "mediaId": "Dolorem dolorem molestias nam.",
+            "sortNumber": 6693284239779247650
          },
          {
-            "alt": "At quaerat non perferendis odit commodi aut.",
-            "mediaId": "Nostrum distinctio quia aut animi quis quod.",
-            "sortNumber": 9107037954132454170
+            "alt": "Ut natus porro eaque eius sint.",
+            "mediaId": "Dolorem dolorem molestias nam.",
+            "sortNumber": 6693284239779247650
          }
       ],
-      "status": "DRAFT",
+      "status": "ACTIVE",
       "tags": [
-         "Iste consequatur minima similique nulla tempore.",
-         "Perferendis distinctio non.",
-         "Ut numquam voluptatem quia molestiae eligendi consequuntur.",
-         "Vero aut."
+         "Sint sint.",
+         "Illum officiis iste consequatur.",
+         "Similique nulla."
       ],
-      "title": "Qui ut accusantium dolorum sit.",
+      "title": "Molestias aut sit hic autem.",
       "variants": [
          {
-            "colorHex": "Ut natus porro eaque eius sint.",
-            "colorName": "Dolorem molestias nam ad.",
-            "price": 3281393361508820864
+            "colorHex": "Voluptates error.",
+            "colorName": "Molestiae eligendi consequuntur in vero.",
+            "price": 4481215871489952671
          },
          {
-            "colorHex": "Ut natus porro eaque eius sint.",
-            "colorName": "Dolorem molestias nam ad.",
-            "price": 3281393361508820864
+            "colorHex": "Voluptates error.",
+            "colorName": "Molestiae eligendi consequuntur in vero.",
+            "price": 4481215871489952671
          },
          {
-            "colorHex": "Ut natus porro eaque eius sint.",
-            "colorName": "Dolorem molestias nam ad.",
-            "price": 3281393361508820864
+            "colorHex": "Voluptates error.",
+            "colorName": "Molestiae eligendi consequuntur in vero.",
+            "price": 4481215871489952671
          }
       ],
-      "vendorId": "Error autem enim."
-   }' --product-id 455149376014392049
+      "vendorId": "Modi perferendis distinctio non nobis ut numquam."
+   }' --product-id 3281393361508820864
 `, os.Args[0])
 }
 
@@ -336,6 +422,58 @@ Create a new product
     -product-id INT: Unique product identifier
 
 Example:
-    %[1]s svc-products delete-product-by-id --product-id 2862713782046866292
+    %[1]s svc-products delete-product-by-id --product-id 8528879750237703595
+`, os.Args[0])
+}
+
+// svcVendorUsage displays the usage of the svc-vendor command and its
+// subcommands.
+func svcVendorUsage() {
+	fmt.Fprintf(os.Stderr, `The product service perform CRUD over the vendor resource
+Usage:
+    %[1]s [globalflags] svc-vendor COMMAND [flags]
+
+COMMAND:
+    list: List vendors
+    create: Create a new product
+    delete-by-id: Create a new product
+
+Additional help:
+    %[1]s svc-vendor COMMAND --help
+`, os.Args[0])
+}
+func svcVendorListUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] svc-vendor list -page-size INT -after INT
+
+List vendors
+    -page-size INT: 
+    -after INT: 
+
+Example:
+    %[1]s svc-vendor list --page-size 61 --after 823592245598267839
+`, os.Args[0])
+}
+
+func svcVendorCreateUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] svc-vendor create -body JSON
+
+Create a new product
+    -body JSON: 
+
+Example:
+    %[1]s svc-vendor create --body '{
+      "name": "Deleniti dicta qui."
+   }'
+`, os.Args[0])
+}
+
+func svcVendorDeleteByIDUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] svc-vendor delete-by-id -vendor-id INT
+
+Create a new product
+    -vendor-id INT: Unique product identifier
+
+Example:
+    %[1]s svc-vendor delete-by-id --vendor-id 6510212265065747319
 `, os.Args[0])
 }

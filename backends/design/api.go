@@ -30,5 +30,4 @@ var _ = API("ecommerce", func() {
 
 		Path(baseAPIDir)
 	})
-
 })

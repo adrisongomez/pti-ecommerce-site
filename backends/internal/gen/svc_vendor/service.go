@@ -15,13 +15,13 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// The product service perform CRUD over the vendor resource
+// Service perform CRUD over the vendor resource
 type Service interface {
 	// List vendors
 	List(context.Context, *ListPayload) (res *VendorList, err error)
-	// Create a new product
+	// Create a new vendor
 	Create(context.Context, *VendorInput) (res *Vendor, err error)
-	// Create a new product
+	// Delete a vendor by id
 	DeleteByID(context.Context, *DeleteByIDPayload) (res bool, err error)
 }
 

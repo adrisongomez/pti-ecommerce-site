@@ -8,7 +8,7 @@ import (
 var PaginatedVendor = types.PaginatedResult("vendor-list", types.Vendor)
 
 var _ = Service(servicePrefix+"-vendor", func() {
-	Description("The product service perform CRUD over the vendor resource")
+	Description("Service perform CRUD over the vendor resource")
 
 	HTTP(func() {
 		Path("/vendors")
@@ -43,7 +43,7 @@ var _ = Service(servicePrefix+"-vendor", func() {
 	})
 
 	Method("create", func() {
-		Description("Create a new product")
+		Description("Create a new vendor")
 
 		Payload(types.VendorInput)
 		Result(types.Vendor)
@@ -51,11 +51,12 @@ var _ = Service(servicePrefix+"-vendor", func() {
 		HTTP(func() {
 			POST("")
 			Response(StatusCreated)
+			Response("BadRequest", StatusBadRequest)
 		})
 	})
 
 	Method("deleteById", func() {
-		Description("Create a new product")
+		Description("Delete a vendor by id")
 
 		Payload(func() {
 			Attribute("vendorId", Int, "Unique product identifier")

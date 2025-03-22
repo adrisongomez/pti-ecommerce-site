@@ -55,6 +55,24 @@ type ListBadRequestResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// CreateBadRequestResponseBody is the type of the "svc-vendor" service
+// "create" endpoint HTTP response body for the "BadRequest" error.
+type CreateBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // DeleteByIDNotFoundResponseBody is the type of the "svc-vendor" service
 // "deleteById" endpoint HTTP response body for the "NotFound" error.
 type DeleteByIDNotFoundResponseBody struct {
@@ -125,6 +143,20 @@ func NewCreateResponseBody(res *svcvendorviews.VendorView) *CreateResponseBody {
 // of the "list" endpoint of the "svc-vendor" service.
 func NewListBadRequestResponseBody(res *goa.ServiceError) *ListBadRequestResponseBody {
 	body := &ListBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateBadRequestResponseBody builds the HTTP response body from the
+// result of the "create" endpoint of the "svc-vendor" service.
+func NewCreateBadRequestResponseBody(res *goa.ServiceError) *CreateBadRequestResponseBody {
+	body := &CreateBadRequestResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,

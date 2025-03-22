@@ -23,5 +23,5 @@ var ProductMedia = ResultType("application/vnd.product-media+json", func() {
 
 var MediaType = Type("MediaType", String, func() {
 	Description("Type of the media")
-	Enum("IMAGE", "VIDEO")
+	Enum("IMAGE", "VIDEO", "UNKNWON")
 })

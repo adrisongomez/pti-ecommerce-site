@@ -67,7 +67,7 @@ func BuildCreatePayload(svcVendorCreateBody string) (*svcvendor.VendorInput, err
 	{
 		err = json.Unmarshal([]byte(svcVendorCreateBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"name\": \"Qui voluptatum quia unde tenetur.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"name\": \"Sed officia corrupti facilis mollitia.\"\n   }'")
 		}
 	}
 	v := &svcvendor.VendorInput{

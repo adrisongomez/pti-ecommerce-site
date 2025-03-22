@@ -277,7 +277,7 @@ type PageInfoResponseBody struct {
 	// The ending cursor for pagination
 	EndCursor int `form:"endCursor" json:"endCursor" xml:"endCursor"`
 	// Indicates if there are more results available
-	HasMore int `form:"hasMore" json:"hasMore" xml:"hasMore"`
+	HasMore bool `form:"hasMore" json:"hasMore" xml:"hasMore"`
 	// Total number of resources available
 	TotalResource int `form:"totalResource" json:"totalResource" xml:"totalResource"`
 }

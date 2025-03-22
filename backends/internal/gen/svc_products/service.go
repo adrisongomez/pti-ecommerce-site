@@ -75,7 +75,7 @@ type PageInfo struct {
 	// The ending cursor for pagination
 	EndCursor int
 	// Indicates if there are more results available
-	HasMore int
+	HasMore bool
 	// Total number of resources available
 	TotalResource int
 }

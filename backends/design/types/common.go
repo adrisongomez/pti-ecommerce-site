@@ -10,7 +10,7 @@ var PageInfo = ResultType("application/vnd.page-info+.json", func() {
 	Attributes(func() {
 		Attribute("startCursor", Int, "The starting cursor for pagination")
 		Attribute("endCursor", Int, "The ending cursor for pagination")
-		Attribute("hasMore", Int, "Indicates if there are more results available")
+		Attribute("hasMore", Boolean, "Indicates if there are more results available")
 		Attribute("totalResource", Int, "Total number of resources available")
 	})
 	Required("startCursor", "endCursor", "hasMore", "totalResource")

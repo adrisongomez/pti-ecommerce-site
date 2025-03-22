@@ -251,10 +251,9 @@ definitions:
                 example: 2127890220536452045
                 format: int64
             hasMore:
-                type: integer
+                type: boolean
                 description: Indicates if there are more results available
-                example: 3799512259741182586
-                format: int64
+                example: true
             startCursor:
                 type: integer
                 description: The starting cursor for pagination
@@ -268,7 +267,7 @@ definitions:
         description: Pagination information (default view)
         example:
             endCursor: 6050478291760407808
-            hasMore: 7984555976830251701
+            hasMore: false
             startCursor: 3624921645173067619
             totalResource: 2923796999026764601
         required:
@@ -983,7 +982,7 @@ definitions:
                     name: Blanditiis deserunt quis suscipit.
             pageInfo:
                 endCursor: 347974875663052432
-                hasMore: 6275484723573813870
+                hasMore: true
                 startCursor: 583995469136965926
                 totalResource: 551664605136913490
     SvcProductsCreateProductConflictResponseBody:
@@ -1336,7 +1335,7 @@ definitions:
                   name: Blanditiis deserunt quis suscipit.
             pageInfo:
                 endCursor: 347974875663052432
-                hasMore: 6275484723573813870
+                hasMore: true
                 startCursor: 583995469136965926
                 totalResource: 551664605136913490
     VendorResponseBody:

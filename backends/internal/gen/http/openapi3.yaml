@@ -168,7 +168,7 @@ paths:
                                         name: Nulla qui consequatur.
                                 pageInfo:
                                     endCursor: 246023972922226725
-                                    hasMore: 5365731106541910194
+                                    hasMore: true
                                     startCursor: 4605218461337653783
                                     totalResource: 1969407321580159685
                 "400":
@@ -455,7 +455,7 @@ paths:
                                       name: Nulla qui consequatur.
                                 pageInfo:
                                     endCursor: 246023972922226725
-                                    hasMore: 5365731106541910194
+                                    hasMore: true
                                     startCursor: 4605218461337653783
                                     totalResource: 1969407321580159685
                 "400":
@@ -581,10 +581,9 @@ components:
                     example: 6835277577939640661
                     format: int64
                 hasMore:
-                    type: integer
+                    type: boolean
                     description: Indicates if there are more results available
-                    example: 7542584944068927465
-                    format: int64
+                    example: false
                 startCursor:
                     type: integer
                     description: The starting cursor for pagination
@@ -598,7 +597,7 @@ components:
             description: Pagination information
             example:
                 endCursor: 6354115617341648078
-                hasMore: 3196091285641001587
+                hasMore: false
                 startCursor: 8352874876551454935
                 totalResource: 7502726910964200266
             required:
@@ -1225,7 +1224,7 @@ components:
                         name: Nulla qui consequatur.
                 pageInfo:
                     endCursor: 246023972922226725
-                    hasMore: 5365731106541910194
+                    hasMore: true
                     startCursor: 4605218461337653783
                     totalResource: 1969407321580159685
         TypeFooter:
@@ -1303,7 +1302,7 @@ components:
                       name: Nulla qui consequatur.
                 pageInfo:
                     endCursor: 246023972922226725
-                    hasMore: 5365731106541910194
+                    hasMore: true
                     startCursor: 4605218461337653783
                     totalResource: 1969407321580159685
 tags:

@@ -31,33 +31,33 @@ jobs:
         with:
           version: 9
 
-      - name: Show pre-installed Node.js version
-        run: node --version
-      - uses: actions/checkout@v4
-      - name: Install Node.js via nvm
-        shell: bash --login {0}
-        run: |
-          nvm install --latest-npm --no-progress
-          echo "$(dirname $(nvm which node))" >> $GITHUB_PATH
-      - name: Show newly installed Node.js version
-        run: node --version
-      - name: Get pnpm store directory
-        id: pnpm-cache-dir
-        shell: bash
-        run: echo "dir=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        id: pnpm-cache
-        with:
-          path: ${{ steps.pnpm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-      - name: Install dependencies
-        run: pnpm install
-      - name: Build
-        working-directory: ./frontends/ecommerce/
-        run: pnpm build
+      # - name: Show pre-installed Node.js version
+      #   run: node --version
+      # - uses: actions/checkout@v4
+      # - name: Install Node.js via nvm
+      #   shell: bash --login {0}
+      #   run: |
+      #     nvm install --latest-npm --no-progress
+      #     echo "$(dirname $(nvm which node))" >> $GITHUB_PATH
+      # - name: Show newly installed Node.js version
+      #   run: node --version
+      # - name: Get pnpm store directory
+      #   id: pnpm-cache-dir
+      #   shell: bash
+      #   run: echo "dir=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+      # - name: Setup pnpm cache
+      #   uses: actions/cache@v4
+      #   id: pnpm-cache
+      #   with:
+      #     path: ${{ steps.pnpm-cache-dir.outputs.dir }}
+      #     key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pnpm-
+      # - name: Install dependencies
+      #   run: pnpm install
+      # - name: Build
+      #   working-directory: ./frontends/ecommerce/
+      #   run: pnpm build
       # - name: Setup Pages
       #   uses: actions/configure-pages@v4
       # - name: Upload artifact

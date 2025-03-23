@@ -6,7 +6,9 @@ import (
 	"net/http"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
-	svc "github.com/adrisongomez/pti-ecommerce-site/backends/libs/services"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/loggers"
+	svc "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/services"
+	"go.uber.org/zap"
 	goahttp "goa.design/goa/v3/http"
 )
 
@@ -14,6 +16,7 @@ func main() {
 	var (
 		port = "3030"
 	)
+	logger := loggers.CreateLogger("ecommerce-api")
 	client := db.NewClient()
 
 	if err := client.Prisma.Connect(); err != nil {
@@ -35,11 +38,12 @@ func main() {
 	svc.MountHealtcheckSVC(mux, healthcheckSvc)
 	svc.MountProductSVC(mux, productSvc)
 	svc.MountVendorSVC(mux, vendorSvc)
-
+	// middleware.Debug(mux, fmt.Fprint)
 	server := &http.Server{Addr: ":" + port, Handler: mux}
 
-	fmt.Printf("Starting server on :%s\n", port)
+	logger.Info(fmt.Sprintf("Starting server on :%s\n", port))
 	if err := server.ListenAndServe(); err != nil {
+		logger.Fatal("Service shutdown due to error", zap.Any("error", err))
 		log.Fatal(err)
 	}
 }

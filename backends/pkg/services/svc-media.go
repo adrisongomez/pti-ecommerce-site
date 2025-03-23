@@ -9,7 +9,7 @@ import (
 	svcHttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_media/server"
 	media "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_media"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
-	mediaUtils "github.com/adrisongomez/pti-ecommerce-site/backends/libs/utils"
+	mediaUtils "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/utils"
 
 	goaHttp "goa.design/goa/v3/http"
 )

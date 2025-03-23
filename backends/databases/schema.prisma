@@ -111,7 +111,7 @@ model ProductMedia {
 model Media {
   id       Int       @id @default(autoincrement())
   filename String
-  size     Int
+  size     BigInt
   type     MediaType
   mimeType String    @map("mime_type")
   bucket   String

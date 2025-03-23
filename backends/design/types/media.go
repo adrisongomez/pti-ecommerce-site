@@ -7,7 +7,7 @@ import (
 var MediaInput = Type("MediaInput", func() {
 	Attribute("filename", String)
 	Attribute("mimeType", String)
-	Attribute("size", Int)
+	Attribute("size", Int64)
 	Attribute("bucket", String)
 	Attribute("key", String)
 
@@ -23,7 +23,7 @@ var Media = ResultType("application/vnd.media+json", func() {
 		Attribute("url", String)
 		Attribute("filename", String)
 		Attribute("mimeType", String)
-		Attribute("size", Int)
+		Attribute("size", Int64)
 		Attribute("bucket", String)
 		Attribute("key", String)
 		Required("id", "mediaType", "url")

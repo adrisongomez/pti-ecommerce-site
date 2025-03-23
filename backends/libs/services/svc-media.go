@@ -42,7 +42,7 @@ func (m *MediaService) count(ctx context.Context, payload *media.ListPayload) (i
 		Count db.BigInt `json:"count"`
 	}
 	err := m.client.Prisma.QueryRaw(
-		"SELECT count(*) FROM project.medias WHERE bucket like CONCAT('%', ?, '%')",
+		"SELECT count(*) FROM project.medias WHERE bucket like CONCAT('%', $1, '%')",
 		payload.Bucket,
 	).Exec(ctx, &rows)
 

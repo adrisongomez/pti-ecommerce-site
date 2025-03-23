@@ -18,19 +18,12 @@ type MediaService struct {
 	client *db.PrismaClient
 }
 
-func (m *MediaService) generateMediaURL(media *db.MediaModel) string {
-	return ""
-}
-
-func (m *MediaService) mapDBToOutput(model *db.MediaModel, url string) *media.Media {
+func (m *MediaService) mapDBToOutput(model *db.MediaModel) *media.Media {
 	size := int64(model.Size)
-	if url == "" {
-		url = m.generateMediaURL(model)
-	}
 	return &media.Media{
 		ID:        model.ID,
 		MediaType: media.MediaType(model.Type),
-		URL:       url,
+		URL:       "",
 		Filename:  &model.Filename,
 		Size:      &size,
 		MimeType:  &model.MimeType,
@@ -73,7 +66,7 @@ func (m *MediaService) List(ctx context.Context, payload *media.ListPayload) (*m
 	var mediaList media.MediaCollection = []*media.Media{}
 
 	for _, record := range records {
-		mediaList = append(mediaList, m.mapDBToOutput(&record, ""))
+		mediaList = append(mediaList, m.mapDBToOutput(&record))
 	}
 
 	count, err := m.count(ctx, payload)
@@ -102,10 +95,10 @@ func (m *MediaService) GetByID(ctx context.Context, payload *media.GetByIDPayloa
 	if err != nil {
 		return nil, err
 	}
-	return m.mapDBToOutput(media, ""), nil
+	return m.mapDBToOutput(media), nil
 }
 
-func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*media.Media, error) {
+func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*media.CreateMediaResponse, error) {
 	url, err := mediaUtils.CreateObjectOnS3(ctx, payload.Bucket, payload.Key)
 	if err != nil {
 		return nil, err
@@ -122,7 +115,11 @@ func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*
 	if err != nil {
 		return nil, err
 	}
-	return m.mapDBToOutput(createdMedia, url), nil
+	response := media.CreateMediaResponse{
+		Media:     m.mapDBToOutput(createdMedia),
+		UploadURL: url,
+	}
+	return &response, nil
 }
 
 func (m *MediaService) DeleteByID(ctx context.Context, payload *media.DeleteByIDPayload) (bool, error) {

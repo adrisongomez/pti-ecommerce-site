@@ -6,6 +6,13 @@ import (
 )
 
 var PaginatedMedia = types.PaginatedResult("media-list", types.Media)
+var CreateMediaResponse = ResultType("application/vnd.create-media-response+json", func() {
+	Attributes(func() {
+		Attribute("media", types.Media)
+		Attribute("uploadUrl", String)
+		Required("media", "uploadUrl")
+	})
+})
 
 var _ = Service(servicePrefix+"-media", func() {
 	Description("Service perform CRUDs over media resource")
@@ -63,7 +70,7 @@ var _ = Service(servicePrefix+"-media", func() {
 	Method("create", func() {
 		Description("Create a media record")
 		Payload(types.MediaInput)
-		Result(types.Media)
+		Result(CreateMediaResponse)
 
 		HTTP(func() {
 			POST("")

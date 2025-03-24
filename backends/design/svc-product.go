@@ -12,7 +12,7 @@ var _ = Service(servicePrefix+"-products", func() {
 		Path("/products")
 	})
 
-	Error("NotFound")
+	Error("ErrNotFound")
 	Error("BadRequest")
 	Error("Conflict")
 
@@ -24,7 +24,9 @@ var _ = Service(servicePrefix+"-products", func() {
 				Maximum(100)
 				Default(10)
 			})
-			Attribute("after", Int, "Start listing after this resource")
+			Attribute("after", Int, "Start listing after this resource", func() {
+				Default(0)
+			})
 		})
 
 		Result(types.ProductPaginated)
@@ -51,16 +53,14 @@ var _ = Service(servicePrefix+"-products", func() {
 			GET("/{productId}")
 			Param("productId")
 			Response(StatusOK)
-			Response("NotFound", StatusNotFound)
+			Response("ErrNotFound", StatusNotFound)
 		})
 	})
 
 	Method("createProduct", func() {
 		Description("Create a new product")
-
-		Payload(types.ProductInput)
+		Payload(types.ProductCreateInput)
 		Result(types.Product)
-
 		HTTP(func() {
 			POST("")
 			Response(StatusCreated)
@@ -73,7 +73,7 @@ var _ = Service(servicePrefix+"-products", func() {
 
 		Payload(func() {
 			Attribute("productId", Int, "Unique product identifier")
-			Attribute("payload", types.ProductInput)
+			Attribute("payload", types.ProductUpdateInput)
 			Required("productId")
 		})
 		Result(types.Product)
@@ -100,7 +100,7 @@ var _ = Service(servicePrefix+"-products", func() {
 			PUT("/{productId}")
 			Param("productId")
 			Response(StatusOK)
-			Response("NotFound", StatusNotFound)
+			Response("ErrNotFound", StatusNotFound)
 		})
 	})
 })

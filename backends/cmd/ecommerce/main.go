@@ -19,17 +19,21 @@ func main() {
 	logger := loggers.CreateLogger("ecommerce-api")
 	client := db.NewClient()
 
+
+	zap.ReplaceGlobals(logger)
+
 	if err := client.Prisma.Connect(); err != nil {
 		panic(err)
 	}
 
 	defer func() {
+		logger.Sync()
 		if err := client.Prisma.Disconnect(); err != nil {
 			panic(err)
 		}
 	}()
 
-	productSvc := svc.NewProductService()
+	productSvc := svc.NewProductService(client)
 	healthcheckSvc := svc.NewHealthcheckService()
 	vendorSvc := svc.NewVendorService(client)
 	mediaSvc := svc.NewMediaService(client)

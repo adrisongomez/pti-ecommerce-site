@@ -22,7 +22,7 @@ func GetMediaTypeByMimeType(mimeType string) db.MediaType {
 }
 
 func IsImage(mimeType string) bool {
-	re, err := regexp.Compile("^images/.*")
+	re, err := regexp.Compile("^images?/.*")
 	if err != nil {
 		log.Println("Error in matching function for images")
 		return false

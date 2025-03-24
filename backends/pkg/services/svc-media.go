@@ -6,10 +6,11 @@ import (
 	"log"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
-	svcHttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_media/server"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_media/server"
 	media "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_media"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
 	mediaUtils "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/utils"
+	"go.uber.org/zap"
 
 	goaHttp "goa.design/goa/v3/http"
 )
@@ -18,12 +19,12 @@ type MediaService struct {
 	client *db.PrismaClient
 }
 
-func (m *MediaService) mapDBToOutput(model *db.MediaModel) *media.Media {
+func MapMediaDBToOutput(model *db.MediaModel) *media.Media {
 	size := int64(model.Size)
 	return &media.Media{
 		ID:        model.ID,
 		MediaType: media.MediaType(model.Type),
-		URL:       "",
+		URL:       mediaUtils.GetResourceURL(model.Bucket, "us-east-1", model.Key),
 		Filename:  &model.Filename,
 		Size:      &size,
 		MimeType:  &model.MimeType,
@@ -66,7 +67,7 @@ func (m *MediaService) List(ctx context.Context, payload *media.ListPayload) (*m
 	var mediaList media.MediaCollection = []*media.Media{}
 
 	for _, record := range records {
-		mediaList = append(mediaList, m.mapDBToOutput(&record))
+		mediaList = append(mediaList, MapMediaDBToOutput(&record))
 	}
 
 	count, err := m.count(ctx, payload)
@@ -95,11 +96,11 @@ func (m *MediaService) GetByID(ctx context.Context, payload *media.GetByIDPayloa
 	if err != nil {
 		return nil, err
 	}
-	return m.mapDBToOutput(media), nil
+	return MapMediaDBToOutput(media), nil
 }
 
 func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*media.CreateMediaResponse, error) {
-	url, err := mediaUtils.CreateObjectOnS3(ctx, payload.Bucket, payload.Key)
+	url, err := mediaUtils.CreateObjectOnS3(ctx, payload.Bucket, payload.Key, payload.Size)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +117,7 @@ func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*
 		return nil, err
 	}
 	response := media.CreateMediaResponse{
-		Media:     m.mapDBToOutput(createdMedia),
+		Media:     MapMediaDBToOutput(createdMedia),
 		UploadURL: url,
 	}
 	return &response, nil
@@ -137,12 +138,12 @@ func MountMediaSVC(mux goaHttp.Muxer, svc *MediaService) {
 	endpoints := media.NewEndpoints(svc)
 	req := goaHttp.RequestDecoder
 	res := goaHttp.ResponseEncoder
-	handler := svcHttp.New(endpoints, mux, req, res, nil, nil)
-	svcHttp.Mount(mux, handler)
+	handler := server.New(endpoints, mux, req, res, nil, nil)
+	server.Mount(mux, handler)
 
 	go func() {
 		for _, mount := range handler.Mounts {
-			fmt.Printf("%q mounted on %s %s\n", mount.Method, mount.Verb, mount.Pattern)
+			zap.L().Info(fmt.Sprintf("%q mounted on %s %s\n", mount.Method, mount.Verb, mount.Pattern))
 		}
 	}()
 }

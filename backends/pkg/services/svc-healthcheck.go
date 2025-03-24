@@ -6,6 +6,7 @@ import (
 
 	svcHttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_healthcheck/server"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_healthcheck"
+	"go.uber.org/zap"
 	goahttp "goa.design/goa/v3/http"
 )
 
@@ -31,7 +32,7 @@ func MountHealtcheckSVC(mux goahttp.Muxer, healthSvc *HealthcheckService) {
 	svcHttp.Mount(mux, handler)
 	go func() {
 		for _, mount := range handler.Mounts {
-			fmt.Printf("%q mounted on %s %s\n", mount.Method, mount.Verb, mount.Pattern)
+			zap.L().Info(fmt.Sprintf("%q mounted on %s %s\n", mount.Method, mount.Verb, mount.Pattern))
 		}
 	}()
 }

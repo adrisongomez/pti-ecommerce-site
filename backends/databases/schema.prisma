@@ -36,6 +36,7 @@ model Product {
   medias      ProductMedia[]
   collections Collection[]
 
+  MediasIn Media[]
   ProductCollection ProductCollection[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
@@ -80,7 +81,7 @@ model ProductVariant {
   productId      Int     @map("product_id")
   featureMediaId Int?    @unique() @map("feature_media_id")
 
-  product      Product       @relation(fields: [productId], references: [id])
+  product      Product?       @relation(fields: [productId], references: [id])
   featureMedia ProductMedia? @relation(fields: [featureMediaId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
@@ -97,7 +98,7 @@ model ProductMedia {
   sortNumber Int     @map("sort_number")
   alt        String?
 
-  product        Product         @relation(fields: [productId], references: [id])
+  product        Product?         @relation(fields: [productId], references: [id])
   ProductVariant ProductVariant?
   Media          Media?          @relation(fields: [mediaId], references: [id])
 
@@ -123,6 +124,7 @@ model Media {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@map("medias")
+  Product Product[]
 }
 
 model User {

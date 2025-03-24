@@ -4,17 +4,31 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
-var ProductInput = Type("ProductInput", func() {
+var ProductUpdateInput = Type("ProductUpdateInput", func() {
 	Attribute("title", String, "Title's product")
 	Attribute("description", String, "Product description")
 	Attribute("handle", String, "Last part of the url which use to idepntify the user")
-	Attribute("status", ProductStatus, "Product's status")
+	Attribute("status", ProductStatus, "Product's status", func() {
+		Default("DRAFT")
+	})
 	Attribute("tags", ArrayOf(String), "Product tags")
-	Attribute("vendorId", String, "Vendor's product")
+	Attribute("vendorId", Int, "Vendor's product")
+	Required("title", "description", "tags", "vendorId")
+})
+
+var ProductCreateInput = Type("ProductInput", func() {
+	Attribute("title", String, "Title's product")
+	Attribute("description", String, "Product description")
+	Attribute("handle", String, "Last part of the url which use to idepntify the user")
+	Attribute("status", ProductStatus, "Product's status", func() {
+		Default("DRAFT")
+	})
+	Attribute("tags", ArrayOf(String), "Product tags")
+	Attribute("vendorId", Int, "Vendor's product")
 	Attribute("variants", ArrayOf(ProductVariantInput), "Product variants")
 	Attribute("medias", ArrayOf(ProductMediaInput))
 
-	Required("title", "description", "tags", "vendorId")
+	Required("title", "description", "tags", "vendorId", "variants")
 })
 
 var ProductStatus = Type("ProductStatus", String, func() {
@@ -25,7 +39,7 @@ var ProductStatus = Type("ProductStatus", String, func() {
 var Product = ResultType("application/vnd.product+json", func() {
 	Description("Product information")
 	ContentType("application/json")
-	Reference(TypeFooter)
+	Extend(TypeFooter)
 
 	Attributes(func() {
 		Attribute("id", Int, fieldID)
@@ -39,7 +53,7 @@ var Product = ResultType("application/vnd.product+json", func() {
 		})
 		Attribute("variants", ArrayOf(ProductVariant))
 		Attribute("medias", ArrayOf(ProductMedia))
-		Required("id", "title", "handle", "description", "status")
+		Required("id", "title", "handle", "description", "status", "variants", "medias")
 	})
 })
 

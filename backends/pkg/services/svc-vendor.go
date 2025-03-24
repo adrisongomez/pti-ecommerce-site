@@ -8,6 +8,7 @@ import (
 	svchttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_vendor/server"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_vendor"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
+	"go.uber.org/zap"
 	goahttp "goa.design/goa/v3/http"
 )
 
@@ -15,7 +16,7 @@ type VendorService struct {
 	client *db.PrismaClient
 }
 
-func mapVendorToVendorResponse(vendor db.VendorModel) *svc.Vendor {
+func MapVendorToVendorResponse(vendor db.VendorModel) *svc.Vendor {
 	return &svc.Vendor{
 		ID:   &vendor.ID,
 		Name: vendor.Name,
@@ -47,7 +48,7 @@ func (v *VendorService) List(ctx context.Context, payload *svc.ListPayload) (*sv
 
 	var vendorList svc.VendorCollection = []*svc.Vendor{}
 	for _, vendor := range vendors {
-		vendorList = append(vendorList, mapVendorToVendorResponse(vendor))
+		vendorList = append(vendorList, MapVendorToVendorResponse(vendor))
 	}
 	count, err := v.count(ctx)
 
@@ -77,7 +78,7 @@ func (v *VendorService) Create(ctx context.Context, input *svc.VendorInput) (*sv
 	if err != nil {
 		return nil, err
 	}
-	response := mapVendorToVendorResponse(*createdVendor)
+	response := MapVendorToVendorResponse(*createdVendor)
 	return response, nil
 }
 func (v *VendorService) DeleteByID(ctx context.Context, input *svc.DeleteByIDPayload) (bool, error) {
@@ -107,7 +108,7 @@ func MountVendorSVC(mux goahttp.Muxer, vendorSvc *VendorService) {
 
 	go func() {
 		for _, mount := range handler.Mounts {
-			fmt.Printf("%q mounted on %s %s\n", mount.Method, mount.Verb, mount.Pattern)
+			zap.L().Info(fmt.Sprintf("%q mounted on %s %s\n", mount.Method, mount.Verb, mount.Pattern))
 		}
 	}()
 }

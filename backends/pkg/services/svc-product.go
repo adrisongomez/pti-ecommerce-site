@@ -18,6 +18,7 @@ import (
 
 type ProductService struct {
 	client *db.PrismaClient
+	logger *zap.Logger
 }
 
 func MapFromProductDbToOut(model *db.ProductModel) *Product {
@@ -168,7 +169,10 @@ func (p *ProductService) ListProduct(ctx context.Context, payload *ListProductPa
 		productList = append(productList, MapFromProductDbToOut(&p))
 	}
 
-	count := 0
+	count, err := p.count(ctx)
+	if err != nil {
+		return nil, err
+	}
 	nextPageCursor := internalUtils.MinInt(count, payload.After+payload.PageSize)
 
 	pageInfo := &PageInfo{
@@ -189,8 +193,7 @@ func (p *ProductService) ListProduct(ctx context.Context, payload *ListProductPa
 func (p *ProductService) CreateProduct(ctx context.Context, payload *ProductInput) (*Product, error) {
 	methodLog := zap.String("method", "ProducServicet#CreateProduct")
 	payloadLog := zap.Any("payload", payload)
-	logger := zap.L()
-	logger.Info("Create a product", methodLog, payloadLog)
+	p.logger.Info("Create a product", methodLog, payloadLog)
 
 	var handle string
 	if payload.Handle == nil {
@@ -207,40 +210,43 @@ func (p *ProductService) CreateProduct(ctx context.Context, payload *ProductInpu
 		db.Product.Vendor.Link(db.Vendor.ID.Equals(payload.VendorID)),
 		db.Product.Tags.Set(payload.Tags),
 	).With().Exec(ctx)
-	logger.Debug("Product is created", methodLog, zap.Any("record", dbProduct))
+	p.logger.Debug("Product is created", methodLog, zap.Any("record", dbProduct))
 	if err != nil {
-		logger.Error("Error trying to createProduct", methodLog, payloadLog, zap.Any("error", err))
+		p.logger.Error("Error trying to createProduct", methodLog, payloadLog, zap.Any("error", err))
 		return nil, err
 	}
 	var txs []db.PrismaTransaction
 
 	if payload.Medias != nil {
 		for _, media := range payload.Medias {
-			var alt string = ""
+			changes := []db.ProductMediaSetParam{}
 			if media.Alt != nil {
-				alt = *media.Alt
+				changes = append(changes, db.ProductMedia.Alt.Set(*media.Alt))
 			}
-			txs = append(txs, p.client.ProductMedia.CreateOne(
-				db.ProductMedia.SortNumber.Set(media.SortNumber),
+			changes = append(changes,
 				db.ProductMedia.ProductID.Set(dbProduct.ID),
 				db.ProductMedia.MediaID.Set(media.MediaID),
-				db.ProductMedia.Alt.Set(alt),
+			)
+			txs = append(txs, p.client.ProductMedia.CreateOne(
+				db.ProductMedia.SortNumber.Set(media.SortNumber),
+				changes...,
 			).Tx())
 		}
 	}
 
 	if payload.Variants != nil {
 		for _, variant := range payload.Variants {
-			colorHex := ""
-
+			changes := []db.ProductVariantSetParam{}
 			if variant.ColorHex != nil {
-				colorHex = *variant.ColorHex
+				changes = append(changes, db.ProductVariant.ColorHex.Set(*variant.ColorHex))
 			}
+			changes = append(changes,
+				db.ProductVariant.ProductID.Set(dbProduct.ID),
+			)
 			txs = append(txs, p.client.ProductVariant.CreateOne(
 				db.ProductVariant.ColorName.Set(variant.ColorName),
 				db.ProductVariant.Price.Set(variant.Price),
-				db.ProductVariant.ProductID.Set(dbProduct.ID),
-				db.ProductVariant.ColorHex.Set(colorHex),
+				changes...,
 			).Tx())
 		}
 	}
@@ -250,23 +256,22 @@ func (p *ProductService) CreateProduct(ctx context.Context, payload *ProductInpu
 		p.client.Product.FindUnique(
 			db.Product.ID.Equals(dbProduct.ID),
 		).Delete().Exec(ctx)
-		logger.Error("Error trying to stitching others elements", methodLog, payloadLog, zap.Any("error", err))
+		p.logger.Error("Error trying to stitching others elements", methodLog, payloadLog, zap.Any("error", err))
 		return nil, err
 	}
 
 	prod, err := p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: dbProduct.ID})
 	if err != nil {
-		logger.Error("Error trying to getProductId", methodLog, payloadLog, zap.Any("error", err))
+		p.logger.Error("Error trying to getProductId", methodLog, payloadLog, zap.Any("error", err))
 		return nil, err
 	}
 	return prod, nil
 }
 
 func (p *ProductService) UpdateProductByID(ctx context.Context, payload *UpdateProductByIDPayload) (*Product, error) {
-	logger := zap.L()
 	methodSign := zap.String("method", "Product#UpdateProductByID")
 	payloadLog := zap.Any("payload", payload)
-	logger.Info("Update product by id got called with", methodSign, payloadLog)
+	p.logger.Info("Update product by id got called with", methodSign, payloadLog)
 
 	updatedProduct, err := p.client.Product.UpsertOne(db.Product.ID.Equals(payload.ProductID)).Update(
 		db.Product.Title.Set(payload.Payload.Title),
@@ -275,23 +280,98 @@ func (p *ProductService) UpdateProductByID(ctx context.Context, payload *UpdateP
 		db.Product.Tags.Set(payload.Payload.Tags),
 	).Exec(ctx)
 	if err != nil {
-		logger.Error("error on updating product", methodSign, payloadLog, zap.Error(err))
+		p.logger.Error("error on updating product", methodSign, payloadLog, zap.Error(err))
 		return nil, err
 	}
-	logger.Error("Response by updating product", methodSign, zap.Any("updatedProduct", updatedProduct))
+	p.logger.Error("Response by updating product", methodSign, zap.Any("updatedProduct", updatedProduct))
 	return MapFromProductDbToOut(updatedProduct), nil
 }
 
 func (p *ProductService) DeleteProductByID(ctx context.Context, payload *DeleteProductByIDPayload) (bool, error) {
+	methodLog := zap.String("method", "ProductService#DeleteProductByID")
 	_, err := p.client.Product.FindUnique(db.Product.ID.Equals(payload.ProductID)).Exec(ctx)
 	if err != nil {
+		p.logger.Error("Error on deleting product", methodLog, zap.Error(err))
 		return false, err
 	}
 	return true, nil
 }
+func (p *ProductService) AddVariant(ctx context.Context, payload *AddVariantPayload) (*Product, error) {
+	methodLog := zap.String("methodName", "ProductService#AddVariant")
+	changes := []db.ProductVariantSetParam{}
+	if payload.Payload.ColorHex != nil {
+		changes = append(changes, db.ProductVariant.ColorHex.Set(*payload.Payload.ColorHex))
+	}
+	p.logger.Info("Add product variant got called", methodLog, zap.Any("payload", payload))
+	variant, err := p.client.ProductVariant.CreateOne(
+		db.ProductVariant.ColorName.Set(payload.Payload.ColorName),
+		db.ProductVariant.Price.Set(payload.Payload.Price),
+		changes...,
+	).Exec(ctx)
+	if err != nil {
+		p.logger.Error("Error on adding variant", methodLog, zap.Error(err))
+		return nil, err
+	}
+	p.logger.Info("Added variant", methodLog, zap.Any("newVariant", variant))
+	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: payload.ProductID})
+}
+
+func (p *ProductService) RemoveVariant(ctx context.Context, payload *RemoveVariantPayload) (*Product, error) {
+	methodLog := zap.String("method", "ProductService#RemoveVariant")
+	p.logger.Info("Remove variant got called", methodLog, zap.Any("payload", payload))
+	_, err := p.client.ProductVariant.FindUnique(
+		db.ProductVariant.ID.Equals(payload.VariantID),
+	).Delete().Exec(ctx)
+	if err != nil {
+		p.logger.Error("Error on remove variant", methodLog, zap.Error(err))
+		return nil, err
+	}
+	p.logger.Info("Removed", methodLog, zap.Int("variantId", payload.VariantID))
+	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: payload.ProductID})
+}
+
+func (p *ProductService) AddMedia(ctx context.Context, payload *AddMediaPayload) (*Product, error) {
+	methodLog := zap.String("method", "ProductService#AddMedia")
+	p.logger.Info("Add media got called", methodLog, zap.Any("payload", payload))
+
+	changes := []db.ProductMediaSetParam{
+		db.ProductMedia.MediaID.Set(payload.Payload.MediaID),
+	}
+
+	if payload.Payload.Alt != nil {
+		changes = append(changes, db.ProductMedia.Alt.Set(*payload.Payload.Alt))
+	}
+	newMedia, err := p.client.ProductMedia.CreateOne(
+		db.ProductMedia.SortNumber.Set(payload.Payload.SortNumber),
+		changes...,
+	).Exec(ctx)
+
+	if err != nil {
+		p.logger.Error("Error on adding media", methodLog, zap.Error(err))
+		return nil, err
+	}
+	p.logger.Info("Added product media", methodLog, zap.Any("newMedia", newMedia))
+
+	return nil, nil
+}
+
+func (p *ProductService) RemoveMedia(ctx context.Context, payload *RemoveMediaPayload) (*Product, error) {
+	methodLog := zap.String("method", "ProductService#RemoveMedia")
+	p.logger.Info("Add media got called", methodLog, zap.Any("payload", payload))
+	removedMedia, err := p.client.ProductMedia.FindUnique(
+		db.ProductMedia.ID.Equals(payload.ProductMediaID),
+	).Delete().Exec(ctx)
+	if err != nil {
+		p.logger.Error("Error on removing media", methodLog, zap.Error(err))
+		return nil, err
+	}
+	p.logger.Info("Remove product media", methodLog, zap.Any("removedMedia", removedMedia))
+	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: payload.ProductID})
+}
 
 func NewProductService(client *db.PrismaClient) *ProductService {
-	return &ProductService{client}
+	logger := zap.L()
+	return &ProductService{client, logger}
 }
 
 func MountProductSVC(mux goahttp.Muxer, svc *ProductService) {

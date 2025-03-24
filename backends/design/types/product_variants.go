@@ -4,7 +4,7 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
-var ProductVariantInput = Type("ProductVariantInput", func() {
+var ProductVariantInput = Type("ProductVariantCreateInput", func() {
 	Attribute("colorName", String, "Color variant option")
 	Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 	Attribute("price", Int, "Price on cents")
@@ -20,7 +20,8 @@ var ProductVariant = ResultType("application/vnd.product-variant+json", func() {
 		Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 		Attribute("price", Int, "Price on cents")
 		Attribute("featureMediaId", Int, "ProductMedia which would be focus when a variant is picked by the user")
+		Attribute("productId", String)
 		Reference(TypeFooter)
-		Required("colorName", "price", "id")
+		Required("colorName", "price", "id", "productId")
 	})
 })

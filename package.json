@@ -72,16 +72,14 @@
     "**/*.{ts,tsx,js,jsx}": [
       "pnpm prettier --write",
       "pnpm lint --fix"
+    ],
+    "**/*.go": [
+      "./scripts/format-golang.sh"
     ]
   },
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
-    ]
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
     ]
   },
   "pnpm": {

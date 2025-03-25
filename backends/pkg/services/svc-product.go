@@ -159,6 +159,7 @@ func (p *ProductService) ListProduct(ctx context.Context, payload *ListProductPa
 		db.Product.Variants.Fetch(),
 		db.Product.MediasIn.Fetch(),
 	).Exec(ctx)
+
 	if err != nil {
 		return nil, err
 	}

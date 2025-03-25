@@ -1,4 +1,3 @@
- 
 import React from "react";
 
 import { Refine } from "@refinedev/core";
@@ -12,7 +11,6 @@ import {
   ThemedLayoutV2,
 } from "@refinedev/mui";
 
-import dataProvider from "@refinedev/simple-rest";
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Route, Routes, Outlet } from "react-router";
@@ -23,7 +21,8 @@ import routerBindings, {
 } from "@refinedev/react-router";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
-import MediaList from "./pages/medias/list";
+import MediaList from "./pages/files/list";
+import FileApiProvider from "./dataProviders/FileApiProvider";
 
 function App() {
   return (
@@ -35,15 +34,18 @@ function App() {
           <RefineSnackbarProvider>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+                dataProvider={{
+                  default: FileApiProvider("http://localhost:3030"),
+                  files: FileApiProvider("http://localhost:3030"),
+                }}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
                 resources={[
                   {
-                    name: "medias",
-                    list: "/medias",
-                    show: "/medias/:id",
-                    create: "/medias/create",
+                    name: "files",
+                    list: "/files",
+                    show: "/files/:id",
+                    create: "/files/create",
                     meta: {
                       canDelete: true,
                     },
@@ -68,7 +70,7 @@ function App() {
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
-                    <Route path="/medias">
+                    <Route path="/files">
                       <Route index element={<MediaList />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />

@@ -2,6 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
+	cors "goa.design/plugins/v3/cors/dsl"
 )
 
 var (
@@ -19,6 +20,10 @@ var _ = API("ecommerce", func() {
 		URL("https://github.com/adrisongomez")
 	})
 
+	cors.Origin("/.*localhost.*/", func() {
+		cors.Methods("GET", "POST", "PUT", "DELETE")
+	})
+
 	Server("ecommerce", func() {
 		Host("localhost", func() {
 			URI("http://localhost:3030")
@@ -27,7 +32,6 @@ var _ = API("ecommerce", func() {
 
 	HTTP(func() {
 		Consumes("application/json")
-
 		Path(baseAPIDir)
 	})
 })

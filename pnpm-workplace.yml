@@ -1,3 +1,4 @@
 packages:
-  - frontends/*
-  - infra
+  - 'frontends/*'
+  - 'infra'
+  - 'packages/*'

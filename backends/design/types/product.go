@@ -39,7 +39,6 @@ var ProductStatus = Type("ProductStatus", String, func() {
 var Product = ResultType("application/vnd.product+json", func() {
 	Description("Product information")
 	ContentType("application/json")
-	Extend(TypeFooter)
 
 	Attributes(func() {
 		Attribute("id", Int, fieldID)
@@ -53,7 +52,9 @@ var Product = ResultType("application/vnd.product+json", func() {
 		})
 		Attribute("variants", ArrayOf(ProductVariant))
 		Attribute("medias", ArrayOf(ProductMedia))
-		Required("id", "title", "handle", "description", "status", "variants", "medias")
+		Attribute("createdAt", String, "Date of creation", fieldDatetime)
+		Attribute("updatedAt", String, "Last update date", fieldDatetime)
+		Required("id", "title", "handle", "description", "status", "variants", "medias", "createdAt")
 	})
 })
 

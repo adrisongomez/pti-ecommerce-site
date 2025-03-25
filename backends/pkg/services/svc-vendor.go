@@ -16,11 +16,19 @@ type VendorService struct {
 	client *db.PrismaClient
 }
 
-func MapVendorToVendorResponse(vendor db.VendorModel) *svc.Vendor {
-	return &svc.Vendor{
-		ID:   &vendor.ID,
-		Name: vendor.Name,
+func MapVendorToVendorResponse(dbVendor db.VendorModel) *svc.Vendor {
+	vendor := svc.Vendor{
+		ID:        &dbVendor.ID,
+		Name:      dbVendor.Name,
+		CreatedAt: dbVendor.CreatedAt.String(),
+		UpdatedAt: nil,
 	}
+
+	if value, ok := dbVendor.UpdatedAt(); ok {
+		vendor.UpdatedAt = utils.StringRef(value.String())
+	}
+
+	return &vendor
 }
 
 func (v *VendorService) count(ctx context.Context) (int, error) {

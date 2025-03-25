@@ -21,18 +21,22 @@ type MediaService struct {
 
 func MapMediaDBToOutput(model *db.MediaModel) *media.Media {
 	size := int64(model.Size)
-	return &media.Media{
+	output := media.Media{
 		ID:        model.ID,
 		MediaType: media.MediaType(model.Type),
 		URL:       mediaUtils.GetResourceURL(model.Bucket, "us-east-1", model.Key),
-		Filename:  &model.Filename,
-		Size:      &size,
-		MimeType:  &model.MimeType,
-		Bucket:    &model.Bucket,
-		Key:       &model.Bucket,
+		Filename:  model.Filename,
+		Size:      size,
+		MimeType:  model.MimeType,
+		Bucket:    model.Bucket,
+		Key:       model.Bucket,
 		CreatedAt: model.CreatedAt.String(),
 		UpdatedAt: nil,
 	}
+	if value, ok := model.UpdatedAt(); ok {
+		output.UpdatedAt = utils.StringRef(value.String())
+	}
+	return &output
 }
 
 func (m *MediaService) count(ctx context.Context, payload *media.ListPayload) (int, error) {

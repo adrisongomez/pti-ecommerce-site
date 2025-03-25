@@ -12,3 +12,7 @@ func MinInt(a, b int) int {
 	}
 	return a
 }
+
+func StringRef(v string) *string {
+	return &v
+}

@@ -45,12 +45,6 @@ func MapFromProductDbToOut(model *db.ProductModel) *Product {
 	variants := []*ProductVariant{}
 	medias := []*ProductMedia{}
 
-	// logger.Info("datas", zap.Any("variants", len(dbVariants)), zap.Any("medias", len(dbProductMedias)))
-
-	// if len(dbProductMedias) == 0 {
-	// 	return &response
-	// }
-
 	dbProductMedias := model.Medias()
 	dbVariants := model.Variants()
 
@@ -75,14 +69,13 @@ func MapFromProductDbToOut(model *db.ProductModel) *Product {
 			UpdatedAt:  nil,
 		}
 		if value, ok := dbMedia.UpdatedAt(); ok {
-			updatedAtStr := value.String()
-			media.UpdatedAt = &updatedAtStr
+			media.UpdatedAt = internalUtils.StringRef(value.String())
 		}
 		logger.Info("data", zap.Any("data", dbMedia))
 
 		if value, ok := productMedia.Alt(); ok {
-			strAlt := string(value)
-			media.Alt = &strAlt
+			media.Alt = internalUtils.StringRef(value)
+
 		}
 		medias = append(medias, &media)
 	}
@@ -94,14 +87,19 @@ func MapFromProductDbToOut(model *db.ProductModel) *Product {
 			Price:          dbVariant.Price,
 			ColorHex:       nil,
 			FeatureMediaID: nil,
+			CreatedAt:      dbVariant.CreatedAt.String(),
 		}
 
 		if value, ok := dbVariant.ColorHex(); ok {
-			variant.ColorHex = &value
+			variant.ColorHex = internalUtils.StringRef(value)
 		}
 
 		if value, ok := dbVariant.FeatureMediaID(); ok {
 			variant.FeatureMediaID = &value
+		}
+
+		if value, ok := dbVariant.UpdatedAt(); ok {
+			variant.UpdatedAt = internalUtils.StringRef(value.String())
 		}
 
 		variants = append(variants, &variant)

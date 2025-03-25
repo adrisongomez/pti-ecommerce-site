@@ -46,7 +46,7 @@ func (v *VendorService) List(ctx context.Context, payload *svc.ListPayload) (*sv
 		return nil, err
 	}
 
-	var vendorList svc.VendorCollection = []*svc.Vendor{}
+	vendorList := []*svc.Vendor{}
 	for _, vendor := range vendors {
 		vendorList = append(vendorList, MapVendorToVendorResponse(vendor))
 	}

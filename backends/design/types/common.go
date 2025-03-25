@@ -38,9 +38,9 @@ func PaginatedResult(name string, returnType *expr.ResultTypeExpr) *expr.ResultT
 	return ResultType("application/vnd."+name+"+json", func() {
 		Description("Paginated results")
 		Attributes(func() {
-			Attribute("data", CollectionOf(returnType), "Data")
+			Attribute("data", ArrayOf(returnType), "Data")
 			Attribute("pageInfo", PageInfo, "Pagination information")
+			Required("data", "pageInfo")
 		})
-
 	})
 }

@@ -163,7 +163,7 @@ func (p *ProductService) ListProduct(ctx context.Context, payload *ListProductPa
 		return nil, err
 	}
 
-	var productList ProductCollection = []*Product{}
+	productList := []*Product{}
 
 	for _, p := range data {
 		productList = append(productList, MapFromProductDbToOut(&p))

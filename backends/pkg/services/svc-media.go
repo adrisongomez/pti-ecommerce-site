@@ -64,7 +64,7 @@ func (m *MediaService) List(ctx context.Context, payload *media.ListPayload) (*m
 		return nil, err
 	}
 
-	var mediaList media.MediaCollection = []*media.Media{}
+	mediaList := []*media.Media{}
 
 	for _, record := range records {
 		mediaList = append(mediaList, MapMediaDBToOutput(&record))

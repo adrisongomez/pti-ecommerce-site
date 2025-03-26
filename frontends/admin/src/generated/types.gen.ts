@@ -335,6 +335,10 @@ export type TypeFooter = {
   updatedAt?: string;
 };
 
+export type UpdateProductByIdRequestBody = {
+  payload?: ProductUpdateInput;
+};
+
 export type Vendor = {
   /**
    * Datetime
@@ -584,6 +588,38 @@ export type SvcProductsCreateProductResponses = {
 export type SvcProductsCreateProductResponse =
   SvcProductsCreateProductResponses[keyof SvcProductsCreateProductResponses];
 
+export type SvcProductsDeleteProductByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Unique product identifier
+     */
+    productId: number;
+  };
+  query?: never;
+  url: "/api/products/{productId}";
+};
+
+export type SvcProductsDeleteProductByIdErrors = {
+  /**
+   * ErrNotFound: Not Found response.
+   */
+  404: _Error;
+};
+
+export type SvcProductsDeleteProductByIdError =
+  SvcProductsDeleteProductByIdErrors[keyof SvcProductsDeleteProductByIdErrors];
+
+export type SvcProductsDeleteProductByIdResponses = {
+  /**
+   * OK response.
+   */
+  200: boolean;
+};
+
+export type SvcProductsDeleteProductByIdResponse =
+  SvcProductsDeleteProductByIdResponses[keyof SvcProductsDeleteProductByIdResponses];
+
 export type SvcProductsGetProductByIdData = {
   body?: never;
   path: {
@@ -616,8 +652,8 @@ export type SvcProductsGetProductByIdResponses = {
 export type SvcProductsGetProductByIdResponse =
   SvcProductsGetProductByIdResponses[keyof SvcProductsGetProductByIdResponses];
 
-export type SvcProductsDeleteProductByIdData = {
-  body?: never;
+export type SvcProductsUpdateProductByIdData = {
+  body: UpdateProductByIdRequestBody;
   path: {
     /**
      * Unique product identifier
@@ -628,25 +664,15 @@ export type SvcProductsDeleteProductByIdData = {
   url: "/api/products/{productId}";
 };
 
-export type SvcProductsDeleteProductByIdErrors = {
-  /**
-   * ErrNotFound: Not Found response.
-   */
-  404: _Error;
-};
-
-export type SvcProductsDeleteProductByIdError =
-  SvcProductsDeleteProductByIdErrors[keyof SvcProductsDeleteProductByIdErrors];
-
-export type SvcProductsDeleteProductByIdResponses = {
+export type SvcProductsUpdateProductByIdResponses = {
   /**
    * OK response.
    */
-  200: boolean;
+  200: Product;
 };
 
-export type SvcProductsDeleteProductByIdResponse =
-  SvcProductsDeleteProductByIdResponses[keyof SvcProductsDeleteProductByIdResponses];
+export type SvcProductsUpdateProductByIdResponse =
+  SvcProductsUpdateProductByIdResponses[keyof SvcProductsUpdateProductByIdResponses];
 
 export type SvcProductsAddMediaData = {
   body: AddMediaRequestBody;

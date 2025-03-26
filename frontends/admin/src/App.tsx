@@ -1,5 +1,4 @@
-import React from "react";
-
+import * as React from "react";
 import { Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
@@ -21,10 +20,13 @@ import routerBindings, {
 } from "@refinedev/react-router";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
-import MediaList from "./pages/files/list";
-import FileApiProvider from "./dataProviders/FileApiProvider";
+import FileLists from "./pages/files/list";
+import ApiDataProvider from "./dataProviders/ApiDataProvider";
+import ProductList from "./pages/products/list";
 
-function App() {
+const dataProvider = ApiDataProvider("http://localhost:3030/api/");
+
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <RefineKbarProvider>
@@ -34,18 +36,23 @@ function App() {
           <RefineSnackbarProvider>
             <DevtoolsProvider>
               <Refine
-                dataProvider={{
-                  default: FileApiProvider("http://localhost:3030"),
-                  files: FileApiProvider("http://localhost:3030"),
-                }}
+                dataProvider={dataProvider}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
                 resources={[
                   {
                     name: "files",
-                    list: "/files",
-                    show: "/files/:id",
-                    create: "/files/create",
+                    list: "/files/",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "products",
+                    list: "/products",
+                    show: "/products/:id",
+                    create: "/products/create",
+                    edit: "/products/:id/edit",
                     meta: {
                       canDelete: true,
                     },
@@ -68,11 +75,12 @@ function App() {
                   >
                     <Route
                       index
-                      element={<NavigateToResource resource="blog_posts" />}
+                      element={<NavigateToResource resource="files" />}
                     />
                     <Route path="/files">
-                      <Route index element={<MediaList />} />
+                      <Route index element={<FileLists />} />
                     </Route>
+                    <Route path="/products" element={<ProductList />} />
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                 </Routes>
@@ -88,6 +96,6 @@ function App() {
       </RefineKbarProvider>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

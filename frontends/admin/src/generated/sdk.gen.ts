@@ -27,12 +27,14 @@ import type {
   SvcProductsCreateProductData,
   SvcProductsCreateProductResponse,
   SvcProductsCreateProductError,
-  SvcProductsGetProductByIdData,
-  SvcProductsGetProductByIdResponse,
-  SvcProductsGetProductByIdError,
   SvcProductsDeleteProductByIdData,
   SvcProductsDeleteProductByIdResponse,
   SvcProductsDeleteProductByIdError,
+  SvcProductsGetProductByIdData,
+  SvcProductsGetProductByIdResponse,
+  SvcProductsGetProductByIdError,
+  SvcProductsUpdateProductByIdData,
+  SvcProductsUpdateProductByIdResponse,
   SvcProductsAddMediaData,
   SvcProductsAddMediaResponse,
   SvcProductsAddMediaError,
@@ -215,6 +217,25 @@ export const svcProductsCreateProduct = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * deleteProductById svc-products
+ * Create a new product
+ */
+export const svcProductsDeleteProductById = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SvcProductsDeleteProductByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    SvcProductsDeleteProductByIdResponse,
+    SvcProductsDeleteProductByIdError,
+    ThrowOnError
+  >({
+    url: "/api/products/{productId}",
+    ...options,
+  });
+};
+
+/**
  * getProductById svc-products
  * Get a product by its id
  */
@@ -232,21 +253,25 @@ export const svcProductsGetProductById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * deleteProductById svc-products
- * Create a new product
+ * updateProductById svc-products
+ * Update a product by id
  */
-export const svcProductsDeleteProductById = <
+export const svcProductsUpdateProductById = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<SvcProductsDeleteProductByIdData, ThrowOnError>,
+  options: Options<SvcProductsUpdateProductByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).put<
-    SvcProductsDeleteProductByIdResponse,
-    SvcProductsDeleteProductByIdError,
+    SvcProductsUpdateProductByIdResponse,
+    unknown,
     ThrowOnError
   >({
     url: "/api/products/{productId}",
     ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 

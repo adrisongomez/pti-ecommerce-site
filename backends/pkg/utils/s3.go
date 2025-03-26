@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
 func GetResourceURL(bucket, region, key string) string {
@@ -41,7 +42,7 @@ func CreateObjectOnS3(ctx context.Context, bucket, key string, size int64) (stri
 		&s3.PutObjectInput{
 			Bucket: aws.String(bucket),
 			Key:    aws.String(key),
-			// ACL:    types.ObjectCannedACLPublicRead,
+			ACL:    types.ObjectCannedACLPublicRead,
 		},
 	)
 

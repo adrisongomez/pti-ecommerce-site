@@ -69,7 +69,7 @@ var _ = Service(servicePrefix+"-products", func() {
 	})
 
 	Method("updateProductById", func() {
-		Description("Create a new product")
+		Description("Update a product by id")
 
 		Payload(func() {
 			Attribute("productId", Int, "Unique product identifier")
@@ -81,9 +81,7 @@ var _ = Service(servicePrefix+"-products", func() {
 		HTTP(func() {
 			PUT("/{productId}")
 			Param("productId")
-			Body("payload")
 			Response(StatusOK)
-			Response("Conflict", StatusConflict)
 		})
 	})
 
@@ -97,7 +95,7 @@ var _ = Service(servicePrefix+"-products", func() {
 		Result(Boolean)
 
 		HTTP(func() {
-			PUT("/{productId}")
+			DELETE("/{productId}")
 			Param("productId")
 			Response(StatusOK)
 			Response("ErrNotFound", StatusNotFound)

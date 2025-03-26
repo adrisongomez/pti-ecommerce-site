@@ -3,6 +3,7 @@ package design
 import (
 	. "goa.design/goa/v3/dsl"
 	cors "goa.design/plugins/v3/cors/dsl"
+	_ "goa.design/plugins/v3/zaplogger"
 )
 
 var (
@@ -22,6 +23,7 @@ var _ = API("ecommerce", func() {
 
 	cors.Origin("/.*localhost.*/", func() {
 		cors.Methods("GET", "POST", "PUT", "DELETE")
+		cors.Headers("*")
 	})
 
 	Server("ecommerce", func() {

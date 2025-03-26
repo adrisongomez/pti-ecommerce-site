@@ -32,7 +32,7 @@ export default function ApiDataProvider(baseUrl: string): DataProvider {
     async create({ resource, variables }) {
       const response = await client.post<unknown>({
         url: `/${resource}`,
-        data: variables,
+        body: variables,
       });
       return { data: response.data };
     },
@@ -40,17 +40,14 @@ export default function ApiDataProvider(baseUrl: string): DataProvider {
     async update({ resource, id, variables }) {
       const response = await client.post<unknown>({
         url: `/${resource}/${id}`,
-        data: variables,
+        body: variables,
       });
       return { data: response.data };
     },
     // @ts-ignore
     async deleteOne({ id, resource }) {
-      const response = await client.delete<BaseRecord, true>({
-        url: `/${resource}/:id`,
-        path: {
-          mediaId: parseInt(id.toString()),
-        },
+      const response = await client.delete<boolean, true>({
+        url: `/${resource}/${id}`,
       });
       if (response.error) {
         throw response.error;

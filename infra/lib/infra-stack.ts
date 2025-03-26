@@ -7,6 +7,16 @@ export class InfraStack extends cdk.Stack {
     super(scope, id, props);
     const defaultBucket = new cdk.aws_s3.Bucket(this, "ecommerce-public", {
       bucketName: "ecommerce-public",
+      cors: [
+        {
+          allowedMethods: [
+            cdk.aws_s3.HttpMethods.GET,
+            cdk.aws_s3.HttpMethods.PUT,
+          ],
+          allowedOrigins: ["*"],
+          allowedHeaders: ["*"],
+        },
+      ],
       encryption: cdk.aws_s3.BucketEncryption.S3_MANAGED,
       accessControl: cdk.aws_s3.BucketAccessControl.PUBLIC_READ,
       enforceSSL: true,
@@ -19,7 +29,6 @@ export class InfraStack extends cdk.Stack {
           ),
       },
     });
-
 
     // The code that defines your stack goes here
 

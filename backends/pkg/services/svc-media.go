@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_media/server"
@@ -11,12 +10,14 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
 	mediaUtils "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/utils"
 	"go.uber.org/zap"
+	"goa.design/clue/log"
 
 	goaHttp "goa.design/goa/v3/http"
 )
 
 type MediaService struct {
 	client *db.PrismaClient
+	*zap.Logger
 }
 
 func MapMediaDBToOutput(model *db.MediaModel) *media.Media {
@@ -61,6 +62,7 @@ func (m *MediaService) count(ctx context.Context, payload *media.ListPayload) (i
 }
 
 func (m *MediaService) List(ctx context.Context, payload *media.ListPayload) (*media.MediaList, error) {
+	m.Info("Media listed endpoint got called with", zap.Any("payload", payload))
 	records, err := m.client.Media.FindMany(
 		db.Media.Bucket.Contains(payload.Bucket),
 	).Take(payload.PageSize).Skip(payload.After).Exec(ctx)
@@ -104,6 +106,7 @@ func (m *MediaService) GetByID(ctx context.Context, payload *media.GetByIDPayloa
 }
 
 func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*media.CreateMediaResponse, error) {
+	m.Info("Media create endpoint got called with", zap.Any("payload", payload))
 	url, err := mediaUtils.CreateObjectOnS3(ctx, payload.Bucket, payload.Key, payload.Size)
 	if err != nil {
 		return nil, err
@@ -129,7 +132,7 @@ func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*
 
 func (m *MediaService) DeleteByID(ctx context.Context, payload *media.DeleteByIDPayload) (bool, error) {
 	record, err := m.client.Media.FindUnique(db.Media.ID.Equals(*payload.MediaID)).Delete().Exec(ctx)
-	log.Println(fmt.Sprintf("Delete media record: %v", record))
+	m.Info(fmt.Sprintf("Delete media record: %v", record))
 
 	if err != nil {
 		return false, err
@@ -140,6 +143,7 @@ func (m *MediaService) DeleteByID(ctx context.Context, payload *media.DeleteByID
 
 func MountMediaSVC(mux goaHttp.Muxer, svc *MediaService) {
 	endpoints := media.NewEndpoints(svc)
+	endpoints.Use(log.Endpoint)
 	req := goaHttp.RequestDecoder
 	res := goaHttp.ResponseEncoder
 	handler := server.New(endpoints, mux, req, res, nil, nil)
@@ -153,5 +157,5 @@ func MountMediaSVC(mux goaHttp.Muxer, svc *MediaService) {
 }
 
 func NewMediaService(client *db.PrismaClient) *MediaService {
-	return &MediaService{client}
+	return &MediaService{client, zap.L()}
 }

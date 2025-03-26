@@ -23,6 +23,7 @@ import { Header } from "./components/header";
 import FileLists from "./pages/files/list";
 import ApiDataProvider from "./dataProviders/ApiDataProvider";
 import ProductList from "./pages/products/list";
+import CreateProductForm from "./pages/products/create";
 
 const dataProvider = ApiDataProvider("http://localhost:3030/api/");
 
@@ -41,10 +42,11 @@ const App: React.FC = () => {
                 routerProvider={routerBindings}
                 resources={[
                   {
-                    name: "files",
+                    name: "medias",
                     list: "/files/",
                     meta: {
                       canDelete: true,
+                      label: "Files",
                     },
                   },
                   {
@@ -80,7 +82,13 @@ const App: React.FC = () => {
                     <Route path="/files">
                       <Route index element={<FileLists />} />
                     </Route>
-                    <Route path="/products" element={<ProductList />} />
+                    <Route path="/products">
+                      <Route index element={<ProductList />} />
+                      <Route
+                        path="/products/create"
+                        element={<CreateProductForm />}
+                      />
+                    </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                 </Routes>

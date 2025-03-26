@@ -37,9 +37,8 @@ func MapFromProductDbToOut(model *db.ProductModel) *Product {
 		response.UpdatedAt = &updatedAtStr
 	}
 
-	dbVendor := model.Vendor()
-	if dbVendor != nil {
-		response.Vendor = (*productGen.Vendor)(MapVendorToVendorResponse(*dbVendor))
+	if value, ok := model.Vendor(); ok {
+		response.Vendor = (*productGen.Vendor)(MapVendorToVendorResponse(*value))
 	}
 
 	variants := []*ProductVariant{}
@@ -288,7 +287,7 @@ func (p *ProductService) UpdateProductByID(ctx context.Context, payload *UpdateP
 
 func (p *ProductService) DeleteProductByID(ctx context.Context, payload *DeleteProductByIDPayload) (bool, error) {
 	methodLog := zap.String("method", "ProductService#DeleteProductByID")
-	_, err := p.client.Product.FindUnique(db.Product.ID.Equals(payload.ProductID)).Exec(ctx)
+	_, err := p.client.Product.FindUnique(db.Product.ID.Equals(payload.ProductID)).Delete().Exec(ctx)
 	if err != nil {
 		p.logger.Error("Error on deleting product", methodLog, zap.Error(err))
 		return false, err

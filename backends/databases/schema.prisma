@@ -28,11 +28,11 @@ model Product {
   description String        @db.Text()
   handler     String        @unique
   status      ProductStatus
-  vendorId    Int           @map("vendor_id")
+  vendorId    Int?          @map("vendor_id")
 
   variants    ProductVariant[]
   tags        String[]
-  vendor      Vendor           @relation(fields: [vendorId], references: [id])
+  vendor      Vendor?          @relation(fields: [vendorId], references: [id], onDelete: SetNull)
   medias      ProductMedia[]
   collections Collection[]
 
@@ -50,13 +50,13 @@ model ProductCollection {
   productId    Int @map("product_id")
   collectionId Int @map("collection_id")
 
-  product    Product    @relation(fields: [productId], references: [id])
-  collection Collection @relation(fields: [collectionId], references: [id])
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
 
-  @@id([productId, collectionId])
+  @@id(name: "id", [productId, collectionId])
   @@map("product_collections")
 }
 
@@ -81,8 +81,8 @@ model ProductVariant {
   productId      Int     @map("product_id")
   featureMediaId Int?    @unique() @map("feature_media_id")
 
-  product      Product?      @relation(fields: [productId], references: [id])
-  featureMedia ProductMedia? @relation(fields: [featureMediaId], references: [id])
+  product      Product?      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  featureMedia ProductMedia? @relation(fields: [featureMediaId], references: [id], onDelete: SetNull)
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
@@ -98,9 +98,9 @@ model ProductMedia {
   sortNumber Int     @map("sort_number")
   alt        String?
 
-  product        Product?        @relation(fields: [productId], references: [id])
+  product        Product?        @relation(fields: [productId], references: [id], onDelete: Cascade)
   ProductVariant ProductVariant?
-  Media          Media?          @relation(fields: [mediaId], references: [id])
+  Media          Media?          @relation(fields: [mediaId], references: [id], onDelete: Cascade)
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()

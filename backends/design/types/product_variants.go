@@ -5,6 +5,7 @@ import (
 )
 
 var ProductVariantInput = Type("ProductVariantCreateInput", func() {
+	Attribute("id", Int, fieldID)
 	Attribute("colorName", String, "Color variant option")
 	Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 	Attribute("price", Int, "Price on cents")

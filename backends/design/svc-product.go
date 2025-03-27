@@ -102,12 +102,11 @@ var _ = Service(servicePrefix+"-products", func() {
 		})
 	})
 
-	Method("addVariant", func() {
+	Method("upsertVariant", func() {
 		Description("Add a new product variant to a given product")
 		Payload(func() {
 			Attribute("productId", Int, "Unique product identifier")
 			Required("productId")
-
 			Attribute("payload", types.ProductVariantInput)
 		})
 		Result(types.Product)

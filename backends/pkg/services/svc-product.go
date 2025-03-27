@@ -291,23 +291,42 @@ func (p *ProductService) DeleteProductByID(ctx context.Context, payload *DeleteP
 	}
 	return true, nil
 }
-func (p *ProductService) AddVariant(ctx context.Context, payload *AddVariantPayload) (*Product, error) {
+func (p *ProductService) UpsertVariant(ctx context.Context, payload *UpsertVariantPayload) (*Product, error) {
 	methodLog := zap.String("methodName", "ProductService#AddVariant")
 	changes := []db.ProductVariantSetParam{}
 	if payload.Payload.ColorHex != nil {
 		changes = append(changes, db.ProductVariant.ColorHex.Set(*payload.Payload.ColorHex))
 	}
-	p.logger.Info("Add product variant got called", methodLog, zap.Any("payload", payload))
-	variant, err := p.client.ProductVariant.CreateOne(
-		db.ProductVariant.ColorName.Set(payload.Payload.ColorName),
-		db.ProductVariant.Price.Set(payload.Payload.Price),
-		changes...,
-	).Exec(ctx)
-	if err != nil {
-		p.logger.Error("Error on adding variant", methodLog, zap.Error(err))
-		return nil, err
+	p.logger.Info("Upsert product variant got called", methodLog, zap.Any("payload", payload))
+	id := payload.Payload.ID
+	if id == nil {
+		variant, err := p.client.ProductVariant.CreateOne(
+			db.ProductVariant.ColorName.Set(payload.Payload.ColorName),
+			db.ProductVariant.Price.Set(payload.Payload.Price),
+			changes...,
+		).Exec(ctx)
+		if err != nil {
+			p.logger.Error("Error on adding variant", methodLog, zap.Error(err))
+			return nil, err
+		}
+		p.logger.Info("Added variant", methodLog, zap.Any("newVariant", variant))
+	} else {
+
+		changes = append(
+			changes,
+			db.ProductVariant.ColorName.Set(payload.Payload.ColorName),
+			db.ProductVariant.Price.Set(payload.Payload.Price),
+		)
+		variant, err := p.client.ProductVariant.
+			FindUnique(db.ProductVariant.ID.Equals(*id)).
+			Update(changes...).Exec(ctx)
+		if err != nil {
+			p.logger.Error("Error on adding variant", methodLog, zap.Error(err))
+			return nil, err
+		}
+		p.logger.Info("Added variant", methodLog, zap.Any("newVariant", variant))
 	}
-	p.logger.Info("Added variant", methodLog, zap.Any("newVariant", variant))
+
 	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: payload.ProductID})
 }
 

@@ -2,7 +2,7 @@ import ProductStyledCard from "./ProductStyledCard";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import ProductVariantEntry from "./ProductVariantEntry";
 import AddIcon from "@mui/icons-material/Add";
-import { ProductVariantCreateInput } from "../../generated";
+import { ProductVariantCreateInput } from "../../../generated";
 
 type ProductVariantsFormSectionProps<T extends ProductVariantCreateInput> = {
   value: T[];

@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import MDEditor from "@uiw/react-md-editor";
-import { Product } from "../../generated";
+import { Product } from "../../../generated";
 
 type ProductGeneralField = Pick<Product, "title" | "description" | "tags">;
 

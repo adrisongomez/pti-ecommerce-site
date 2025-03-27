@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from "react";
-import { ProductMediaInput } from "../../generated";
-import { DropZone } from "../../components/dropZones/DropZone";
+import { ProductMediaInput } from "../../../generated";
+import { DropZone } from "../../../components/dropZones/DropZone";
 
 const ProductMediaDropzone: FC<
   Pick<

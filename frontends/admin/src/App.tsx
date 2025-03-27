@@ -25,7 +25,10 @@ import ProductList from "./pages/products/list";
 import CreateProductForm from "./pages/products/create";
 import { APP_RESOURCES, APP_DATA_PROVIDER } from "./config/constants";
 import EditProduct from "./pages/products/edit";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
+import UserList from "./pages/users/list";
+import CreateUserPage from "./pages/users/create";
+import EditUserPage from "./pages/users/edit";
 
 const App: React.FC = () => {
   return (
@@ -51,7 +54,10 @@ const App: React.FC = () => {
                 <Routes>
                   <Route
                     element={
-                      <ThemedLayoutV2 Header={() => <Header sticky />}>
+                      <ThemedLayoutV2
+                        Title={() => <Typography>CMS</Typography>}
+                        Header={() => <Header sticky />}
+                      >
                         <Container maxWidth="lg" sx={{ width: "100%" }}>
                           <Outlet />
                         </Container>
@@ -60,10 +66,18 @@ const App: React.FC = () => {
                   >
                     <Route
                       index
-                      element={<NavigateToResource resource="files" />}
+                      element={<NavigateToResource resource="products" />}
                     />
                     <Route path="/files">
                       <Route index element={<FileLists />} />
+                    </Route>
+                    <Route path="/users">
+                      <Route index element={<UserList />} />
+                      <Route
+                        path="/users/create"
+                        element={<CreateUserPage />}
+                      />
+                      <Route path="/users/:id" element={<EditUserPage />} />
                     </Route>
                     <Route path="/products">
                       <Route index element={<ProductList />} />

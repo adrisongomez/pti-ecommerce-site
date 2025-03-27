@@ -10,9 +10,10 @@ import {
 import { HttpError, useForm } from "@refinedev/core";
 import { useUpdateEffect } from "react-use";
 import { Stack } from "@mui/material";
-import ProductFormGeneralSection from "./ProductFormGeneralSection";
-import ProductMediasFormSection from "./ProductMediasFormSection";
-import ProductVariantsFormSection from "./ProductVariantsFormSection";
+import ProductFormGeneralSection from "./components/ProductFormGeneralSection";
+import ProductMediasFormSection from "./components/ProductMediasFormSection";
+import ProductVariantsFormSection from "./components/ProductVariantsFormSection";
+import { filterNull } from "../../utils/utils";
 
 type EditProductFormState = {
   productUpdate: ProductUpdateInput;
@@ -20,12 +21,12 @@ type EditProductFormState = {
   variants: ProductVariantUpsertInput[];
 };
 
-const EditProduct: FC<{ id: string }> = ({ id }) => {
+const EditProduct: FC = () => {
   const { formLoading, query, onFinish } = useForm<
     Product,
     HttpError,
     ProductUpdateInput
-  >({ id, resource: "products", action: "edit" });
+  >({ resource: "products", action: "edit" });
   const originalProduct = query?.data;
   const formik = useFormik<EditProductFormState>({
     initialValues: {
@@ -118,11 +119,5 @@ const EditProduct: FC<{ id: string }> = ({ id }) => {
     </Edit>
   );
 };
-
-function filterNull<T>(
-  v: T | null | undefined,
-): v is Exclude<T, null | undefined> {
-  return Boolean(v);
-}
 
 export default EditProduct;

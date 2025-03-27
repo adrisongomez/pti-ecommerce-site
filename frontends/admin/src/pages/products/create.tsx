@@ -4,9 +4,9 @@ import { Product, ProductInput } from "../../generated";
 import { Formik } from "formik";
 import { Box, Stack } from "@mui/material";
 import { Create } from "@refinedev/mui";
-import ProductFormGeneralSection from "./ProductFormGeneralSection";
-import ProductMediasFormSection from "./ProductMediasFormSection";
-import ProductVariantsFormSection from "./ProductVariantsFormSection";
+import ProductFormGeneralSection from "./components/ProductFormGeneralSection";
+import ProductMediasFormSection from "./components/ProductMediasFormSection";
+import ProductVariantsFormSection from "./components/ProductVariantsFormSection";
 
 const CreateProductForm: FC = () => {
   const form = useForm<Product, HttpError, ProductInput>({

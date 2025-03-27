@@ -8,7 +8,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { FC, MouseEventHandler } from "react";
 import { useFormik } from "formik";
-import { ProductVariantCreateInput } from "../../generated";
+import { ProductVariantCreateInput } from "../../../generated";
 import { useDebounce } from "react-use";
 
 type ProductVariantEntryProps = {

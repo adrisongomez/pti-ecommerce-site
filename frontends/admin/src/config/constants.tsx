@@ -2,6 +2,7 @@ import { ResourceProps } from "@refinedev/core";
 import StoreIcon from "@mui/icons-material/Store";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import ApiDataProvider from "../dataProviders/ApiDataProvider";
+import PersonIcon from "@mui/icons-material/Person";
 
 export const APP_RESOURCES: ResourceProps[] = [
   {
@@ -11,6 +12,16 @@ export const APP_RESOURCES: ResourceProps[] = [
     edit: "/products/:id",
     meta: {
       icon: <StoreIcon />,
+      canDelete: true,
+    },
+  },
+  {
+    name: "users",
+    list: "/users",
+    create: "/users/create",
+    edit: "/users/:id",
+    meta: {
+      icon: <PersonIcon />,
       canDelete: true,
     },
   },

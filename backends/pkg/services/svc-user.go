@@ -12,7 +12,7 @@ import (
 	"goa.design/goa/v3/http"
 )
 
-type UserService struct {
+type UserController struct {
 	client *db.PrismaClient
 	logger *zap.Logger
 }
@@ -21,13 +21,13 @@ func MapUserDBToOutput(model db.UserModel) *User {
 	user := User{
 		ID:        model.ID,
 		FirstName: model.FirstName,
-		LastName:  "",
+		LastName:  nil,
 		Email:     model.Email,
 		Role:      UserRole(model.Role),
 		CreatedAt: model.CreatedAt.String(),
 	}
 	if value, ok := model.LastName(); ok {
-		user.LastName = value
+		user.LastName = &value
 	}
 
 	if value, ok := model.UpdatedAt(); ok {
@@ -36,10 +36,10 @@ func MapUserDBToOutput(model db.UserModel) *User {
 	return &user
 }
 
-func (u *UserService) List(ctx context.Context, payload *ListPayload) (*UserList, error) {
+func (u *UserController) List(ctx context.Context, payload *ListPayload) (*UserList, error) {
 	u.logger.Info("List got called With", zap.Any("payload", payload))
 	usersDB, err := u.client.User.FindMany(
-		db.User.Not(db.User.DeletedAt.IsNull()),
+		db.User.DeletedAt.IsNull(),
 	).
 		Take(payload.PageSize).
 		Skip(payload.After).Exec(ctx)
@@ -58,7 +58,7 @@ func (u *UserService) List(ctx context.Context, payload *ListPayload) (*UserList
 		Count db.BigInt `json:"count"`
 	}
 	err = u.client.Prisma.QueryRaw(
-		"SELECT count(*) FROM project.users WHERE deleted_at IS NOT NULL",
+		"SELECT count(*) FROM project.users WHERE deleted_at IS NULL",
 	).Exec(ctx, &rows)
 
 	if err != nil {
@@ -75,7 +75,7 @@ func (u *UserService) List(ctx context.Context, payload *ListPayload) (*UserList
 		Data: users,
 		PageInfo: &PageInfo{
 			StartCursor:   payload.After,
-			TotalResource: payload.After,
+			TotalResource: count,
 			EndCursor:     nextCursor,
 			HasMore:       count != nextCursor,
 		},
@@ -83,12 +83,68 @@ func (u *UserService) List(ctx context.Context, payload *ListPayload) (*UserList
 	return &response, nil
 }
 
-func NewUserService(client *db.PrismaClient) *UserService {
-	logger := zap.L()
-	return &UserService{client, logger}
+func (u *UserController) Create(ctx context.Context, payload *UserCreateInput) (*User, error) {
+	u.logger.Info("User#create got called", zap.Any("payload", payload))
+	changes := []db.UserSetParam{
+		db.User.Role.Set(db.UserRole(payload.Role)),
+	}
+	if payload.LastName != nil {
+		changes = append(changes, db.User.LastName.Set(*payload.LastName))
+	}
+	userModel, err := u.client.User.CreateOne(
+		db.User.FirstName.Set(payload.FirstName),
+		db.User.Email.Set(payload.Email),
+		changes...,
+	).Exec(ctx)
+
+	if err != nil {
+		u.logger.Error("User#create got error", zap.Error(err))
+		return nil, err
+	}
+
+	return MapUserDBToOutput(*userModel), nil
 }
 
-func MountUserServiceSVC(mux http.Muxer, svc *UserService) {
+func (u *UserController) Show(ctx context.Context, payload *ShowPayload) (*User, error) {
+	u.logger.Info("User#Show got called with", zap.Any("payload", payload))
+	userDB, err := u.client.User.FindUnique(db.User.ID.Equals(payload.UserID)).Exec(ctx)
+	if err != nil {
+		u.logger.Error("User#Show got error", zap.Error(err))
+		return nil, err
+	}
+	return MapUserDBToOutput(*userDB), nil
+}
+
+func (u *UserController) Update(ctx context.Context, input *UpdatePayload) (*User, error) {
+	payload := input.Payload
+	u.logger.Info("User#create got called", zap.Any("payload", payload))
+	changes := []db.UserSetParam{
+		db.User.FirstName.Set(payload.FirstName),
+		db.User.Email.Set(payload.Email),
+		db.User.Role.Set(db.UserRole(payload.Role)),
+	}
+	if payload.LastName != nil {
+		changes = append(changes, db.User.LastName.Set(*payload.LastName))
+	}
+	userModel, err := u.client.User.FindUnique(
+		db.User.ID.Equals(input.UserID),
+	).Update(
+		changes...,
+	).Exec(ctx)
+
+	if err != nil {
+		u.logger.Error("User#create got error", zap.Error(err))
+		return nil, err
+	}
+	return MapUserDBToOutput(*userModel), nil
+}
+
+func NewUserService(client *db.PrismaClient) *UserController {
+	logger := zap.L()
+	return &UserController{client, logger}
+}
+
+func MountUserServiceSVC(mux http.Muxer, svc *UserController) {
 	endpoints := NewEndpoints(svc)
 	req := http.RequestDecoder
 	res := http.ResponseEncoder

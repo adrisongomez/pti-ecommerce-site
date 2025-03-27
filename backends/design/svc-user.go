@@ -28,7 +28,37 @@ var _ = Service(servicePrefix+"user", func() {
 			Response(StatusOK)
 		})
 	})
-	Method("upsert", func() {
-
+	Method("show", func() {
+		Payload(func() {
+			Attribute("userId", Int)
+			Required("userId")
+		})
+		Result(types.User)
+		HTTP(func() {
+			GET("/{userId}")
+			Param("userId")
+			Response(StatusOK)
+		})
+	})
+	Method("create", func() {
+		Result(types.User)
+		Payload(types.UserCreateInput)
+		HTTP(func() {
+			POST("")
+			Response(StatusCreated)
+		})
+	})
+	Method("update", func() {
+		Payload(func() {
+			Attribute("payload", types.UserCreateInput)
+			Attribute("userId", Int)
+			Required("payload", "userId")
+		})
+		Result(types.User)
+		HTTP(func() {
+			PUT("/{userId}")
+			Param("userId")
+			Response(StatusOK)
+		})
 	})
 })

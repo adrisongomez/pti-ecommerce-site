@@ -5,14 +5,6 @@ export type CreateMediaResponse = {
   uploadUrl: string;
 };
 
-export type CreateUserInput = {
-  email: string;
-  firstName: string;
-  lastName?: string;
-  password: string;
-  role?: "CUSTOMER" | "ADMIN";
-};
-
 export type _Error = {
   /**
    * Is the error a server-side fault?
@@ -361,13 +353,6 @@ export type ProductsList = {
   pageInfo: PageInfo;
 };
 
-export type RegisterUserInput = {
-  email: string;
-  firstName: string;
-  lastName?: string;
-  password: string;
-};
-
 export type TypeFooter = {
   /**
    * Datetime
@@ -381,6 +366,10 @@ export type TypeFooter = {
 
 export type UpdateProductByIdRequestBody = {
   payload?: ProductUpdateInput;
+};
+
+export type UpdateRequestBody = {
+  payload: UserCreateInput;
 };
 
 export type User = {
@@ -402,6 +391,13 @@ export type User = {
   updatedAt?: string;
 };
 
+export type UserCreateInput = {
+  email: string;
+  firstName: string;
+  lastName?: string;
+  role?: "CUSTOMER" | "ADMIN";
+};
+
 /**
  * Paginated results
  */
@@ -411,6 +407,13 @@ export type UserList = {
    */
   data: Array<User>;
   pageInfo: PageInfo;
+};
+
+export type UserRegistrationInput = {
+  email: string;
+  firstName: string;
+  lastName?: string;
+  password: string;
 };
 
 export type SvcHealthcheckCheckData = {
@@ -742,6 +745,61 @@ export type SvcuserListResponses = {
 
 export type SvcuserListResponse =
   SvcuserListResponses[keyof SvcuserListResponses];
+
+export type SvcuserCreateData = {
+  body: UserCreateInput;
+  path?: never;
+  query?: never;
+  url: "/api/users";
+};
+
+export type SvcuserCreateResponses = {
+  /**
+   * Created response.
+   */
+  201: User;
+};
+
+export type SvcuserCreateResponse =
+  SvcuserCreateResponses[keyof SvcuserCreateResponses];
+
+export type SvcuserShowData = {
+  body?: never;
+  path: {
+    userId: number;
+  };
+  query?: never;
+  url: "/api/users/{userId}";
+};
+
+export type SvcuserShowResponses = {
+  /**
+   * OK response.
+   */
+  200: User;
+};
+
+export type SvcuserShowResponse =
+  SvcuserShowResponses[keyof SvcuserShowResponses];
+
+export type SvcuserUpdateData = {
+  body: UpdateRequestBody;
+  path: {
+    userId: number;
+  };
+  query?: never;
+  url: "/api/users/{userId}";
+};
+
+export type SvcuserUpdateResponses = {
+  /**
+   * OK response.
+   */
+  200: User;
+};
+
+export type SvcuserUpdateResponse =
+  SvcuserUpdateResponses[keyof SvcuserUpdateResponses];
 
 export type ClientOptions = {
   baseURL: "http://localhost:3030" | (string & {});

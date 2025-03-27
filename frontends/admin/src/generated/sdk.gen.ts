@@ -37,6 +37,12 @@ import type {
   SvcProductsUpdateProductByIdResponse,
   SvcuserListData,
   SvcuserListResponse,
+  SvcuserCreateData,
+  SvcuserCreateResponse,
+  SvcuserShowData,
+  SvcuserShowResponse,
+  SvcuserUpdateData,
+  SvcuserUpdateResponse,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 
@@ -269,5 +275,61 @@ export const svcuserList = <ThrowOnError extends boolean = false>(
   >({
     url: "/api/users",
     ...options,
+  });
+};
+
+/**
+ * create svcuser
+ */
+export const svcuserCreate = <ThrowOnError extends boolean = false>(
+  options: Options<SvcuserCreateData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    SvcuserCreateResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/users",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * show svcuser
+ */
+export const svcuserShow = <ThrowOnError extends boolean = false>(
+  options: Options<SvcuserShowData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    SvcuserShowResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/users/{userId}",
+    ...options,
+  });
+};
+
+/**
+ * update svcuser
+ */
+export const svcuserUpdate = <ThrowOnError extends boolean = false>(
+  options: Options<SvcuserUpdateData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).put<
+    SvcuserUpdateResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/users/{userId}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };

@@ -4,7 +4,7 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
-var RegisterUserInput = Type("RegisterUserInput", func() {
+var UserRegistrationInput = Type("UserRegistrationInput", func() {
 	Attribute("firstName", String)
 	Attribute("lastName", String)
 	Attribute("email", String, func() {
@@ -15,18 +15,17 @@ var RegisterUserInput = Type("RegisterUserInput", func() {
 	Required("firstName", "email", "password")
 })
 
-var CreateUserInput = Type("CreateUserInput", func() {
+var UserCreateInput = Type("UserCreateInput", func() {
 	Attribute("firstName", String)
 	Attribute("lastName", String)
 	Attribute("email", String, func() {
 		Format("email")
 	})
 	Attribute("role", UserRole, func() {
-		Default("USER")
+		Default("CUSTOMER")
 	})
-	Attribute("password", String)
 
-	Required("firstName", "email", "password")
+	Required("firstName", "email")
 })
 
 var User = ResultType("application/vnd.user+json", func() {
@@ -38,7 +37,9 @@ var User = ResultType("application/vnd.user+json", func() {
 		Attribute("email", String, func() {
 			Format("email")
 		})
-		Attribute("role", UserRole)
+		Attribute("role", UserRole, func() {
+			Default("CUSTOMER")
+		})
 		Attribute("createdAt", String, "Date of creation", fieldDatetime)
 		Attribute("updatedAt", String, "Last update date", fieldDatetime)
 

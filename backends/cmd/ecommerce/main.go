@@ -32,13 +32,15 @@ func main() {
 		}
 	}()
 
-	productSvc := svc.NewProductService(client)
 	healthcheckSvc := svc.NewHealthcheckService()
+	productSvc := svc.NewProductService(client)
 	mediaSvc := svc.NewMediaService(client)
+	userSvc := svc.NewUserService(client)
 	mux := goahttp.NewMuxer()
 	svc.MountMediaSVC(mux, mediaSvc)
 	svc.MountHealtcheckSVC(mux, healthcheckSvc)
 	svc.MountProductSVC(mux, productSvc)
+	svc.MountUserServiceSVC(mux, userSvc)
 	// middleware.Debug(mux, fmt.Fprint)
 	server := &http.Server{Addr: ":" + port, Handler: mux}
 

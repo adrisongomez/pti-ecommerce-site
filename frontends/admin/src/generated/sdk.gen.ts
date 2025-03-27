@@ -35,6 +35,8 @@ import type {
   SvcProductsGetProductByIdError,
   SvcProductsUpdateProductByIdData,
   SvcProductsUpdateProductByIdResponse,
+  SvcuserListData,
+  SvcuserListResponse,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 
@@ -251,5 +253,21 @@ export const svcProductsUpdateProductById = <
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * list svcuser
+ */
+export const svcuserList = <ThrowOnError extends boolean = false>(
+  options?: Options<SvcuserListData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    SvcuserListResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/users",
+    ...options,
   });
 };

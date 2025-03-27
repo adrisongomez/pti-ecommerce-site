@@ -5,6 +5,14 @@ export type CreateMediaResponse = {
   uploadUrl: string;
 };
 
+export type CreateUserInput = {
+  email: string;
+  firstName: string;
+  lastName?: string;
+  password: string;
+  role?: "CUSTOMER" | "ADMIN";
+};
+
 export type _Error = {
   /**
    * Is the error a server-side fault?
@@ -353,6 +361,13 @@ export type ProductsList = {
   pageInfo: PageInfo;
 };
 
+export type RegisterUserInput = {
+  email: string;
+  firstName: string;
+  lastName?: string;
+  password: string;
+};
+
 export type TypeFooter = {
   /**
    * Datetime
@@ -366,6 +381,36 @@ export type TypeFooter = {
 
 export type UpdateProductByIdRequestBody = {
   payload?: ProductUpdateInput;
+};
+
+export type User = {
+  /**
+   * Datetime
+   */
+  createdAt: string;
+  email: string;
+  firstName: string;
+  /**
+   * Key ID
+   */
+  id: number;
+  lastName?: string;
+  role: "CUSTOMER" | "ADMIN";
+  /**
+   * Datetime
+   */
+  updatedAt?: string;
+};
+
+/**
+ * Paginated results
+ */
+export type UserList = {
+  /**
+   * Data
+   */
+  data: Array<User>;
+  pageInfo: PageInfo;
 };
 
 export type SvcHealthcheckCheckData = {
@@ -671,6 +716,32 @@ export type SvcProductsUpdateProductByIdResponses = {
 
 export type SvcProductsUpdateProductByIdResponse =
   SvcProductsUpdateProductByIdResponses[keyof SvcProductsUpdateProductByIdResponses];
+
+export type SvcuserListData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Record per page
+     */
+    pageSize?: number;
+    /**
+     * Start listing after this resource
+     */
+    after?: number;
+  };
+  url: "/api/users";
+};
+
+export type SvcuserListResponses = {
+  /**
+   * OK response.
+   */
+  200: UserList;
+};
+
+export type SvcuserListResponse =
+  SvcuserListResponses[keyof SvcuserListResponses];
 
 export type ClientOptions = {
   baseURL: "http://localhost:3030" | (string & {});

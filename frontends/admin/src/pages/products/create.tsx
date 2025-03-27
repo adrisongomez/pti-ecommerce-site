@@ -30,7 +30,7 @@ const CreateProductForm: FC = () => {
         description: "",
         tags: [],
         title: "",
-        variants: [],
+        variants: [{ colorName: "Default", price: 0 }],
         medias: [],
         vendorId: 1,
       }}
@@ -58,6 +58,11 @@ const CreateProductForm: FC = () => {
                 value={formik.values.title}
                 onChange={formik.handleChange}
                 name="title"
+                slotProps={{
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
               />
               <Autocomplete
                 fullWidth
@@ -73,6 +78,11 @@ const CreateProductForm: FC = () => {
                     label="Tags"
                     name="tags"
                     variant="filled"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      },
+                    }}
                     {...props}
                   />
                 )}
@@ -98,9 +108,40 @@ const CreateProductForm: FC = () => {
                 Variants
               </Typography>
               <Stack spacing={2}>
-                <ProductVariantEntry />
+                {formik.values.variants.map((v, i) => (
+                  <ProductVariantEntry
+                    key={`${v.colorName}-${i}`}
+                    colorName={v.colorName}
+                    price={v.price}
+                    colorHex={v.colorHex}
+                    onSave={(d) => {
+                      formik.setFieldValue(
+                        "varians",
+                        formik.values.variants.map((v, idx) =>
+                          i === idx ? d : v,
+                        ),
+                      );
+                    }}
+                    onRemove={() => {
+                      if (formik.values.variants.length <= 1) {
+                        return;
+                      }
+                      formik.setFieldValue(
+                        "varians",
+                        formik.values.variants.filter((_, idx) => i !== idx),
+                      );
+                    }}
+                  />
+                ))}
                 <Box display="flex" alignItems="center" justifyContent="center">
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      formik.setFieldValue("variants", [
+                        ...formik.values.variants,
+                        { colorName: "", price: 0, colorHex: undefined },
+                      ]);
+                    }}
+                  >
                     <AddIcon fontSize="large" />
                   </IconButton>
                 </Box>

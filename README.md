@@ -8,9 +8,9 @@ El proyecto es un ecommerce site desarrollado utilizando React y Golang como las
 
 El repositorio es un monorepo y contiene 3 aplicaciones:
 
-- [Ecommerce]('/frontends/ecommerce')
-- [Admin Panel]('/frontends/admin')
-- [Main API]('/backends/')
+- [Ecommerce](/frontends/ecommerce)
+- [Admin Panel](/frontends/admin)
+- [Main API](/backends/)
 
 
 

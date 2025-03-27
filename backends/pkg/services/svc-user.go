@@ -139,6 +139,16 @@ func (u *UserController) Update(ctx context.Context, input *UpdatePayload) (*Use
 	return MapUserDBToOutput(*userModel), nil
 }
 
+func (u *UserController) Delete(ctx context.Context, input *DeletePayload) (bool, error) {
+	u.logger.Info("User#create got called", zap.Any("payload", input))
+
+	_, err := u.client.User.FindUnique(db.User.ID.Equals(input.UserID)).Delete().Exec(ctx)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 func NewUserService(client *db.PrismaClient) *UserController {
 	logger := zap.L()
 	return &UserController{client, logger}

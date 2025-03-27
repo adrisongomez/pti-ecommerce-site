@@ -39,6 +39,8 @@ import type {
   SvcuserListResponse,
   SvcuserCreateData,
   SvcuserCreateResponse,
+  SvcuserDeleteData,
+  SvcuserDeleteResponse,
   SvcuserShowData,
   SvcuserShowResponse,
   SvcuserUpdateData,
@@ -295,6 +297,22 @@ export const svcuserCreate = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * delete svcuser
+ */
+export const svcuserDelete = <ThrowOnError extends boolean = false>(
+  options: Options<SvcuserDeleteData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    SvcuserDeleteResponse,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/users/{userId}",
+    ...options,
   });
 };
 

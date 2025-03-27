@@ -763,6 +763,25 @@ export type SvcuserCreateResponses = {
 export type SvcuserCreateResponse =
   SvcuserCreateResponses[keyof SvcuserCreateResponses];
 
+export type SvcuserDeleteData = {
+  body?: never;
+  path: {
+    userId: number;
+  };
+  query?: never;
+  url: "/api/users/{userId}";
+};
+
+export type SvcuserDeleteResponses = {
+  /**
+   * Accepted response.
+   */
+  202: boolean;
+};
+
+export type SvcuserDeleteResponse =
+  SvcuserDeleteResponses[keyof SvcuserDeleteResponses];
+
 export type SvcuserShowData = {
   body?: never;
   path: {

@@ -61,4 +61,18 @@ var _ = Service(servicePrefix+"user", func() {
 			Response(StatusOK)
 		})
 	})
+
+	Method("delete", func() {
+		Payload(func() {
+			Attribute("userId", Int)
+			Required("userId")
+		})
+		Result(Boolean)
+		HTTP(func() {
+			DELETE("/{userId}")
+			Param("userId")
+			Response(StatusAccepted)
+		})
+
+	})
 })

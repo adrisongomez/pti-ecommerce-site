@@ -111,16 +111,12 @@ model Media {
 }
 
 model User {
-  id                Int      @id @default(autoincrement())
-  firstName         String   @map("first_name")
-  lastName          String?  @map("last_name")
-  email             String
-  billingAddressId  Int?     @map("billing_address_id")
-  shippingAddressId Int?     @map("shipping_address_id")
-  role              UserRole @default(CUSTOMER)
-
-  shippingAddress Address? @relation("shipping_address_id_fk", fields: [shippingAddressId], references: [id], onDelete: SetNull)
-  billingAddress  Address? @relation("billing_address_id", fields: [billingAddressId], references: [id], onDelete: SetNull)
+  id         Int      @id @default(autoincrement())
+  firstName  String   @map("first_name")
+  lastName   String?  @map("last_name")
+  email      String
+  role       UserRole @default(CUSTOMER)
+  preference Json?    @db.JsonB
 
   Credential Credential[]
   address    Address[]
@@ -136,19 +132,15 @@ model Address {
   id     Int @id @default(autoincrement())
   userId Int @unique @map("user_id")
 
-  addressLine1 String @map("address_line_1")
-  addressLine2 String @map("address_line_2")
+  addressLine1 String    @map("address_line_1")
+  addressLine2 String    @map("address_line_2")
   city         String
   province     String
   country      String
-
-  user        User   @relation(fields: [userId], references: [id])
-  shipping_fk User[] @relation("shipping_address_id_fk")
-  billing_fk  User[] @relation("billing_address_id")
-
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-  deletedAt DateTime? @map("deleted_at")
+  user         User?     @relation(fields: [userId], references: [id])
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt    DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt    DateTime? @map("deleted_at")
 
   @@map("addresses")
 }

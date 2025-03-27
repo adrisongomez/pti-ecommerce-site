@@ -3,7 +3,7 @@
 
 Convertir el frontend de la plataforma e-Commerce en una SPA (Single Page Application) utilizando AngularJS. Esta aplicación permitirá a los usuarios gestionar una lista de productos, incluyendo operaciones como agregar, editar, eliminar y buscar productos. El proyecto deberá demostrar competencias en la arquitectura de AngularJS, manejo de datos con AJAX, navegación con rutas, validación de formularios y animaciones.
 
-##Requerimientos:
+## Requerimientos:
 
 - Implementar una interfaz de usuario para gestionar productos (nombre, categoría, valor, etc.).
 - Utilizar componentes de AngularJS para estructurar la aplicación (4.1).

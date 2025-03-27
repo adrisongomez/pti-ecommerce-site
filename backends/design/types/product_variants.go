@@ -4,8 +4,16 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
-var ProductVariantInput = Type("ProductVariantCreateInput", func() {
+var ProductVariantUpsertInput = Type("ProductVariantUpsertInput", func() {
 	Attribute("id", Int, fieldID)
+	Attribute("colorName", String, "Color variant option")
+	Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
+	Attribute("price", Int, "Price on cents")
+
+	Required("colorName", "price")
+})
+
+var ProductVariantCreateInput = Type("ProductVariantCreateInput", func() {
 	Attribute("colorName", String, "Color variant option")
 	Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 	Attribute("price", Int, "Price on cents")

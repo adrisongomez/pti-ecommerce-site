@@ -291,18 +291,18 @@ func (p *ProductService) DeleteProductByID(ctx context.Context, payload *DeleteP
 	}
 	return true, nil
 }
-func (p *ProductService) UpsertVariant(ctx context.Context, payload *UpsertVariantPayload) (*Product, error) {
+func (p *ProductService) UpsertVariant(ctx context.Context, productId int, payload *ProductVariantUpsertInput) (*Product, error) {
 	methodLog := zap.String("methodName", "ProductService#AddVariant")
 	changes := []db.ProductVariantSetParam{}
-	if payload.Payload.ColorHex != nil {
-		changes = append(changes, db.ProductVariant.ColorHex.Set(*payload.Payload.ColorHex))
+	if payload.ColorHex != nil {
+		changes = append(changes, db.ProductVariant.ColorHex.Set(*payload.ColorHex))
 	}
 	p.logger.Info("Upsert product variant got called", methodLog, zap.Any("payload", payload))
-	id := payload.Payload.ID
+	id := payload.ID
 	if id == nil {
 		variant, err := p.client.ProductVariant.CreateOne(
-			db.ProductVariant.ColorName.Set(payload.Payload.ColorName),
-			db.ProductVariant.Price.Set(payload.Payload.Price),
+			db.ProductVariant.ColorName.Set(payload.ColorName),
+			db.ProductVariant.Price.Set(payload.Price),
 			changes...,
 		).Exec(ctx)
 		if err != nil {
@@ -314,8 +314,8 @@ func (p *ProductService) UpsertVariant(ctx context.Context, payload *UpsertVaria
 
 		changes = append(
 			changes,
-			db.ProductVariant.ColorName.Set(payload.Payload.ColorName),
-			db.ProductVariant.Price.Set(payload.Payload.Price),
+			db.ProductVariant.ColorName.Set(payload.ColorName),
+			db.ProductVariant.Price.Set(payload.Price),
 		)
 		variant, err := p.client.ProductVariant.
 			FindUnique(db.ProductVariant.ID.Equals(*id)).
@@ -327,36 +327,36 @@ func (p *ProductService) UpsertVariant(ctx context.Context, payload *UpsertVaria
 		p.logger.Info("Added variant", methodLog, zap.Any("newVariant", variant))
 	}
 
-	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: payload.ProductID})
+	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: productId})
 }
 
-func (p *ProductService) RemoveVariant(ctx context.Context, payload *RemoveVariantPayload) (*Product, error) {
+func (p *ProductService) RemoveVariants(ctx context.Context, productId int, ids []int) (*Product, error) {
 	methodLog := zap.String("method", "ProductService#RemoveVariant")
-	p.logger.Info("Remove variant got called", methodLog, zap.Any("payload", payload))
-	_, err := p.client.ProductVariant.FindUnique(
-		db.ProductVariant.ID.Equals(payload.VariantID),
+	p.logger.Info("Remove variant got called", methodLog, zap.Any("payload", ids))
+	_, err := p.client.ProductVariant.FindMany(
+		db.ProductVariant.ID.In(ids),
 	).Delete().Exec(ctx)
 	if err != nil {
 		p.logger.Error("Error on remove variant", methodLog, zap.Error(err))
 		return nil, err
 	}
-	p.logger.Info("Removed", methodLog, zap.Int("variantId", payload.VariantID))
-	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: payload.ProductID})
+	p.logger.Info("Removed", methodLog, zap.Any("variantIds", ids))
+	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: productId})
 }
 
-func (p *ProductService) AddMedia(ctx context.Context, payload *AddMediaPayload) (*Product, error) {
+func (p *ProductService) AddMedia(ctx context.Context, productId int, payload *ProductMediaInput) (*Product, error) {
 	methodLog := zap.String("method", "ProductService#AddMedia")
 	p.logger.Info("Add media got called", methodLog, zap.Any("payload", payload))
 
 	changes := []db.ProductMediaSetParam{
-		db.ProductMedia.MediaID.Set(payload.Payload.MediaID),
+		db.ProductMedia.MediaID.Set(payload.MediaID),
 	}
 
-	if payload.Payload.Alt != nil {
-		changes = append(changes, db.ProductMedia.Alt.Set(*payload.Payload.Alt))
+	if payload.Alt != nil {
+		changes = append(changes, db.ProductMedia.Alt.Set(*payload.Alt))
 	}
 	newMedia, err := p.client.ProductMedia.CreateOne(
-		db.ProductMedia.SortNumber.Set(payload.Payload.SortNumber),
+		db.ProductMedia.SortNumber.Set(payload.SortNumber),
 		changes...,
 	).Exec(ctx)
 
@@ -369,18 +369,18 @@ func (p *ProductService) AddMedia(ctx context.Context, payload *AddMediaPayload)
 	return nil, nil
 }
 
-func (p *ProductService) RemoveMedia(ctx context.Context, payload *RemoveMediaPayload) (*Product, error) {
+func (p *ProductService) RemoveMedia(ctx context.Context, productId int, payload []int) (*Product, error) {
 	methodLog := zap.String("method", "ProductService#RemoveMedia")
 	p.logger.Info("Add media got called", methodLog, zap.Any("payload", payload))
-	removedMedia, err := p.client.ProductMedia.FindUnique(
-		db.ProductMedia.ID.Equals(payload.ProductMediaID),
+	removedMedia, err := p.client.ProductMedia.FindMany(
+		db.ProductMedia.ID.In(payload),
 	).Delete().Exec(ctx)
 	if err != nil {
 		p.logger.Error("Error on removing media", methodLog, zap.Error(err))
 		return nil, err
 	}
 	p.logger.Info("Remove product media", methodLog, zap.Any("removedMedia", removedMedia))
-	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: payload.ProductID})
+	return p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: productId})
 }
 
 func NewProductService(client *db.PrismaClient) *ProductService {

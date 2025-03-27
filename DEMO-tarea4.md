@@ -29,3 +29,8 @@ Tambien decidi comenzar con la estrucutura de mis aplicacion de backend que sera
 
 
 
+https://github.com/user-attachments/assets/ec1a33ae-fe86-4ee0-8ab8-ed93ab2dc5fe
+
+
+
+

@@ -21,11 +21,9 @@ import routerBindings, {
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
 import FileLists from "./pages/files/list";
-import ApiDataProvider from "./dataProviders/ApiDataProvider";
 import ProductList from "./pages/products/list";
 import CreateProductForm from "./pages/products/create";
-
-const dataProvider = ApiDataProvider("http://localhost:3030/api/");
+import { APP_RESOURCES, APP_DATA_PROVIDER } from "./config/constants";
 
 const App: React.FC = () => {
   return (
@@ -37,29 +35,10 @@ const App: React.FC = () => {
           <RefineSnackbarProvider>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider}
+                dataProvider={APP_DATA_PROVIDER}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
-                resources={[
-                  {
-                    name: "medias",
-                    list: "/files/",
-                    meta: {
-                      canDelete: true,
-                      label: "Files",
-                    },
-                  },
-                  {
-                    name: "products",
-                    list: "/products",
-                    show: "/products/:id",
-                    create: "/products/create",
-                    edit: "/products/:id/edit",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                ]}
+                resources={APP_RESOURCES}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,

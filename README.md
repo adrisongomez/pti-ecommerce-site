@@ -2,18 +2,15 @@
 
 Este repositorio contiene un proyecto planteado para la evaluacion del cuso de Programming The Internet en BIU University.
 
-El proyecto es un ecommerce site, desarrollado utilizando React y Golang como las herramientas mas importantes en frontend 
-y backend. Ademas de un numero de paquetes y librerias que ayudan tanto la experiencia de desarrollo como para
-la ejecucion de diferentes features.
+El proyecto es un ecommerce site desarrollado utilizando React y Golang como las herramientas mas importantes en frontend  y backend. Ademas de multiples herramientas, paquetes y librerias que ayudan tanto la experiencia de desarrollo como para la ejecucion de diferentes features.
 
-## Bases del proyecto:
+## Estructura del proyectoy y aspecto generales:
 
-El proyecto es una plataforma de ecommerce. Esta debe contener las capacidades principales de todo ecommerce site.
+El repositorio es un monorepo y contiene 3 aplicaciones:
 
-El repositorio esta organizado como un monorepo por lo tanto. Este contiene tanto el codigo del front-end y el back-end
-de la aplicacion.
+- [Ecommerce relative]('./frontends/ecommerce')
+- [Admin Panel relative]('./frontends/admin')
+- [Main API relative]('./backends/')
 
-## Proyectos
 
-- [Ecommerce Site]('./frontends/ecommerce/')
-- [Backend]('./backends/api/')
+

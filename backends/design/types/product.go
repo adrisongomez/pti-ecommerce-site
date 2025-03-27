@@ -12,8 +12,7 @@ var ProductUpdateInput = Type("ProductUpdateInput", func() {
 		Default("DRAFT")
 	})
 	Attribute("tags", ArrayOf(String), "Product tags")
-	Attribute("vendorId", Int, "Vendor's product")
-	Required("title", "description", "tags", "vendorId")
+	Required("title", "description", "tags")
 })
 
 var ProductCreateInput = Type("ProductInput", func() {
@@ -24,11 +23,10 @@ var ProductCreateInput = Type("ProductInput", func() {
 		Default("DRAFT")
 	})
 	Attribute("tags", ArrayOf(String), "Product tags")
-	Attribute("vendorId", Int, "Vendor's product")
 	Attribute("variants", ArrayOf(ProductVariantInput), "Product variants")
 	Attribute("medias", ArrayOf(ProductMediaInput))
 
-	Required("title", "description", "tags", "vendorId", "variants")
+	Required("title", "description", "tags", "variants")
 })
 
 var ProductStatus = Type("ProductStatus", String, func() {
@@ -45,7 +43,6 @@ var Product = ResultType("application/vnd.product+json", func() {
 		Attribute("title", String, "Title")
 		Attribute("description", String, "Product description")
 		Attribute("handle", String, "Handle")
-		Attribute("vendor", Vendor)
 		Attribute("tags", ArrayOf(String), "Product tags")
 		Attribute("status", ProductStatus, "The product's status on ecommerce site", func() {
 			Default("DRAFT")

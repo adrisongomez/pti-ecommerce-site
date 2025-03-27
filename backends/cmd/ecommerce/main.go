@@ -19,7 +19,6 @@ func main() {
 	logger := loggers.CreateLogger("ecommerce-api")
 	client := db.NewClient()
 
-
 	zap.ReplaceGlobals(logger)
 
 	if err := client.Prisma.Connect(); err != nil {
@@ -35,13 +34,11 @@ func main() {
 
 	productSvc := svc.NewProductService(client)
 	healthcheckSvc := svc.NewHealthcheckService()
-	vendorSvc := svc.NewVendorService(client)
 	mediaSvc := svc.NewMediaService(client)
 	mux := goahttp.NewMuxer()
 	svc.MountMediaSVC(mux, mediaSvc)
 	svc.MountHealtcheckSVC(mux, healthcheckSvc)
 	svc.MountProductSVC(mux, productSvc)
-	svc.MountVendorSVC(mux, vendorSvc)
 	// middleware.Debug(mux, fmt.Fprint)
 	server := &http.Server{Addr: ":" + port, Handler: mux}
 

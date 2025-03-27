@@ -28,11 +28,9 @@ model Product {
   description String        @db.Text()
   handler     String        @unique
   status      ProductStatus
-  vendorId    Int?          @map("vendor_id")
 
   variants    ProductVariant[]
   tags        String[]
-  vendor      Vendor?          @relation(fields: [vendorId], references: [id], onDelete: SetNull)
   medias      ProductMedia[]
   collections Collection[]
 
@@ -58,19 +56,6 @@ model ProductCollection {
 
   @@id(name: "id", [productId, collectionId])
   @@map("product_collections")
-}
-
-model Vendor {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-
-  Product Product[]
-
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-
-  @@index([name])
-  @@map("vendors")
 }
 
 model ProductVariant {

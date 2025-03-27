@@ -21,6 +21,12 @@ type ProductService struct {
 	logger *zap.Logger
 }
 
+var Connections = []db.ProductRelationWith{
+	db.Product.Medias.Fetch().With(db.ProductMedia.Media.Fetch()),
+	db.Product.Variants.Fetch(),
+	db.Product.MediasIn.Fetch(),
+}
+
 func MapFromProductDbToOut(model *db.ProductModel) *Product {
 	logger := zap.L()
 	response := Product{
@@ -35,10 +41,6 @@ func MapFromProductDbToOut(model *db.ProductModel) *Product {
 	if value, ok := model.UpdatedAt(); ok {
 		updatedAtStr := value.String()
 		response.UpdatedAt = &updatedAtStr
-	}
-
-	if value, ok := model.Vendor(); ok {
-		response.Vendor = (*productGen.Vendor)(MapVendorToVendorResponse(*value))
 	}
 
 	variants := []*ProductVariant{}
@@ -120,10 +122,7 @@ func (p *ProductService) GetProductByID(ctx context.Context, payload *GetProduct
 	)
 
 	dbProduct, err := p.client.Product.FindFirst(db.Product.ID.Equals(payload.ProductID)).With(
-		db.Product.Vendor.Fetch(),
-		db.Product.Medias.Fetch().With(db.ProductMedia.Media.Fetch()),
-		db.Product.Variants.Fetch(),
-		db.Product.MediasIn.Fetch(),
+		Connections...,
 	).Exec(ctx)
 	if err != nil {
 		logger.Error("Error trying to getProductId", method, productIdLog, zap.Any("error", err))
@@ -151,10 +150,7 @@ func (p *ProductService) count(ctx context.Context) (int, error) {
 
 func (p *ProductService) ListProduct(ctx context.Context, payload *ListProductPayload) (*ProductsList, error) {
 	data, err := p.client.Product.FindMany().Take(payload.PageSize).Skip(payload.After).With(
-		db.Product.Vendor.Fetch(),
-		db.Product.Medias.Fetch().With(db.ProductMedia.Media.Fetch()),
-		db.Product.Variants.Fetch(),
-		db.Product.MediasIn.Fetch(),
+		Connections...,
 	).Exec(ctx)
 
 	if err != nil {
@@ -205,9 +201,10 @@ func (p *ProductService) CreateProduct(ctx context.Context, payload *ProductInpu
 		db.Product.Description.Set(payload.Description),
 		db.Product.Handler.Set(handle),
 		db.Product.Status.Set(db.ProductStatus(payload.Status)),
-		db.Product.Vendor.Link(db.Vendor.ID.Equals(payload.VendorID)),
 		db.Product.Tags.Set(payload.Tags),
-	).With().Exec(ctx)
+	).With(
+		Connections...,
+	).Exec(ctx)
 	p.logger.Debug("Product is created", methodLog, zap.Any("record", dbProduct))
 	if err != nil {
 		p.logger.Error("Error trying to createProduct", methodLog, payloadLog, zap.Any("error", err))

@@ -1,18 +1,22 @@
-import { Box, BoxProps, Card, CircularProgress } from "@mui/material";
+import { Box, BoxProps, Card, CircularProgress, useTheme } from "@mui/material";
 import { CSSProperties, FC, useState } from "react";
 
 type ImageProps = {
   width: CSSProperties["width"];
   height: CSSProperties["height"];
-} & Omit<BoxProps<"img">, "onLoad" | "width">;
+} & Omit<BoxProps<"img">, "onLoad" | "width" | "height" | "bgcolor">;
 
 const Image: FC<ImageProps> = ({ width, height, ...props }) => {
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
   return (
     <Card
-      raised
-      variant="outlined"
+      variant="elevation"
+      onDragStart={(e) => {
+        e.preventDefault();
+      }}
       sx={{
+        borderRadius: theme.shape.borderRadius,
         position: "relative",
         width: width,
         height: height,
@@ -23,6 +27,11 @@ const Image: FC<ImageProps> = ({ width, height, ...props }) => {
         component="img"
         width="100%"
         height="100%"
+        bgcolor={theme.palette.background.default}
+        sx={{
+          ...(props.sx ?? {}),
+          objectFit: "contain",
+        }}
         onLoad={() => {
           setLoading(false);
         }}

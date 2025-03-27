@@ -30,7 +30,7 @@ func MapMediaDBToOutput(model *db.MediaModel) *media.Media {
 		Size:      size,
 		MimeType:  model.MimeType,
 		Bucket:    model.Bucket,
-		Key:       model.Bucket,
+		Key:       model.Key,
 		CreatedAt: model.CreatedAt.String(),
 		UpdatedAt: nil,
 	}

@@ -12,6 +12,14 @@ var ProductMediaInput = Type("ProductMediaInput", func() {
 	Required("mediaId", "sortNumber")
 })
 
+var ProductMediaUpsertInput = Type("ProductMediaUpsertInput", func() {
+	Attribute("mediaId", Int, "ID of the media record where the resource has being upload")
+	Attribute("sortNumber", Int, "Position on the images of the product")
+	Attribute("alt", String, "Alt text that would show in case the image does not render")
+
+	Required("mediaId", "sortNumber")
+})
+
 var ProductMedia = ResultType("application/vnd.product-media+json", func() {
 	Description("Instance of media in a product")
 	ContentType("application/json")

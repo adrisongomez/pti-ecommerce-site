@@ -38,9 +38,9 @@ export default function ApiDataProvider(baseUrl: string): DataProvider {
     },
     // @ts-ignore
     async update({ resource, id, variables }) {
-      const response = await client.post<unknown>({
+      const response = await client.put<unknown>({
         url: `/${resource}/${id}`,
-        body: variables,
+        body: { payload: variables },
       });
       return { data: response.data };
     },

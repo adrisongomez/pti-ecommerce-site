@@ -1,23 +1,20 @@
-import { FC } from "react";
+import { ComponentProps, FC } from "react";
 import { ProductMediaInput } from "../../generated";
-import { useField } from "formik";
 import { DropZone } from "../../components/dropZones/DropZone";
 
-const ProductMediaDropzone: FC = () => {
-  const fields = useField<ProductMediaInput[]>("medias");
-  const { value } = fields[0];
-  const { setValue: onChange } = fields[2];
+const ProductMediaDropzone: FC<
+  Pick<
+    ComponentProps<typeof DropZone<ProductMediaInput>>,
+    "onChange" | "values" | "mapFromMediaToT"
+  >
+> = ({ onChange, values, mapFromMediaToT }) => {
   return (
     <DropZone<ProductMediaInput>
-      values={value}
+      values={values}
       onChange={(m) => {
         onChange(m);
       }}
-      mapFromMediaToT={(m, i) => ({
-        mediaId: m.id,
-        alt: "",
-        sortNumber: i,
-      })}
+      mapFromMediaToT={mapFromMediaToT}
     />
   );
 };

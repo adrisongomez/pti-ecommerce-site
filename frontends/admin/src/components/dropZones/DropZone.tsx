@@ -15,11 +15,9 @@ type DropdownZoneProps<T> = {
   mapFromMediaToT: (m: Media, i: number) => T;
 };
 
-export function DropZone<T extends { mediaId: number; sortNumber: number }>({
-  values,
-  onChange,
-  mapFromMediaToT,
-}: DropdownZoneProps<T>): JSX.Element {
+export function DropZone<
+  T extends { mediaId: number; sortNumber: number; url?: string | undefined },
+>({ values, onChange, mapFromMediaToT }: DropdownZoneProps<T>): JSX.Element {
   const theme = useTheme();
   const [loadingFiles, setLoadingFiles] = useState<
     Record<string, Pick<Media, "url">>
@@ -141,7 +139,7 @@ export function DropZone<T extends { mediaId: number; sortNumber: number }>({
                   }}
                   width={"166px"}
                   height={"208px"}
-                  src={loadingFiles[v.mediaId]?.url}
+                  src={v.url ?? loadingFiles[v.mediaId]?.url}
                 />
               </Box>
             </SortableItem>

@@ -4,6 +4,7 @@ import { DeleteButton, EditButton, List, useDataGrid } from "@refinedev/mui";
 import { FC, Fragment, useMemo } from "react";
 import { Product } from "../../generated";
 import ImageIcon from "@mui/icons-material/Image";
+import Image from "../../components/images/Images";
 
 const ProductList: FC = () => {
   const { dataGridProps } = useDataGrid({ resource: "products" });
@@ -12,6 +13,7 @@ const ProductList: FC = () => {
       {
         headerName: "",
         type: "custom",
+        display: "flex",
         sortable: false,
         field: "medias",
         align: "center",
@@ -24,7 +26,15 @@ const ProductList: FC = () => {
               </Avatar>
             );
           }
-          return <Avatar variant="rounded" src={media?.url} alt={media?.alt} />;
+          return (
+            <Image
+              width="44px"
+              height="44px"
+              sx={{ borderRadius: 1 }}
+              src={media?.url}
+              alt={media?.alt}
+            />
+          );
         },
       },
       {

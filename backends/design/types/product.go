@@ -13,7 +13,7 @@ var ProductUpdateInput = Type("ProductUpdateInput", func() {
 	})
 	Attribute("tags", ArrayOf(String), "Product tags")
 	Attribute("removeMediaIds", ArrayOf(Int))
-	Attribute("addedMedias", ArrayOf(ProductMediaInput))
+	Attribute("medias", ArrayOf(ProductMediaUpsertInput))
 	Attribute("removeVariantIds", ArrayOf(Int))
 	Attribute("variants", ArrayOf(ProductVariantUpsertInput))
 	Required("title", "description", "tags")

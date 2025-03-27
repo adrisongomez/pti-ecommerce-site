@@ -18,19 +18,15 @@ Convertir el frontend de la plataforma e-Commerce en una SPA (Single Page Applic
 
 En este tarea decidi volver el repositorio a un mono-repo. Por lo tanto ahora en este repositorio viven varias aplicaciones.
 
-1- [Ecommerce Site](/frontends/ecommerce/): Esta app tendra acceso limitado a la API y sera utilizado para los clientes.
-2- [Admin Site](/frontends/admin/): Esta tendra full access a la API y podra realizar todas las operaciones CRUDs
+1. [Ecommerce Site](/frontends/ecommerce/): Esta app tendra acceso limitado a la API y sera utilizado para los clientes.
+2. [Admin Site](/frontends/admin/): Esta tendra full access a la API y podra realizar todas las operaciones CRUDs
 
 El objetivo de esto es separar lo que tiene que ver con manejo del ecommerce y su content, de lo que es el ecommerce site. Ademas de brindar otro layer de seguridad.
 
-Tambien decidi comenzar con la estrucutura de mis aplicacion de backend que sera escrita en Golang
+Tambien decidi comenzar con la aplicacion de backend que sera escrita en Golang.
+
+Tambien para la UI utilize un framework de React llamado [Refine](https://refine.dev/). Este es basicamente un conjunto de diferentes librerias, React Query, Material UI, React Router, etc. que estan unidas todas en el framework para realizar aplicaciones internal como Admin Panels, Dashboard, etc de una manera muy sencilla haciendo que la experiencia de desarrollo sea mas rapida y menos tediosa.
 
 ## Demo video
 
-
-
 https://github.com/user-attachments/assets/ec1a33ae-fe86-4ee0-8ab8-ed93ab2dc5fe
-
-
-
-

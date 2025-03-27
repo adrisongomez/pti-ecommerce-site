@@ -59,15 +59,14 @@ model ProductCollection {
 }
 
 model ProductVariant {
-  id             Int     @id @default(autoincrement())
-  colorName      String  @map("color_name")
-  price          Int
-  colorHex       String? @map("color_hex")
-  productId      Int     @map("product_id")
-  featureMediaId Int?    @unique() @map("feature_media_id")
+  id              Int     @id @default(autoincrement())
+  colorName       String  @map("color_name")
+  price           Int
+  colorHex        String? @map("color_hex")
+  productId       Int     @map("product_id")
+  featureMediaLoc Int?    @map("feature_media_loc_no")
 
-  product      Product?      @relation(fields: [productId], references: [id], onDelete: Cascade)
-  featureMedia ProductMedia? @relation(fields: [featureMediaId], references: [id], onDelete: SetNull)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
@@ -83,9 +82,8 @@ model ProductMedia {
   sortNumber Int     @map("sort_number")
   alt        String?
 
-  product        Product?        @relation(fields: [productId], references: [id], onDelete: Cascade)
-  ProductVariant ProductVariant?
-  Media          Media?          @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  Media   Media?   @relation(fields: [mediaId], references: [id], onDelete: Cascade)
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()

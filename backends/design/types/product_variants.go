@@ -9,6 +9,7 @@ var ProductVariantUpsertInput = Type("ProductVariantUpsertInput", func() {
 	Attribute("colorName", String, "Color variant option")
 	Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 	Attribute("price", Int, "Price on cents")
+	Attribute("featureMediaLoc", Int, "ProductMedia which would be focus when a variant is picked by the user")
 
 	Required("colorName", "price")
 })
@@ -17,6 +18,7 @@ var ProductVariantCreateInput = Type("ProductVariantCreateInput", func() {
 	Attribute("colorName", String, "Color variant option")
 	Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 	Attribute("price", Int, "Price on cents")
+	Attribute("featureMediaLoc", Int, "ProductMedia which would be focus when a variant is picked by the user")
 
 	Required("colorName", "price")
 })
@@ -28,7 +30,7 @@ var ProductVariant = ResultType("application/vnd.product-variant+json", func() {
 		Attribute("colorName", String, "Color variant option")
 		Attribute("colorHex", String, "Color in HEX value that would be used on the variant picker")
 		Attribute("price", Int, "Price on cents")
-		Attribute("featureMediaId", Int, "ProductMedia which would be focus when a variant is picked by the user")
+		Attribute("featureMediaLoc", Int, "ProductMedia which would be focus when a variant is picked by the user")
 		Attribute("productId", String)
 		Attribute("createdAt", String, "Date of creation", fieldDatetime)
 		Attribute("updatedAt", String, "Last update date", fieldDatetime)

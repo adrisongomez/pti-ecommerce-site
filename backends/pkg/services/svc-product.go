@@ -83,20 +83,20 @@ func MapFromProductDbToOut(model *db.ProductModel) *Product {
 
 	for _, dbVariant := range dbVariants {
 		variant := ProductVariant{
-			ID:             dbVariant.ID,
-			ColorName:      dbVariant.ColorName,
-			Price:          dbVariant.Price,
-			ColorHex:       nil,
-			FeatureMediaID: nil,
-			CreatedAt:      dbVariant.CreatedAt.String(),
+			ID:              dbVariant.ID,
+			ColorName:       dbVariant.ColorName,
+			Price:           dbVariant.Price,
+			ColorHex:        nil,
+			FeatureMediaLoc: nil,
+			CreatedAt:       dbVariant.CreatedAt.String(),
 		}
 
 		if value, ok := dbVariant.ColorHex(); ok {
 			variant.ColorHex = internalUtils.StringRef(value)
 		}
 
-		if value, ok := dbVariant.FeatureMediaID(); ok {
-			variant.FeatureMediaID = &value
+		if value, ok := dbVariant.FeatureMediaLoc(); ok {
+			variant.FeatureMediaLoc = &value
 		}
 
 		if value, ok := dbVariant.UpdatedAt(); ok {

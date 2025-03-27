@@ -6,7 +6,6 @@ import {
   Autocomplete,
   Box,
   Card,
-  Container,
   FormLabel,
   IconButton,
   Stack,
@@ -40,8 +39,7 @@ const CreateProductForm: FC = () => {
       }}
     >
       {(formik) => (
-        <Container
-          maxWidth={"md"}
+        <Box
           component="form"
           onSubmit={formik.handleSubmit}
           onReset={formik.handleReset}
@@ -53,7 +51,7 @@ const CreateProductForm: FC = () => {
             }}
           >
             <Stack spacing={6}>
-              <StyledCard variant="elevation">
+              <StyledCard raised variant="elevation">
                 <Typography variant="h6" fontWeight="500">
                   General
                 </Typography>
@@ -104,13 +102,13 @@ const CreateProductForm: FC = () => {
                   />
                 </Stack>
               </StyledCard>
-              <StyledCard variant="elevation">
+              <StyledCard raised variant="elevation">
                 <Typography variant="h6" fontWeight="500">
                   Medias
                 </Typography>
                 <ProductMediaDropzone />
               </StyledCard>
-              <StyledCard>
+              <StyledCard raised>
                 <Typography variant="h6" fontWeight="500">
                   Variants
                 </Typography>
@@ -160,18 +158,18 @@ const CreateProductForm: FC = () => {
               </StyledCard>
             </Stack>
           </Create>
-        </Container>
+        </Box>
       )}
     </Formik>
   );
 };
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  padding: theme.spacing(4),
+  padding: theme.spacing(3),
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(3),
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: theme.shape.borderRadius * 3,
 }));
 
 export default CreateProductForm;

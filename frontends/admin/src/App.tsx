@@ -24,6 +24,8 @@ import FileLists from "./pages/files/list";
 import ProductList from "./pages/products/list";
 import CreateProductForm from "./pages/products/create";
 import { APP_RESOURCES, APP_DATA_PROVIDER } from "./config/constants";
+import EditProduct from "./pages/products/edit";
+import { Container } from "@mui/material";
 
 const App: React.FC = () => {
   return (
@@ -50,7 +52,9 @@ const App: React.FC = () => {
                   <Route
                     element={
                       <ThemedLayoutV2 Header={() => <Header sticky />}>
-                        <Outlet />
+                        <Container maxWidth="lg" sx={{ width: "100%" }}>
+                          <Outlet />
+                        </Container>
                       </ThemedLayoutV2>
                     }
                   >
@@ -67,11 +71,11 @@ const App: React.FC = () => {
                         path="/products/create"
                         element={<CreateProductForm />}
                       />
+                      <Route path="/products/:id" element={<EditProduct />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                 </Routes>
-
                 <RefineKbar />
                 <UnsavedChangesNotifier />
                 <DocumentTitleHandler />

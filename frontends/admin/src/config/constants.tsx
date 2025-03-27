@@ -7,9 +7,8 @@ export const APP_RESOURCES: ResourceProps[] = [
   {
     name: "products",
     list: "/products",
-    show: "/products/:id",
     create: "/products/create",
-    edit: "/products/:id/edit",
+    edit: "/products/:id",
     meta: {
       icon: <StoreIcon />,
       canDelete: true,

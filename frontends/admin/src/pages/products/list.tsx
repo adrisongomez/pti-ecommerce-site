@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { DeleteButton, List, useDataGrid } from "@refinedev/mui";
+import { DeleteButton, EditButton, List, useDataGrid } from "@refinedev/mui";
 import { FC, Fragment, useMemo } from "react";
 import { Product } from "../../generated";
 import ImageIcon from "@mui/icons-material/Image";
@@ -64,6 +64,7 @@ const ProductList: FC = () => {
         type: "actions",
         renderCell: ({ row }) => (
           <Fragment>
+            <EditButton hideText recordItemId={row.id} />
             <DeleteButton hideText recordItemId={row.id} />
           </Fragment>
         ),

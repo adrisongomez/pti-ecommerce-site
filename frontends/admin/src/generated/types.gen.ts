@@ -284,7 +284,7 @@ export type ProductVariant = {
   /**
    * ProductMedia which would be focus when a variant is picked by the user
    */
-  featureMediaId?: number;
+  featureMediaLoc?: number;
   /**
    * Key ID
    */
@@ -310,6 +310,10 @@ export type ProductVariantCreateInput = {
    */
   colorName: string;
   /**
+   * ProductMedia which would be focus when a variant is picked by the user
+   */
+  featureMediaLoc?: number;
+  /**
    * Price on cents
    */
   price: number;
@@ -324,6 +328,10 @@ export type ProductVariantUpsertInput = {
    * Color variant option
    */
   colorName: string;
+  /**
+   * ProductMedia which would be focus when a variant is picked by the user
+   */
+  featureMediaLoc?: number;
   /**
    * Key ID
    */

@@ -274,6 +274,19 @@ func MountUserServiceSVC(mux http.Muxer, svc *UserController) {
 ```
 
 Un punto muy importantes algunos endpoints como `POST products/` y `PUT products/:productId` escriben en diferentes entidades por ese motivo se utilizo transacciones para asegurar la integridad de las operaciones de manera que si encuentra un fallo en cualquiera de los queries, la base de datos no quede en un estado incompleto.
+
+## Para correr el proyecto.
+1- asegurarse exponer las variables de entornos en los archivos `.env.example`
+
+```
+make start-external-svc # Inicia un base de datos con docker
+make migrate-sync 	# para sincronizar la base de datos con los archivos de migraciones
+make generate-svc	# para generar los archivos de goa.design
+
+air 			# para correr un process que realiza reload de la aplicacion cuando se realiza cambios del codigo
+
+curl http://localhost:3030
+```
  
 ## Demo video
 

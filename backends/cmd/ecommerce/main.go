@@ -47,15 +47,15 @@ func main() {
 		refreshTokenGenerator = &auth.JWTGenerator{Secret: &REFRESH_TOKEN_SECRET, ExpirationBandwith: Month}
 		accessTokenValidator  = &auth.JWTValidator{Secret: &ACCESS_TOKEN_SECRET}
 		refreshTokenValidator = &auth.JWTValidator{Secret: &REFRESH_TOKEN_SECRET}
-		passwordHaser         = &auth.PasswordHasher{}
+		passwordHasher        = &auth.PasswordHasher{}
 	)
 
 	refreshAuthService := svc.NewAuthRefreshService(client, logger, accessTokenGenerator, refreshTokenGenerator, refreshTokenValidator)
-	authService := svc.NewAuthService(logger, client, passwordHaser, accessTokenGenerator, refreshTokenGenerator, accessTokenValidator)
+	authService := svc.NewAuthService(logger, client, passwordHasher, accessTokenGenerator, refreshTokenGenerator, accessTokenValidator)
 	healthcheckSvc := svc.NewHealthcheckService()
 	productSvc := svc.NewProductService(client)
 	mediaSvc := svc.NewMediaService(client)
-	userSvc := svc.NewUserService(client)
+	userSvc := svc.NewUserService(client, passwordHasher)
 	mux := goahttp.NewMuxer()
 	svc.MountMediaSVC(mux, mediaSvc)
 	svc.MountHealtcheckSVC(mux, healthcheckSvc)

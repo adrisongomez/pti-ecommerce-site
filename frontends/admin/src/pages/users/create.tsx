@@ -22,12 +22,17 @@ const CreateUserPage: FC = () => {
   const formik = useFormik<UserCreateInput>({
     initialValues: {
       lastName: "",
+      password: "",
       firstName: "",
       email: "",
       role: "CUSTOMER",
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("required"),
+      password: Yup.string()
+        .min(8, "At least 8 letters or numbers")
+        .strict()
+        .required(),
       email: Yup.string()
         .email("Please enter a valid email")
         .required("Required")
@@ -90,6 +95,24 @@ const CreateUserPage: FC = () => {
             onBlur={formik.handleBlur}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+          />
+          <TextField
+            fullWidth
+            required
+            variant="filled"
+            label="Passowrd"
+            type="password"
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && !!formik.errors.password}
+            helperText={formik.touched.password && formik.errors.password}
             slotProps={{
               inputLabel: {
                 shrink: true,

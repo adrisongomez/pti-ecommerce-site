@@ -32,6 +32,7 @@ const EditUserPage: FC = () => {
       firstName: user?.firstName ?? "",
       email: user?.email ?? "",
       role: user?.role ?? "CUSTOMER",
+      password: "",
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("required"),
@@ -55,6 +56,7 @@ const EditUserPage: FC = () => {
           firstName: user?.firstName ?? "",
           email: user?.email ?? "",
           role: user?.role ?? "CUSTOMER",
+          password: "",
         },
         false,
       );

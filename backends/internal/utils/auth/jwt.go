@@ -46,13 +46,17 @@ type JWTValidator struct {
 	client *db.PrismaClient
 }
 
+const (
+	ClaimsCtxKey = "claims"
+)
+
 var (
 	UnauthorizedError = fmt.Errorf("Unathorized")
 	MalformToken      = fmt.Errorf("Token is malform")
 )
 
 func (j *JWTValidator) JWTAuth(ctx context.Context, token string, schema *security.JWTScheme) (context.Context, error) {
-	claim, err := j.parse(token)
+	claim, err := j.Parse(token)
 	if err != nil {
 		return nil, err
 	}
@@ -62,20 +66,12 @@ func (j *JWTValidator) JWTAuth(ctx context.Context, token string, schema *securi
 	if claim.IsExpired() {
 		return nil, UnauthorizedError
 	}
-	userDB, err := j.client.User.FindUnique(
-		db.User.ID.Equals(claim.UserID),
-	).Exec(ctx)
 
-	if err != nil {
-		return nil, err
-	}
-
-	ctx = context.WithValue(ctx, "claims", claim)
-	ctx = context.WithValue(ctx, "user", userDB)
+	ctx = context.WithValue(ctx, ClaimsCtxKey, claim)
 	return nil, UnauthorizedError
 }
 
-func (j *JWTValidator) parse(token string) (*Claims, error) {
+func (j *JWTValidator) Parse(token string) (*Claims, error) {
 	claims := &Claims{}
 	parsedToken, err := jwt.ParseWithClaims(
 		token,

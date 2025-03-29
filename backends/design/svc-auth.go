@@ -13,7 +13,6 @@ var Creds = Type("Creds", func() {
 	Attribute("refreshToken", String, "Refresh JWT Token", func() {
 		Example("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ")
 	})
-	Attribute("user")
 	Required("accessToken", "refreshToken")
 })
 

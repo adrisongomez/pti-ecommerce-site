@@ -65,7 +65,12 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
           error={formik.touched.password && Boolean(formik.errors.password)}
         />
         <div className="mt-6 flex gap-3">
-          <Button className="flex-1 py-1.5" type="submit" variant="contained">
+          <Button
+            disabled={!formik.isValid || formik.isSubmitting}
+            className="flex-1 py-1.5"
+            type="submit"
+            variant="contained"
+          >
             Login
           </Button>
           <Button className="flex-1 py-1.5" type="reset" variant="outline">

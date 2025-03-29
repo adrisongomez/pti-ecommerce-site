@@ -37,12 +37,16 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSignUpForm }) => {
       lastName: "",
     },
     onSubmit(d) {
-      onSignUpForm?.(d);
+      return onSignUpForm?.(d);
     },
   });
   return (
     <Card className="w-full max-w-lg bg-(--bg-light) px-10">
-      <form className="flex w-full flex-col gap-4 px-4 py-6">
+      <form
+        className="flex w-full flex-col gap-4 px-4 py-6"
+        onSubmit={formik.handleSubmit}
+        onChange={formik.handleChange}
+      >
         <h3 className="mb-3 text-center text-3xl font-medium">
           Sign to the <strong className="text-(--bg-dark)">Store</strong>
         </h3>
@@ -106,7 +110,11 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSignUpForm }) => {
               : undefined
           }
         />
-        <Button className="mt-2 py-2" variant="contained">
+        <Button
+          className="mt-2 py-2"
+          variant="contained"
+          disabled={!formik.isValid || formik.isSubmitting}
+        >
           Submit
         </Button>
       </form>

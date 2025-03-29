@@ -41,11 +41,17 @@ func NewAuthService(
 }
 
 func (a *AuthService) BasicAuth(ctx context.Context, user, pass string, schema *security.BasicScheme) (context.Context, error) {
+	a.Info("Validating basic auth", zap.String("user", user))
 	userDB, err := a.client.User.FindUnique(db.User.Email.Equals(user)).Exec(ctx)
 	if err != nil {
+		a.Error("Error on trying to get user from db", zap.Error(err))
+		if db.IsErrNotFound(err) {
+			return nil, InvalidCredential
+		}
 		return nil, InternalServerError
 	}
 	if !a.hasher.Validate(pass, userDB.PasswordHash) {
+		a.Error("Password not match")
 		return nil, MakeBadInput(InvalidCredential)
 	}
 	return ctx, nil
@@ -101,6 +107,7 @@ func (a *AuthService) Signup(ctx context.Context, input *UserRegistrationInput) 
 		db.User.FirstName.Set(input.FirstName),
 		db.User.Email.Set(input.Email),
 		db.User.PasswordHash.Set(hashedPassword),
+		change...,
 	).Exec(ctx)
 
 	if err != nil {

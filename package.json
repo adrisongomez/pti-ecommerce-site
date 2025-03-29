@@ -69,7 +69,7 @@
     "vitest": "^3.0.7"
   },
   "lint-staged": {
-    "**/*.{ts,tsx,js,jsx}": [
+    "**/!generated/*.{ts,tsx,js,jsx}": [
       "pnpm prettier --write",
       "pnpm lint --fix"
     ],

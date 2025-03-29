@@ -21,6 +21,7 @@ var _ = API("ecommerce", func() {
 		URL("https://github.com/adrisongomez")
 	})
 
+	Error("unauthorized", String, "Crendetials are invalid")
 	cors.Origin("/.*localhost.*/", func() {
 		cors.Methods("GET", "POST", "PUT", "DELETE")
 		cors.Headers("*")

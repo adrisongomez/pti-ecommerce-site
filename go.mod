@@ -9,11 +9,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.29.9
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.62
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.78.2
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/joho/godotenv v1.5.1
 	github.com/shopspring/decimal v1.4.0
 	go.uber.org/zap v1.27.0
 	goa.design/clue v1.1.1
 	goa.design/goa/v3 v3.20.0
+	golang.org/x/crypto v0.36.0
 )
 
 require (

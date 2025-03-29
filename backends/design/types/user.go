@@ -24,8 +24,9 @@ var UserCreateInput = Type("UserCreateInput", func() {
 	Attribute("role", UserRole, func() {
 		Default("CUSTOMER")
 	})
+	Attribute("password", String)
 
-	Required("firstName", "email")
+	Required("firstName", "email", "password")
 })
 
 var User = ResultType("application/vnd.user+json", func() {

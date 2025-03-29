@@ -8,6 +8,7 @@ import (
 	svcuserhttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svcuser/server"
 	. "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svcuser"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	"go.uber.org/zap"
 	"goa.design/goa/v3/http"
 )
@@ -15,6 +16,7 @@ import (
 type UserController struct {
 	client *db.PrismaClient
 	logger *zap.Logger
+	hasher *auth.PasswordHasher
 }
 
 func MapUserDBToOutput(model db.UserModel) *User {
@@ -91,9 +93,14 @@ func (u *UserController) Create(ctx context.Context, payload *UserCreateInput) (
 	if payload.LastName != nil {
 		changes = append(changes, db.User.LastName.Set(*payload.LastName))
 	}
+	passwordHash, err := u.hasher.Hash(payload.Password)
+	if err != nil {
+		return nil, err
+	}
 	userModel, err := u.client.User.CreateOne(
 		db.User.FirstName.Set(payload.FirstName),
 		db.User.Email.Set(payload.Email),
+		db.User.PasswordHash.Set(passwordHash),
 		changes...,
 	).Exec(ctx)
 
@@ -149,9 +156,9 @@ func (u *UserController) Delete(ctx context.Context, input *DeletePayload) (bool
 	return true, nil
 }
 
-func NewUserService(client *db.PrismaClient) *UserController {
+func NewUserService(client *db.PrismaClient, hasher *auth.PasswordHasher) *UserController {
 	logger := zap.L()
-	return &UserController{client, logger}
+	return &UserController{client, logger, hasher}
 }
 
 func MountUserServiceSVC(mux http.Muxer, svc *UserController) {

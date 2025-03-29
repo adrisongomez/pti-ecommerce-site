@@ -4,20 +4,29 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/loggers"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/services"
 	"go.uber.org/zap"
 	goahttp "goa.design/goa/v3/http"
 )
 
+var (
+	Day                  = time.Hour * 24
+	Month                = Day * 24 * 30
+	ACCESS_TOKEN_SECRET  = "SECRET"
+	REFRESH_TOKEN_SECRET = "SECRET2"
+)
+
 func main() {
 	var (
-		port = "3030"
+		port   = "3030"
+		logger = loggers.CreateLogger("ecommerce-api")
+		client = db.NewClient()
 	)
-	logger := loggers.CreateLogger("ecommerce-api")
-	client := db.NewClient()
 
 	zap.ReplaceGlobals(logger)
 
@@ -33,6 +42,16 @@ func main() {
 		}
 	}()
 
+	var (
+		accessTokenGenerator  = &auth.JWTGenerator{Secret: &ACCESS_TOKEN_SECRET, ExpirationBandwith: Day}
+		refreshTokenGenerator = &auth.JWTGenerator{Secret: &REFRESH_TOKEN_SECRET, ExpirationBandwith: Month}
+		accessTokenValidator  = &auth.JWTValidator{Secret: &ACCESS_TOKEN_SECRET}
+		refreshTokenValidator = &auth.JWTValidator{Secret: &REFRESH_TOKEN_SECRET}
+		passwordHaser         = &auth.PasswordHasher{}
+	)
+
+	refreshAuthService := svc.NewAuthRefreshService(client, logger, accessTokenGenerator, refreshTokenGenerator, refreshTokenValidator)
+	authService := svc.NewAuthService(logger, client, passwordHaser, accessTokenGenerator, refreshTokenGenerator, accessTokenValidator)
 	healthcheckSvc := svc.NewHealthcheckService()
 	productSvc := svc.NewProductService(client)
 	mediaSvc := svc.NewMediaService(client)
@@ -42,7 +61,8 @@ func main() {
 	svc.MountHealtcheckSVC(mux, healthcheckSvc)
 	svc.MountProductSVC(mux, productSvc)
 	svc.MountUserServiceSVC(mux, userSvc)
-	// middleware.Debug(mux, fmt.Fprint)
+	svc.MountAuthSVC(mux, authService)
+	svc.MountAuthRefreshSVC(mux, refreshAuthService)
 	server := &http.Server{Addr: ":" + port, Handler: mux}
 
 	logger.Info(fmt.Sprintf("Starting server on :%s\n", port))

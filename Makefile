@@ -21,9 +21,6 @@ migrate-status:
 migrate-dev:
 	go run github.com/steebchen/prisma-client-go migrate dev --schema ./backends/databases/schema.prisma
 
-migrate-sync:
-	go run github.com/steebchen/prisma-client-go migrate sync --schema ./backends/databases/schema.prisma
-
 migrate-depoy:
 	go run github.com/steebchen/prisma-client-go migrate deploy --schema ./backends/databases/schema.prisma
 

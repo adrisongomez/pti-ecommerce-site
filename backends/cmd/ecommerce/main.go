@@ -22,6 +22,7 @@ func main() {
 	zap.ReplaceGlobals(logger)
 
 	if err := client.Prisma.Connect(); err != nil {
+		logger.Error("Error connecting to prisma server", zap.Error(err))
 		panic(err)
 	}
 

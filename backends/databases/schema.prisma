@@ -117,7 +117,7 @@ model User {
   email        String   @unique
   role         UserRole @default(CUSTOMER)
   preference   Json?    @db.JsonB
-  password_has String
+  passwordHash String   @map("password_hash")
 
   address Address[]
 

@@ -5,6 +5,18 @@ export type CreateMediaResponse = {
   uploadUrl: string;
 };
 
+export type Creds = {
+  /**
+   * Access JWT Token
+   */
+  accessToken: string;
+  /**
+   * Refresh JWT Token
+   */
+  refreshToken: string;
+  user?: string;
+};
+
 export type _Error = {
   /**
    * Is the error a server-side fault?
@@ -395,6 +407,7 @@ export type UserCreateInput = {
   email: string;
   firstName: string;
   lastName?: string;
+  password: string;
   role?: "CUSTOMER" | "ADMIN";
 };
 
@@ -415,6 +428,112 @@ export type UserRegistrationInput = {
   lastName?: string;
   password: string;
 };
+
+export type AuthLoginData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/auth/login";
+};
+
+export type AuthLoginErrors = {
+  /**
+   * NotValidCrendentials: Unauthorized response.
+   */
+  401: _Error;
+};
+
+export type AuthLoginError = AuthLoginErrors[keyof AuthLoginErrors];
+
+export type AuthLoginResponses = {
+  /**
+   * OK response.
+   */
+  200: Creds;
+};
+
+export type AuthLoginResponse = AuthLoginResponses[keyof AuthLoginResponses];
+
+export type AuthMeData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/auth/me";
+};
+
+export type AuthMeErrors = {
+  /**
+   * NotValidCrendentials: Unauthorized response.
+   */
+  401: _Error;
+  /**
+   * Unproccesable: Unprocessable Entity response.
+   */
+  422: _Error;
+};
+
+export type AuthMeError = AuthMeErrors[keyof AuthMeErrors];
+
+export type AuthMeResponses = {
+  /**
+   * OK response.
+   */
+  200: User;
+};
+
+export type AuthMeResponse = AuthMeResponses[keyof AuthMeResponses];
+
+export type AuthRefreshRefreshData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/auth/refresh";
+};
+
+export type AuthRefreshRefreshErrors = {
+  /**
+   * NotValidToken: Conflict response.
+   */
+  409: _Error;
+};
+
+export type AuthRefreshRefreshError =
+  AuthRefreshRefreshErrors[keyof AuthRefreshRefreshErrors];
+
+export type AuthRefreshRefreshResponses = {
+  /**
+   * OK response.
+   */
+  200: Creds;
+};
+
+export type AuthRefreshRefreshResponse =
+  AuthRefreshRefreshResponses[keyof AuthRefreshRefreshResponses];
+
+export type AuthSignupData = {
+  body: UserRegistrationInput;
+  path?: never;
+  query?: never;
+  url: "/api/auth/signup";
+};
+
+export type AuthSignupErrors = {
+  /**
+   * BadInput: Bad Request response.
+   */
+  400: _Error;
+};
+
+export type AuthSignupError = AuthSignupErrors[keyof AuthSignupErrors];
+
+export type AuthSignupResponses = {
+  /**
+   * OK response.
+   */
+  200: Creds;
+};
+
+export type AuthSignupResponse = AuthSignupResponses[keyof AuthSignupResponses];
 
 export type SvcHealthcheckCheckData = {
   body?: never;

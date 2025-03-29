@@ -6,6 +6,18 @@ import type {
   Client,
 } from "@hey-api/client-axios";
 import type {
+  AuthLoginData,
+  AuthLoginResponse,
+  AuthLoginError,
+  AuthMeData,
+  AuthMeResponse,
+  AuthMeError,
+  AuthRefreshRefreshData,
+  AuthRefreshRefreshResponse,
+  AuthRefreshRefreshError,
+  AuthSignupData,
+  AuthSignupResponse,
+  AuthSignupError,
   SvcHealthcheckCheckData,
   SvcHealthcheckCheckResponse,
   SvcMediaListData,
@@ -63,6 +75,92 @@ export type Options<
    * used to access values that aren't defined as part of the SDK function.
    */
   meta?: Record<string, unknown>;
+};
+
+/**
+ * login auth
+ */
+export const authLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<AuthLoginData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    AuthLoginResponse,
+    AuthLoginError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "basic",
+        type: "http",
+      },
+    ],
+    url: "/api/auth/login",
+    ...options,
+  });
+};
+
+/**
+ * me auth
+ */
+export const authMe = <ThrowOnError extends boolean = false>(
+  options?: Options<AuthMeData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    AuthMeResponse,
+    AuthMeError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/api/auth/me",
+    ...options,
+  });
+};
+
+/**
+ * refresh authRefresh
+ */
+export const authRefreshRefresh = <ThrowOnError extends boolean = false>(
+  options?: Options<AuthRefreshRefreshData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    AuthRefreshRefreshResponse,
+    AuthRefreshRefreshError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/api/auth/refresh",
+    ...options,
+  });
+};
+
+/**
+ * signup auth
+ */
+export const authSignup = <ThrowOnError extends boolean = false>(
+  options: Options<AuthSignupData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    AuthSignupResponse,
+    AuthSignupError,
+    ThrowOnError
+  >({
+    url: "/api/auth/signup",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
 };
 
 /**

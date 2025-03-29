@@ -111,15 +111,15 @@ model Media {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  firstName  String   @map("first_name")
-  lastName   String?  @map("last_name")
-  email      String
-  role       UserRole @default(CUSTOMER)
-  preference Json?    @db.JsonB
+  id           Int      @id @default(autoincrement())
+  firstName    String   @map("first_name")
+  lastName     String?  @map("last_name")
+  email        String   @unique
+  role         UserRole @default(CUSTOMER)
+  preference   Json?    @db.JsonB
+  password_has String
 
-  Credential Credential[]
-  address    Address[]
+  address Address[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
@@ -143,18 +143,6 @@ model Address {
   deletedAt    DateTime? @map("deleted_at")
 
   @@map("addresses")
-}
-
-model Credential {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @unique @map("user_id")
-  email     String
-  password  String?
-  verfiedAt DateTime? @map("verfied_at") @db.Timestamptz()
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@map("credentials")
 }
 
 enum UserRole {

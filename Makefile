@@ -12,8 +12,17 @@ db-push:
 db-pull:
 	go run github.com/steebchen/prisma-client-go db pull --schema ./backends/databases/schema.prisma
 
+migrate-reset:
+	go run github.com/steebchen/prisma-client-go migrate reset --schema ./backends/databases/schema.prisma
+
+migrate-status:
+	go run github.com/steebchen/prisma-client-go migrate status --schema ./backends/databases/schema.prisma
+
 migrate-dev:
 	go run github.com/steebchen/prisma-client-go migrate dev --schema ./backends/databases/schema.prisma
+
+migrate-sync:
+	go run github.com/steebchen/prisma-client-go migrate sync --schema ./backends/databases/schema.prisma
 
 migrate-depoy:
 	go run github.com/steebchen/prisma-client-go migrate deploy --schema ./backends/databases/schema.prisma

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	"github.com/golang-jwt/jwt/v5"
 	"goa.design/goa/v3/security"
 )
@@ -36,8 +37,13 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+func (c *Claims) IsExpired() bool {
+	return time.Now().After(c.ExpiresAt.Time)
+}
+
 type JWTValidator struct {
-	Secret *string
+	secret *string
+	client *db.PrismaClient
 }
 
 var (
@@ -46,17 +52,30 @@ var (
 )
 
 func (j *JWTValidator) JWTAuth(ctx context.Context, token string, schema *security.JWTScheme) (context.Context, error) {
-	claims, err := j.Parse(token)
+	claim, err := j.parse(token)
 	if err != nil {
 		return nil, err
 	}
-	if hasRequiredScopes(claims.Scopes, schema.RequiredScopes) {
+	if hasRequiredScopes(claim.Scopes, schema.RequiredScopes) {
 		return ctx, nil
 	}
+	if claim.IsExpired() {
+		return nil, UnauthorizedError
+	}
+	userDB, err := j.client.User.FindUnique(
+		db.User.ID.Equals(claim.UserID),
+	).Exec(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	ctx = context.WithValue(ctx, "claims", claim)
+	ctx = context.WithValue(ctx, "user", userDB)
 	return nil, UnauthorizedError
 }
 
-func (j *JWTValidator) Parse(token string) (*Claims, error) {
+func (j *JWTValidator) parse(token string) (*Claims, error) {
 	claims := &Claims{}
 	parsedToken, err := jwt.ParseWithClaims(
 		token,
@@ -65,7 +84,7 @@ func (j *JWTValidator) Parse(token string) (*Claims, error) {
 			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("Unexpected token method: %v", t.Header["alg"])
 			}
-			return []byte(*j.Secret), nil
+			return []byte(*j.secret), nil
 		})
 
 	if err != nil {
@@ -75,4 +94,8 @@ func (j *JWTValidator) Parse(token string) (*Claims, error) {
 		return nil, MalformToken
 	}
 	return claims, nil
+}
+
+func NewJWTValidator(secret *string, client *db.PrismaClient) *JWTValidator {
+	return &JWTValidator{secret, client}
 }

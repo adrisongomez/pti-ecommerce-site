@@ -45,8 +45,8 @@ func main() {
 	var (
 		accessTokenGenerator  = &auth.JWTGenerator{Secret: &ACCESS_TOKEN_SECRET, ExpirationBandwith: Day}
 		refreshTokenGenerator = &auth.JWTGenerator{Secret: &REFRESH_TOKEN_SECRET, ExpirationBandwith: Month}
-		accessTokenValidator  = &auth.JWTValidator{Secret: &ACCESS_TOKEN_SECRET}
-		refreshTokenValidator = &auth.JWTValidator{Secret: &REFRESH_TOKEN_SECRET}
+		accessTokenValidator  = auth.NewJWTValidator(&ACCESS_TOKEN_SECRET, client)
+		refreshTokenValidator = auth.NewJWTValidator(&REFRESH_TOKEN_SECRET, client)
 		passwordHasher        = &auth.PasswordHasher{}
 	)
 

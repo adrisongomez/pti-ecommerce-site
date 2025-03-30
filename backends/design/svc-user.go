@@ -8,8 +8,11 @@ import (
 var PaginatedUser = types.PaginatedResult("user-list", types.User)
 
 var _ = Service(servicePrefix+"user", func() {
-	HTTP(func() { Path("/users") })
+	HTTP(func() {
+		Path("/users")
+	})
 	Method("list", func() {
+
 		Payload(func() {
 			Attribute("pageSize", Int, "Record per page", func() {
 				Minimum(10)

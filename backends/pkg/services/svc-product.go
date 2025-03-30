@@ -275,10 +275,14 @@ func (p *ProductService) UpdateProductByID(ctx context.Context, payload *UpdateP
 
 	if len(payload.Payload.RemoveMediaIds) != 0 {
 		p.logger.Info("removing medias")
-		err := p.RemoveMedia(ctx, payload.ProductID, payload.Payload.RemoveMediaIds)
-		if err != nil {
-			return nil, err
-		}
+		tx = append(
+			tx,
+			p.client.ProductMedia.FindMany(
+				db.ProductMedia.ID.
+					InIfPresent(payload.Payload.RemoveMediaIds)).
+				Delete().
+				Tx(),
+		)
 	}
 
 	if len(payload.Payload.RemoveVariantIds) != 0 {
@@ -364,46 +368,6 @@ func (p *ProductService) RemoveVariants(ctx context.Context, productId int, ids 
 		return err
 	}
 	p.logger.Info("Removed", methodLog, zap.Any("variantIds", ids))
-	return nil
-}
-
-func (p *ProductService) AddMedia(ctx context.Context, productId int, payload *ProductMediaInput) error {
-	methodLog := zap.String("method", "ProductService#AddMedia")
-	p.logger.Info("Add media got called", methodLog, zap.Any("payload", payload))
-
-	changes := []db.ProductMediaSetParam{
-		db.ProductMedia.MediaID.Set(payload.MediaID),
-		db.ProductMedia.ProductID.Set(productId),
-	}
-
-	if payload.Alt != nil {
-		changes = append(changes, db.ProductMedia.Alt.Set(*payload.Alt))
-	}
-	newMedia, err := p.client.ProductMedia.CreateOne(
-		db.ProductMedia.SortNumber.Set(payload.SortNumber),
-		changes...,
-	).Exec(ctx)
-
-	if err != nil {
-		p.logger.Error("Error on adding media", methodLog, zap.Error(err))
-		return err
-	}
-	p.logger.Info("Added product media", methodLog, zap.Any("newMedia", newMedia))
-
-	return nil
-}
-
-func (p *ProductService) RemoveMedia(ctx context.Context, productId int, payload []int) error {
-	methodLog := zap.String("method", "ProductService#RemoveMedia")
-	p.logger.Info("Add media got called", methodLog, zap.Any("payload", payload))
-	removedMedia, err := p.client.ProductMedia.FindMany(
-		db.ProductMedia.ID.InIfPresent(payload),
-	).Delete().Exec(ctx)
-	if err != nil {
-		p.logger.Error("Error on removing media", methodLog, zap.Error(err))
-		return err
-	}
-	p.logger.Info("Remove product media", methodLog, zap.Any("removedMedia", removedMedia))
 	return nil
 }
 

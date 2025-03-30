@@ -8,6 +8,7 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_media/server"
 	media "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_media"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	mediaUtils "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/utils"
 	"go.uber.org/zap"
 	"goa.design/clue/log"
@@ -17,7 +18,9 @@ import (
 
 type MediaService struct {
 	client *db.PrismaClient
+
 	*zap.Logger
+	*auth.JWTValidator
 }
 
 func MapMediaDBToOutput(model *db.MediaModel) *media.Media {
@@ -98,14 +101,18 @@ func (m *MediaService) List(ctx context.Context, payload *media.ListPayload) (*m
 }
 
 func (m *MediaService) GetByID(ctx context.Context, payload *media.GetByIDPayload) (*media.Media, error) {
-	media, err := m.client.Media.FindFirst(db.Media.ID.Equals(*payload.MediaID)).Exec(ctx)
+	mediaDB, err := m.client.Media.FindFirst(db.Media.ID.Equals(payload.MediaID)).Exec(ctx)
 	if err != nil {
+		if db.IsErrNotFound(err) {
+			return nil, media.MakeNotFound(err)
+		}
 		return nil, err
 	}
-	return MapMediaDBToOutput(media), nil
+	return MapMediaDBToOutput(mediaDB), nil
 }
 
-func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*media.CreateMediaResponse, error) {
+func (m *MediaService) Create(ctx context.Context, input *media.CreatePayload) (*media.CreateMediaResponse, error) {
+	payload := input.Input
 	m.Info("Media create endpoint got called with", zap.Any("payload", payload))
 	url, err := mediaUtils.CreateObjectOnS3(ctx, payload.Bucket, payload.Key, payload.Size)
 	if err != nil {
@@ -121,6 +128,9 @@ func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*
 	).Exec(ctx)
 
 	if err != nil {
+		if err, ok := db.IsErrUniqueConstraint(err); ok {
+			return nil, media.MakeBadRequest(fmt.Errorf("Error on field %v", err))
+		}
 		return nil, err
 	}
 	response := media.CreateMediaResponse{
@@ -131,7 +141,7 @@ func (m *MediaService) Create(ctx context.Context, payload *media.MediaInput) (*
 }
 
 func (m *MediaService) DeleteByID(ctx context.Context, payload *media.DeleteByIDPayload) (bool, error) {
-	record, err := m.client.Media.FindUnique(db.Media.ID.Equals(*payload.MediaID)).Delete().Exec(ctx)
+	record, err := m.client.Media.FindUnique(db.Media.ID.Equals(payload.MediaID)).Delete().Exec(ctx)
 	m.Info(fmt.Sprintf("Delete media record: %v", record))
 
 	if err != nil {
@@ -141,7 +151,7 @@ func (m *MediaService) DeleteByID(ctx context.Context, payload *media.DeleteByID
 	return true, nil
 }
 
-func MountMediaSVC(mux goaHttp.Muxer, svc *MediaService) {
+func MountMediaSVC(mux goaHttp.Muxer, svc media.Service) {
 	endpoints := media.NewEndpoints(svc)
 	endpoints.Use(log.Endpoint)
 	req := goaHttp.RequestDecoder
@@ -156,6 +166,6 @@ func MountMediaSVC(mux goaHttp.Muxer, svc *MediaService) {
 	}()
 }
 
-func NewMediaService(client *db.PrismaClient) *MediaService {
-	return &MediaService{client, zap.L()}
+func NewMediaService(client *db.PrismaClient, validator *auth.JWTValidator) media.Service {
+	return &MediaService{client, zap.L(), validator}
 }

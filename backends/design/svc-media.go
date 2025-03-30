@@ -1,7 +1,9 @@
 package design
 
 import (
+	"github.com/adrisongomez/pti-ecommerce-site/backends/design/securities"
 	types "github.com/adrisongomez/pti-ecommerce-site/backends/design/types"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	. "goa.design/goa/v3/dsl"
 )
 
@@ -18,16 +20,22 @@ var _ = Service(servicePrefix+"-media", func() {
 	Description("Service perform CRUDs over media resource")
 	HTTP(func() {
 		Path("/medias")
+		Response("Unauthorized", StatusUnauthorized)
 	})
 
+	Error("Unauthorized")
 	Error("NotFound")
 	Error("BadRequest")
 
 	Method("list", func() {
 		Description("Create a media record")
+		Security(securities.JWTAuth, func() {
+			Scope(auth.MediasReads)
+		})
 
 		Result(PaginatedMedia)
 		Payload(func() {
+			Token("token")
 			Attribute("pageSize", Int, "Record per page", func() {
 				Minimum(10)
 				Maximum(100)
@@ -39,6 +47,7 @@ var _ = Service(servicePrefix+"-media", func() {
 			Attribute("bucket", String, "S3 bucket where data is store", func() {
 				Default("")
 			})
+			Required("token")
 		})
 
 		HTTP(func() {
@@ -53,9 +62,14 @@ var _ = Service(servicePrefix+"-media", func() {
 
 	Method("getById", func() {
 		Description("Get a media by id")
+		Security(securities.JWTAuth, func() {
+			Scope(auth.MediasReads)
+		})
 
 		Payload(func() {
+			Token("token")
 			Attribute("mediaId", Int)
+			Required("token", "mediaId")
 		})
 
 		Result(types.Media)
@@ -69,11 +83,19 @@ var _ = Service(servicePrefix+"-media", func() {
 
 	Method("create", func() {
 		Description("Create a media record")
-		Payload(types.MediaInput)
+		Payload(func() {
+			Attribute("input", types.MediaInput)
+			Token("token")
+			Required("token", "input")
+		})
 		Result(CreateMediaResponse)
+		Security(securities.JWTAuth, func() {
+			Scope(auth.MediasWrite)
+		})
 
 		HTTP(func() {
 			POST("")
+			Body("input")
 			Response(StatusCreated)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -83,9 +105,14 @@ var _ = Service(servicePrefix+"-media", func() {
 		Description("Create a media record")
 		Payload(types.MediaInput)
 		Result(Boolean)
+		Security(securities.JWTAuth, func() {
+			Scope(auth.MediasWrite)
+		})
 
 		Payload(func() {
+			Token("token")
 			Attribute("mediaId", Int)
+			Required("token", "mediaId")
 		})
 
 		HTTP(func() {

@@ -6,7 +6,9 @@ import (
 	"time"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/auth"
 	"github.com/golang-jwt/jwt/v5"
+	"go.uber.org/zap"
 	"goa.design/goa/v3/security"
 )
 
@@ -58,17 +60,23 @@ var (
 func (j *JWTValidator) JWTAuth(ctx context.Context, token string, schema *security.JWTScheme) (context.Context, error) {
 	claim, err := j.Parse(token)
 	if err != nil {
+		zap.L().Error("Claims is expired", zap.Error(err))
 		return nil, err
 	}
-	if hasRequiredScopes(claim.Scopes, schema.RequiredScopes) {
-		return ctx, nil
-	}
+
 	if claim.IsExpired() {
+		zap.L().Error("Claims is expired", zap.Error(fmt.Errorf("Token is expired")))
 		return nil, UnauthorizedError
 	}
 
+	if !hasRequiredScopes(claim.Scopes, schema.RequiredScopes) {
+		err := fmt.Errorf("Not required scope: %v", schema.RequiredScopes)
+		zap.L().Info("Scope checking failed", zap.Error(err))
+		return nil, auth.MakeUnauthorized(err)
+	}
+
 	ctx = context.WithValue(ctx, ClaimsCtxKey, claim)
-	return nil, UnauthorizedError
+	return ctx, nil
 }
 
 func (j *JWTValidator) Parse(token string) (*Claims, error) {

@@ -54,7 +54,7 @@ func main() {
 	authService := svc.NewAuthService(logger, client, passwordHasher, accessTokenGenerator, refreshTokenGenerator, accessTokenValidator)
 	healthcheckSvc := svc.NewHealthcheckService()
 	productSvc := svc.NewProductService(client)
-	mediaSvc := svc.NewMediaService(client)
+	mediaSvc := svc.NewMediaService(client, accessTokenValidator)
 	userSvc := svc.NewUserService(client, passwordHasher)
 	mux := goahttp.NewMuxer()
 	svc.MountMediaSVC(mux, mediaSvc)

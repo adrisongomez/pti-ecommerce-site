@@ -21,10 +21,15 @@ var BasicAuth = BasicAuthSecurity("basic", func() {
 })
 
 var _ = Service("auth", func() {
-	HTTP(func() { Path("/auth") })
 	Error("NotValidCrendentials")
 	Error("BadInput")
 	Error("Unproccesable")
+	Error("Unauthorized")
+
+	HTTP(func() {
+		Path("/auth")
+		Response("Unauthorized", StatusUnauthorized)
+	})
 	Method("login", func() {
 		Security(BasicAuth)
 		Payload(func() {

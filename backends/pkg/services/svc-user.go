@@ -17,6 +17,8 @@ type UserController struct {
 	client *db.PrismaClient
 	logger *zap.Logger
 	hasher *auth.PasswordHasher
+
+	*auth.JWTValidator
 }
 
 func MapUserDBToOutput(model db.UserModel) *User {
@@ -85,7 +87,8 @@ func (u *UserController) List(ctx context.Context, payload *ListPayload) (*UserL
 	return &response, nil
 }
 
-func (u *UserController) Create(ctx context.Context, payload *UserCreateInput) (*User, error) {
+func (u *UserController) Create(ctx context.Context, input *CreatePayload) (*User, error) {
+	payload := input.Input
 	u.logger.Info("User#create got called", zap.Any("payload", payload))
 	changes := []db.UserSetParam{
 		db.User.Role.Set(db.UserRole(payload.Role)),
@@ -156,12 +159,12 @@ func (u *UserController) Delete(ctx context.Context, input *DeletePayload) (bool
 	return true, nil
 }
 
-func NewUserService(client *db.PrismaClient, hasher *auth.PasswordHasher) *UserController {
+func NewUserService(client *db.PrismaClient, hasher *auth.PasswordHasher, validator *auth.JWTValidator) Service {
 	logger := zap.L()
-	return &UserController{client, logger, hasher}
+	return &UserController{client, logger, hasher, validator}
 }
 
-func MountUserServiceSVC(mux http.Muxer, svc *UserController) {
+func MountUserServiceSVC(mux http.Muxer, svc Service) {
 	endpoints := NewEndpoints(svc)
 	req := http.RequestDecoder
 	res := http.ResponseEncoder

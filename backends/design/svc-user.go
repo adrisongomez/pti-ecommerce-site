@@ -1,7 +1,9 @@
 package design
 
 import (
+	"github.com/adrisongomez/pti-ecommerce-site/backends/design/securities"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/design/types"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	. "goa.design/goa/v3/dsl"
 )
 
@@ -10,9 +12,14 @@ var PaginatedUser = types.PaginatedResult("user-list", types.User)
 var _ = Service(servicePrefix+"user", func() {
 	HTTP(func() {
 		Path("/users")
+		Response("Unauthorized", StatusUnauthorized)
 	})
+	Error("ErrNotFound")
+	Error("Unauthorized")
 	Method("list", func() {
-
+		Security(securities.JWTAuth, func() {
+			Scope(auth.UsersReads)
+		})
 		Payload(func() {
 			Attribute("pageSize", Int, "Record per page", func() {
 				Minimum(10)
@@ -22,6 +29,8 @@ var _ = Service(servicePrefix+"user", func() {
 			Attribute("after", Int, "Start listing after this resource", func() {
 				Default(0)
 			})
+			Token("token")
+			Required("token")
 		})
 		Result(PaginatedUser)
 		HTTP(func() {
@@ -32,22 +41,35 @@ var _ = Service(servicePrefix+"user", func() {
 		})
 	})
 	Method("show", func() {
+		Security(securities.JWTAuth, func() {
+			Scope(auth.UsersReads)
+		})
 		Payload(func() {
 			Attribute("userId", Int)
-			Required("userId")
+			Token("token")
+			Required("userId", "token")
 		})
 		Result(types.User)
 		HTTP(func() {
 			GET("/{userId}")
 			Param("userId")
 			Response(StatusOK)
+			Response("ErrNotFound", StatusNotFound)
 		})
 	})
 	Method("create", func() {
 		Result(types.User)
-		Payload(types.UserCreateInput)
+		Payload(func() {
+			Attribute("input", types.UserCreateInput)
+			Token("token")
+			Required("token", "input")
+		})
+		Security(securities.JWTAuth, func() {
+			Scope(auth.UsersWrite)
+		})
 		HTTP(func() {
 			POST("")
+			Body("input")
 			Response(StatusCreated)
 		})
 	})
@@ -55,11 +77,16 @@ var _ = Service(servicePrefix+"user", func() {
 		Payload(func() {
 			Attribute("payload", types.UserCreateInput)
 			Attribute("userId", Int)
-			Required("payload", "userId")
+			Token("token")
+			Required("payload", "userId", "token")
+		})
+		Security(securities.JWTAuth, func() {
+			Scope(auth.UsersWrite)
 		})
 		Result(types.User)
 		HTTP(func() {
 			PUT("/{userId}")
+			Body("payload")
 			Param("userId")
 			Response(StatusOK)
 		})
@@ -68,9 +95,14 @@ var _ = Service(servicePrefix+"user", func() {
 	Method("delete", func() {
 		Payload(func() {
 			Attribute("userId", Int)
-			Required("userId")
+			Token("token")
+
+			Required("userId", "token")
 		})
 		Result(Boolean)
+		Security(securities.JWTAuth, func() {
+			Scope(auth.UsersWrite)
+		})
 		HTTP(func() {
 			DELETE("/{userId}")
 			Param("userId")

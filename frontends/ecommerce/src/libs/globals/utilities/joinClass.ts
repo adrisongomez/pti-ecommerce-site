@@ -1,3 +1,3 @@
-export function joinClass(...classes: string[]): string {
-  return classes.join(" ");
+export function joinClass(...classes: string[] | TemplateStringsArray[]): string {
+  return classes.filter(Boolean).join(" ");
 }

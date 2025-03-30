@@ -129,6 +129,9 @@ func (p *ProductService) GetProductByID(ctx context.Context, payload *GetProduct
 	).Exec(ctx)
 	if err != nil {
 		logger.Error("Error trying to getProductId", method, productIdLog, zap.Any("error", err))
+		if db.IsErrNotFound(err) {
+			return nil, MakeErrNotFound(err)
+		}
 		return nil, err
 	}
 	logger.Debug("Response for getting product", method, productIdLog, zap.Any("response", dbProduct))
@@ -255,13 +258,12 @@ func (p *ProductService) CreateProduct(ctx context.Context, input *CreateProduct
 		p.client.Product.FindUnique(
 			db.Product.ID.Equals(dbProduct.ID),
 		).Delete().Exec(ctx)
-		p.logger.Error("Error trying to stitching others elements", methodLog, payloadLog, zap.Any("error", err))
+		p.logger.Error("Error trying to stitching product others elements", methodLog, payloadLog, zap.Any("error", err))
 		return nil, err
 	}
 
 	prod, err := p.GetProductByID(ctx, &GetProductByIDPayload{ProductID: dbProduct.ID})
 	if err != nil {
-		p.logger.Error("Error trying to getProductId", methodLog, payloadLog, zap.Any("error", err))
 		return nil, err
 	}
 	return prod, nil
@@ -340,6 +342,9 @@ func (p *ProductService) UpdateProductByID(ctx context.Context, payload *UpdateP
 	).Tx())
 	err := p.client.Prisma.Transaction(tx...).Exec(ctx)
 	if err != nil {
+		if db.IsErrNotFound(err) {
+			return nil, MakeErrNotFound(err)
+		}
 		p.logger.Error("error on updating product", methodSign, payloadLog, zap.Error(err))
 		return nil, err
 	}
@@ -352,6 +357,9 @@ func (p *ProductService) DeleteProductByID(ctx context.Context, payload *DeleteP
 	_, err := p.client.Product.FindUnique(db.Product.ID.Equals(payload.ProductID)).Delete().Exec(ctx)
 	if err != nil {
 		p.logger.Error("Error on deleting product", methodLog, zap.Error(err))
+		if db.IsErrNotFound(err) {
+			return false, MakeErrNotFound(err)
+		}
 		return false, err
 	}
 	return true, nil

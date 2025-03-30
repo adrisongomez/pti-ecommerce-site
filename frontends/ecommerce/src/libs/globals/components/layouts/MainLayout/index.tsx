@@ -15,7 +15,6 @@ type MainLayoutProps = {
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
-  console.log(auth);
   return (
     <div
       className={joinClass(
@@ -29,12 +28,14 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
         actions={
           <div className="flex flex-row items-center gap-4">
             {auth.user ? (
-              <div className="flex gap-3">
+              <div className="flex items-center gap-3">
                 <span className="cursor-pointer select-none">
-                  Hi, {auth.user.firstName}.
+                  <Button variant="text">
+                    Profile
+                  </Button>
                 </span>
                 <Button
-                  variant="outline"
+                  variant="text"
                   onClick={() => {
                     dispatch(authSlice.actions.logout());
                   }}
@@ -48,7 +49,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                   <Button>Sign up</Button>
                 </Link>
                 <Link to="/auth/login">
-                  <Button variant="outline">Login</Button>
+                  <Button variant="text">Login</Button>
                 </Link>
               </div>
             )}

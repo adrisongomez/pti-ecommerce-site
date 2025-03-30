@@ -1,18 +1,24 @@
 import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { ButtonHTMLAttributes, FC } from "react";
+import LoadingIndicator from "../progress/LoadingIndicator";
 
 type ButtonVariantType = "contained" | "outline";
 
 type ButtonProps = {
   variant?: ButtonVariantType;
   disabled?: boolean;
+  loading?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FC<ButtonProps> = ({
   variant = "contained",
+  loading = false,
   disabled = false,
   ...props
 }) => {
+  if (loading) {
+    props.children = <LoadingIndicator />;
+  }
   return (
     <button
       {...props}
@@ -33,7 +39,7 @@ const Button: FC<ButtonProps> = ({
                 "hover:bg-(--bg-dark) hover:text-white active:bg-(--bg-light) active:text-(--bg-dark)",
               ]),
       )}
-    ></button>
+    />
   );
 };
 

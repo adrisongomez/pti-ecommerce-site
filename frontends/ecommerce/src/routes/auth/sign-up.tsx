@@ -1,11 +1,11 @@
 import SimpleCenterLayout from "@/libs/globals/components/layouts/SimpleCenterLayout";
 import { useAuthServicePostApiAuthSignup } from "@/libs/globals/generated/queries";
-import { useAppDispatch, useAppSelector } from "@/libs/globals/hooks/redux";
+import { useAppDispatch } from "@/libs/globals/hooks/redux";
+import { useUnauthenticated } from "@/libs/globals/hooks/useUnauthenticated";
 import { fetchUser } from "@/libs/globals/redux/AuthReducer";
 import { writeCreds } from "@/libs/globals/utilities/auth";
 import SignUpForm from "@/libs/routes/auth/SignUpForm";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMount } from "react-use";
 
 export const Route = createFileRoute("/auth/sign-up")({
   component: RouteComponent,
@@ -14,12 +14,7 @@ export const Route = createFileRoute("/auth/sign-up")({
 function RouteComponent() {
   const nav = Route.useNavigate();
   const dispatch = useAppDispatch();
-  const auth = useAppSelector((state) => state.auth);
-  useMount(() => {
-    if (auth.user) {
-      nav({ to: "/" });
-    }
-  });
+  useUnauthenticated();
   const mutation = useAuthServicePostApiAuthSignup({});
   return (
     <SimpleCenterLayout>

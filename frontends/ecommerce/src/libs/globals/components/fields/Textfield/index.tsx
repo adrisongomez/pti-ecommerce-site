@@ -1,5 +1,6 @@
 import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { FC, InputHTMLAttributes } from "react";
+import FormHelperText from "../FormHelperText";
 
 type TextfieldProps = {
   label: string;
@@ -36,16 +37,7 @@ const Textfield: FC<TextfieldProps> = ({
         )}
         {...props}
       />
-      {helperText && (
-        <p
-          className={joinClass(
-            "text-sm font-light",
-            error ? "text-red-600" : "",
-          )}
-        >
-          {helperText}
-        </p>
-      )}
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </label>
   );
 };

@@ -1,6 +1,8 @@
 import Button from "@/libs/globals/components/buttons/Button";
 import Card from "@/libs/globals/components/cards/Card/index";
+import FormHelperText from "@/libs/globals/components/fields/FormHelperText";
 import Textfield from "@/libs/globals/components/fields/Textfield";
+import { joinClass } from "@/libs/globals/utilities/joinClass";
 import { useRouter } from "@tanstack/react-router";
 import { useFormik } from "formik";
 import { FC } from "react";
@@ -13,9 +15,13 @@ const LoginFormSchema = Yup.object({
 type LoginFormState = Yup.InferType<typeof LoginFormSchema>;
 type LoginFormProps = {
   onLogin?: (d: LoginFormState) => void | Promise<void>;
+  showErrorCrendetialsMessage?: boolean;
 };
 
-const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
+const LoginForm: FC<LoginFormProps> = ({
+  onLogin,
+  showErrorCrendetialsMessage = false,
+}) => {
   const router = useRouter();
   const formik = useFormik<LoginFormState>({
     validationSchema: LoginFormSchema,
@@ -64,12 +70,19 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
           onBlur={formik.handleBlur}
           error={formik.touched.password && Boolean(formik.errors.password)}
         />
+        {showErrorCrendetialsMessage && (
+          <FormHelperText error>Email or password is not valid</FormHelperText>
+        )}
         <div className="mt-6 flex gap-3">
           <Button
             disabled={!formik.isValid || formik.isSubmitting}
-            className="flex-1 py-1.5"
+            className={joinClass(
+              "flex-1 py-1.5",
+              formik.isSubmitting ? "flex items-center justify-center" : "",
+            )}
             type="submit"
             variant="contained"
+            loading={formik.isSubmitting}
           >
             Login
           </Button>

@@ -25,4 +25,13 @@ export const OutlineButton: Story = {
     className: "",
   },
 };
+
+export const LoadingButton: Story = {
+  args: {
+    children: "Primary Button",
+    variant: "outline",
+    className: "",
+    loading: true,
+  },
+};
 export default meta;

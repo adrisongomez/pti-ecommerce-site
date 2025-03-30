@@ -7,6 +7,7 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	. "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/svc_products"
 	internalUtils "github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/utils"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -19,6 +20,8 @@ import (
 type ProductService struct {
 	client *db.PrismaClient
 	logger *zap.Logger
+
+	*auth.JWTValidator
 }
 
 var Connections = []db.ProductRelationWith{
@@ -184,7 +187,8 @@ func (p *ProductService) ListProduct(ctx context.Context, payload *ListProductPa
 	return response, nil
 }
 
-func (p *ProductService) CreateProduct(ctx context.Context, payload *ProductInput) (*Product, error) {
+func (p *ProductService) CreateProduct(ctx context.Context, input *CreateProductPayload) (*Product, error) {
+	payload := input.Input
 	methodLog := zap.String("method", "ProducServicet#CreateProduct")
 	payloadLog := zap.Any("payload", payload)
 	p.logger.Info("Create a product", methodLog, payloadLog)
@@ -403,12 +407,12 @@ func (p *ProductService) RemoveMedia(ctx context.Context, productId int, payload
 	return nil
 }
 
-func NewProductService(client *db.PrismaClient) *ProductService {
+func NewProductService(client *db.PrismaClient, validator *auth.JWTValidator) Service {
 	logger := zap.L()
-	return &ProductService{client, logger}
+	return &ProductService{client, logger, validator}
 }
 
-func MountProductSVC(mux goahttp.Muxer, svc *ProductService) {
+func MountProductSVC(mux goahttp.Muxer, svc Service) {
 	endpoints := productGen.NewEndpoints(svc)
 	req := goahttp.RequestDecoder
 	res := goahttp.ResponseEncoder

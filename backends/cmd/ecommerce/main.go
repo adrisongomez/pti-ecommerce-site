@@ -50,10 +50,10 @@ func main() {
 		passwordHasher        = &auth.PasswordHasher{}
 	)
 
+	healthcheckSvc := svc.NewHealthcheckService()
 	refreshAuthService := svc.NewAuthRefreshService(client, logger, accessTokenGenerator, refreshTokenGenerator, refreshTokenValidator)
 	authService := svc.NewAuthService(logger, client, passwordHasher, accessTokenGenerator, refreshTokenGenerator, accessTokenValidator)
-	healthcheckSvc := svc.NewHealthcheckService()
-	productSvc := svc.NewProductService(client)
+	productSvc := svc.NewProductService(client, accessTokenValidator)
 	mediaSvc := svc.NewMediaService(client, accessTokenValidator)
 	userSvc := svc.NewUserService(client, passwordHasher)
 	mux := goahttp.NewMuxer()

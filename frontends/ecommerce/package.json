@@ -12,7 +12,7 @@
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "client:generate": "openapi-rq -i ../../backends/internal/gen/http/openapi3.yaml -o ./src/libs/globals/generated -c axios --enums typescript"
+    "generate:client": "openapi-rq -i ../../backends/internal/gen/http/openapi3.yaml -o ./src/libs/globals/generated -c axios --enums typescript"
   },
   "dependencies": {
     "@hey-api/client-axios": "^0.6.3",

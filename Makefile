@@ -26,8 +26,8 @@ migrate-depoy:
 
 generate-svc:
 	goa gen github.com/adrisongomez/pti-ecommerce-site/backends/design -o ./backends//internal
-	cd ./frontends/admin && pnpm generate:client
-	cd ../..
+	cd ./frontends/admin && pnpm generate:client && cd ../..
+	cd ./frontends/ecommerce/ && pnpm generate:client && cd ../..
 
 format-prisma:
 	go run github.com/steebchen/prisma-client-go format --schema ./backends/databases/schema.prisma

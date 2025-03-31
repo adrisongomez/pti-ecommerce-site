@@ -18,6 +18,7 @@ model Collection {
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
 
   @@map("collections")
 }
@@ -36,10 +37,11 @@ model Product {
 
   MediasIn          Media[]
   ProductCollection ProductCollection[]
+  orderLineItem     OrderLineItem[]
 
-  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt     DateTime?       @updatedAt @map("updated_at") @db.Timestamptz()
-  orderLineItem OrderLineItem[]
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
 
   @@index([id, title, handler])
   @@map("products")
@@ -54,6 +56,7 @@ model ProductCollection {
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
 
   @@id(name: "id", [productId, collectionId])
   @@map("product_collections")
@@ -71,6 +74,7 @@ model ProductVariant {
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
 
   @@index([productId])
   @@map("product_variants")
@@ -88,6 +92,7 @@ model ProductMedia {
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
 
   @@index([productId])
   @@map("product_medias")
@@ -103,10 +108,11 @@ model Media {
   key      String
 
   productMedia ProductMedia?
+  Product      Product[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-  Product   Product[]
+  deletedAt DateTime? @map("deleted_at")
 
   @@map("medias")
 }
@@ -121,11 +127,11 @@ model User {
   passwordHash String   @map("password_hash")
 
   address Address[]
+  order   Order[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
   deletedAt DateTime? @map("deleted_at")
-  order     Order[]
 
   @@map("users")
 }
@@ -134,16 +140,18 @@ model Address {
   id     Int @id @default(autoincrement())
   userId Int @unique @map("user_id")
 
-  addressLine1 String    @map("address_line_1")
-  addressLine2 String    @map("address_line_2")
+  addressLine1 String @map("address_line_1")
+  addressLine2 String @map("address_line_2")
   city         String
   province     String
   country      String
-  user         User?     @relation(fields: [userId], references: [id])
-  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt    DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-  deletedAt    DateTime? @map("deleted_at")
-  order        Order[]
+
+  user  User?   @relation(fields: [userId], references: [id])
+  order Order[]
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
 
   @@map("addresses")
 }
@@ -159,7 +167,11 @@ model Order {
   user          User?           @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   address       Address?        @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@map("order")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("orders")
 }
 
 model OrderLineItem {
@@ -171,6 +183,12 @@ model OrderLineItem {
 
   order   Order?   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   product Product? @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("order_line_items")
 }
 
 enum UserRole {

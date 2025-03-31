@@ -140,11 +140,12 @@ model Address {
   id     Int @id @default(autoincrement())
   userId Int @unique @map("user_id")
 
-  addressLine1 String @map("address_line_1")
-  addressLine2 String @map("address_line_2")
+  addressLine1 String  @map("address_line_1")
+  addressLine2 String? @map("address_line_2")
   city         String
   province     String
   country      String
+  zipCode      String? @map("zip_code")
 
   user  User?   @relation(fields: [userId], references: [id])
   order Order[]
@@ -157,19 +158,21 @@ model Address {
 }
 
 model Order {
-  id         Int     @id @default(autoincrement())
-  userId     Int?    @map("user_id")
-  userEmail  String? @map("user_email")
-  addressId  Int     @map("address_id")
+  id         Int    @id @default(autoincrement())
+  userId     Int    @map("user_id")
+  userEmail  String @map("user_email")
+  addressId  Int    @map("address_id")
   totalPrice Int
 
-  OrderLineItem OrderLineItem[]
-  user          User?           @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
-  address       Address?        @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address Address @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-  deletedAt DateTime? @map("deleted_at")
+  lineItems OrderLineItem[]
+
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  cancelledAt DateTime? @map("cancelled_at")
+  deletedAt   DateTime? @map("deleted_at")
 
   @@map("orders")
 }
@@ -205,4 +208,10 @@ enum MediaType {
 enum ProductStatus {
   DRAFT
   ACTIVE
+}
+
+enum OrderStatus {
+  DRAFT
+  ACTIVE
+  CANCELLED
 }

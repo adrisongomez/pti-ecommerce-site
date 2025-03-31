@@ -4,7 +4,7 @@ import . "goa.design/goa/v3/dsl"
 
 var OrderLineItemInput = Type("OrderLineItemInput", func() {
 	Attribute("productId", String)
-	Attribute("price", Float32)
+	Attribute("price", Int)
 	Attribute("quantity", Int)
 	Required("productId", "price", "quantity")
 })
@@ -25,10 +25,10 @@ var Order = ResultType("application/vnd.order+json", func() {
 		Attribute("user", User)
 		Attribute("lineItems", ArrayOf(OrderLineItem))
 		Attribute("address", Address)
-		Attribute("totalPrice", Float32)
+		Attribute("totalPrice", Int)
 		Attribute("createdAt", String, "Date of creation", fieldDatetime)
 		Attribute("updatedAt", String, "Last update date", fieldDatetime)
-		Required("id", "email", "user", "lineItems", "createdAt")
+		Required("id", "email", "user", "address", "lineItems", "createdAt", "totalPrice")
 	})
 })
 
@@ -36,11 +36,11 @@ var OrderLineItem = ResultType("application/vnd.order-line-item+json", func() {
 	ContentType("application/json")
 	Attributes(func() {
 		Attribute("id", Int, fieldID)
-		Attribute("product", Product)
-		Attribute("price", Float32)
+		Attribute("productId", Int, fieldID)
+		Attribute("price", String)
 		Attribute("quantity", Int)
 		Attribute("createdAt", String, "Date of creation", fieldDatetime)
 		Attribute("updatedAt", String, "Last update date", fieldDatetime)
-		Required("id", "product", "price", "quantity", "createdAt")
+		Required("id", "price", "quantity", "createdAt")
 	})
 })

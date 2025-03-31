@@ -158,11 +158,11 @@ model Address {
 }
 
 model Order {
-  id         Int    @id @default(autoincrement())
-  userId     Int    @map("user_id")
-  userEmail  String @map("user_email")
-  addressId  Int    @map("address_id")
-  totalPrice Int
+  id         Int     @id @default(autoincrement())
+  userId     Int     @map("user_id")
+  userEmail  String  @map("user_email")
+  addressId  Int     @map("address_id")
+  totalPrice Decimal @db.Money
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   address Address @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: Cascade)

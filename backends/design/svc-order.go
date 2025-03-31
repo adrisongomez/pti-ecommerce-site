@@ -55,9 +55,7 @@ var _ = Service("order", func() {
 				Default(0)
 			})
 		})
-
-		Result(types.ProductPaginated)
-
+		Result(PaginatedOrder)
 		HTTP(func() {
 			GET("")
 			Param("pageSize")
@@ -68,10 +66,10 @@ var _ = Service("order", func() {
 	})
 	Method("show", func() {
 		Payload(func() {
-			Attribute("orderId", String)
+			Attribute("orderId", Int)
 			Required("orderId")
 		})
-		Result(PaginatedOrder)
+		Result(types.Order)
 		HTTP(func() {
 			GET("/{orderId}")
 			Response(StatusOK)

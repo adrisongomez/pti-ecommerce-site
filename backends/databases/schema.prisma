@@ -37,8 +37,9 @@ model Product {
   MediasIn          Media[]
   ProductCollection ProductCollection[]
 
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt     DateTime?       @updatedAt @map("updated_at") @db.Timestamptz()
+  orderLineItem OrderLineItem[]
 
   @@index([id, title, handler])
   @@map("products")
@@ -124,6 +125,7 @@ model User {
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
   deletedAt DateTime? @map("deleted_at")
+  order     Order[]
 
   @@map("users")
 }
@@ -141,17 +143,39 @@ model Address {
   createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt    DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
   deletedAt    DateTime? @map("deleted_at")
+  order        Order[]
 
   @@map("addresses")
+}
+
+model Order {
+  id         Int     @id @default(autoincrement())
+  userId     Int?    @map("user_id")
+  userEmail  String? @map("user_email")
+  addressId  Int     @map("address_id")
+  totalPrice Int
+
+  OrderLineItem OrderLineItem[]
+  user          User?           @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  address       Address?        @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("order")
+}
+
+model OrderLineItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int?    @map("order_id")
+  productId Int?    @map("product_id")
+  price     Decimal @db.Money
+  quantity  Int
+
+  order   Order?   @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: Cascade)
 }
 
 enum UserRole {
   CUSTOMER
   ADMIN
-}
-
-enum AuthMethod {
-  EMAIL_PASSWORD
 }
 
 enum MediaType {

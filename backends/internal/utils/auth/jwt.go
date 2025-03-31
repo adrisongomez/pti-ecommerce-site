@@ -49,6 +49,7 @@ type JWTValidator struct {
 }
 
 const (
+	UserCtxKey   = "user"
 	ClaimsCtxKey = "claims"
 )
 
@@ -75,6 +76,16 @@ func (j *JWTValidator) JWTAuth(ctx context.Context, token string, schema *securi
 		return nil, auth.MakeUnauthorized(err)
 	}
 
+	userDB, err := j.client.User.FindUnique(db.User.ID.Equals(claim.UserID)).Exec(ctx)
+
+	if err != nil {
+		if db.IsErrNotFound(err) {
+			return nil, auth.MakeUnauthorized(fmt.Errorf("User does not exists anymore"))
+		}
+		return nil, err
+	}
+
+	ctx = context.WithValue(ctx, UserCtxKey, userDB)
 	ctx = context.WithValue(ctx, ClaimsCtxKey, claim)
 	return ctx, nil
 }

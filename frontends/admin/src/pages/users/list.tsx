@@ -17,7 +17,7 @@ const USER_LIST_COLUMNS: GridColDef<User>[] = [
     type: "string",
     headerName: "Name",
     valueGetter: (_, row) =>
-      [row.firstName, row.lastName].filter(filterNull).join(""),
+      [row.firstName, row.lastName].filter(filterNull).join(" "),
   },
   {
     field: "email",

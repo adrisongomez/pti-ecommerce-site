@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Refine } from "@refinedev/core";
+import { Authenticated, AuthPage, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -17,15 +17,20 @@ import routerBindings, {
   NavigateToResource,
   UnsavedChangesNotifier,
   DocumentTitleHandler,
+  CatchAllNavigate,
 } from "@refinedev/react-router";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
 import FileLists from "./pages/files/list";
 import ProductList from "./pages/products/list";
 import CreateProductForm from "./pages/products/create";
-import { APP_RESOURCES, APP_DATA_PROVIDER } from "./config/constants";
+import {
+  APP_RESOURCES,
+  APP_DATA_PROVIDER,
+  APP_AUTH_PROVIDER,
+} from "./config/constants";
 import EditProduct from "./pages/products/edit";
-import { Container, Typography } from "@mui/material";
+import { Card, Container, Typography } from "@mui/material";
 import UserList from "./pages/users/list";
 import CreateUserPage from "./pages/users/create";
 import EditUserPage from "./pages/users/edit";
@@ -40,6 +45,7 @@ const App: React.FC = () => {
           <RefineSnackbarProvider>
             <DevtoolsProvider>
               <Refine
+                authProvider={APP_AUTH_PROVIDER}
                 dataProvider={APP_DATA_PROVIDER}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
@@ -53,15 +59,44 @@ const App: React.FC = () => {
               >
                 <Routes>
                   <Route
+                    path="/login"
                     element={
-                      <ThemedLayoutV2
-                        Title={() => <Typography>CMS</Typography>}
-                        Header={() => <Header sticky />}
+                      <AuthPage
+                        renderContent={(content) => (
+                          <Container
+                            maxWidth="sm"
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              minHeight: "100vh",
+                            }}
+                          >
+                            <Card
+                              raised
+                              sx={{ p: 2, borderRadius: 3, width: "100%" }}
+                            >
+                              {content}
+                            </Card>
+                          </Container>
+                        )}
+                        type="login"
+                        rememberMe={false}
+                      />
+                    }
+                  />
+                  <Route
+                    element={
+                      <Authenticated
+                        key="catch-all-auth"
+                        fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <Container maxWidth="lg" sx={{ width: "100%" }}>
-                          <Outlet />
-                        </Container>
-                      </ThemedLayoutV2>
+                        <ThemedLayoutV2>
+                          <Container maxWidth="lg" sx={{ width: "100%" }}>
+                            <Outlet />
+                          </Container>
+                        </ThemedLayoutV2>
+                      </Authenticated>
                     }
                   >
                     <Route

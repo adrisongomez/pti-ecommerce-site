@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	svcuserhttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svcuser/server"
@@ -152,7 +153,8 @@ func (u *UserController) Update(ctx context.Context, input *UpdatePayload) (*Use
 func (u *UserController) Delete(ctx context.Context, input *DeletePayload) (bool, error) {
 	u.logger.Info("User#create got called", zap.Any("payload", input))
 
-	_, err := u.client.User.FindUnique(db.User.ID.Equals(input.UserID)).Delete().Exec(ctx)
+	_, err := u.client.User.FindUnique(db.User.ID.Equals(input.UserID)).
+		Update(db.User.DeletedAt.Set(time.Now())).Exec(ctx)
 	if err != nil {
 		return false, err
 	}

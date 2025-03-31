@@ -1,8 +1,9 @@
 import { ResourceProps } from "@refinedev/core";
 import StoreIcon from "@mui/icons-material/Store";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
-import ApiDataProvider from "../dataProviders/ApiDataProvider";
 import PersonIcon from "@mui/icons-material/Person";
+import ApiDataProvider from "../providers/ApiDataProvider";
+import Auth from "../providers/AuthProvider";
 
 export const APP_RESOURCES: ResourceProps[] = [
   {
@@ -36,4 +37,5 @@ export const APP_RESOURCES: ResourceProps[] = [
   },
 ];
 
+export const APP_AUTH_PROVIDER = Auth("http://localhost:3030/")
 export const APP_DATA_PROVIDER = ApiDataProvider("http://localhost:3030/api/");

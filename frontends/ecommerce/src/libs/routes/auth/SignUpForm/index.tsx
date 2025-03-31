@@ -113,6 +113,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSignUpForm }) => {
         <Button
           className="mt-2 py-2"
           variant="contained"
+          loading={formik.isSubmitting}
           disabled={!formik.isValid || formik.isSubmitting}
         >
           Submit

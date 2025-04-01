@@ -52,7 +52,7 @@ func (a *AuthService) BasicAuth(ctx context.Context, user, pass string, schema *
 	}
 	if !a.hasher.Validate(pass, userDB.PasswordHash) {
 		a.Error("Password not match")
-		return nil, MakeBadInput(InvalidCredential)
+		return nil, InvalidCredential
 	}
 	return ctx, nil
 }
@@ -110,7 +110,7 @@ func (a *AuthService) Signup(ctx context.Context, input *UserRegistrationInput) 
 		if field, err := db.IsErrUniqueConstraint(err); err {
 			err := fmt.Errorf("Error on user trying to violate unique constraint: %v", field)
 			a.Error("Error on user trying to violate unique constraint", zap.Error(err))
-			return nil, MakeBadInput(err)
+			return nil, err
 		}
 		a.Error("Error trying to create user from db", zap.Error(err))
 		return nil, err

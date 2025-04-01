@@ -1,12 +1,18 @@
 import { FC } from "react";
 import NavigationLink from "./NavigationLink";
+import { Home } from "react-feather";
 
 const Navigation: FC = () => {
   return (
     <nav className="flex gap-6">
-      <NavigationLink to="/about" label="About us" />
-      <NavigationLink to="/about" label="Contact" />
-      <NavigationLink to="/about" label="Blog" />
+      <NavigationLink
+        to="/"
+        label={
+          <div className="flex items-center gap-4 font-bold">
+            <Home size={16} /> <p className="pt-1">Home</p>
+          </div>
+        }
+      />
     </nav>
   );
 };

@@ -63,7 +63,6 @@ var _ = Service("order", func() {
 				Maximum(100)
 				Default(10)
 			})
-			Attribute("q", String)
 			Attribute("after", Int, "Start listing after this resource", func() {
 				Default(0)
 			})

@@ -78,8 +78,10 @@ func (o *OrderService) Cancel(ctx context.Context, payload *CancelPayload) (bool
 
 func (o *OrderService) List(ctx context.Context, payload *ListPayload) (*OrderList, error) {
 	o.Info("List Order got called with", zap.Any("payload", payload))
-
-	filters := []db.OrderWhereParam{}
+	filters := []db.OrderWhereParam{
+		db.Order.CancelledAt.IsNull(),
+	}
+	o.Info("List Order got called with user", zap.Any("userId", ctx.Value(auth.UserCtxKey)))
 	if user, ok := ctx.Value(auth.UserCtxKey).(*db.UserModel); ok {
 		filters = append(filters, db.Order.UserID.Equals(user.ID))
 	}
@@ -94,6 +96,7 @@ func (o *OrderService) List(ctx context.Context, payload *ListPayload) (*OrderLi
 		return nil, err
 	}
 	orders := []*Order{}
+	o.Debug("response", zap.Any("db", ordersDB))
 	for _, orderDB := range ordersDB {
 		orders = append(orders, MapOrderModelToOrder(&orderDB))
 	}
@@ -165,6 +168,7 @@ func MapOrderModelToOrder(model *db.OrderModel) *Order {
 		if data, ok := value.ZipCode(); ok {
 			addressOut.ZipCode = *utils.StringRef(data)
 		}
+		output.Address = addressOut
 	}
 
 	lineItems := []*OrderLineItem{}

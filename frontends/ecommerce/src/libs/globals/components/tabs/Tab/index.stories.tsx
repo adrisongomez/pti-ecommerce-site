@@ -10,6 +10,19 @@ const meta: Meta<TabType> = {
 
 export const DefaultTab: Story = {
   args: {
+    variant: "horizontal",
+    onChange: console.log,
+    options: [
+      { label: "Emotional", value: "emotional" },
+      { label: "Damage", value: "damage" },
+    ],
+    value: "damage",
+  },
+};
+
+export const VerticalTab: Story = {
+  args: {
+    variant: "vertical",
     onChange: console.log,
     options: [
       { label: "Emotional", value: "emotional" },

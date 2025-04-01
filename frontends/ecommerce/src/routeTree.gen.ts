@@ -13,8 +13,10 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as UsersIndexImport } from './routes/users/index'
+import { Route as ProfileIndexImport } from './routes/profile/index'
 import { Route as CheckoutIndexImport } from './routes/checkout/index'
 import { Route as CartsIndexImport } from './routes/carts/index'
+import { Route as ProfileTabValueImport } from './routes/profile/$tabValue'
 import { Route as ProductsProductIdImport } from './routes/products.$productId'
 import { Route as AuthSignUpImport } from './routes/auth/sign-up'
 import { Route as AuthLoginImport } from './routes/auth/login'
@@ -35,6 +37,12 @@ const UsersIndexRoute = UsersIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ProfileIndexRoute = ProfileIndexImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const CheckoutIndexRoute = CheckoutIndexImport.update({
   id: '/checkout/',
   path: '/checkout/',
@@ -44,6 +52,12 @@ const CheckoutIndexRoute = CheckoutIndexImport.update({
 const CartsIndexRoute = CartsIndexImport.update({
   id: '/carts/',
   path: '/carts/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileTabValueRoute = ProfileTabValueImport.update({
+  id: '/profile/$tabValue',
+  path: '/profile/$tabValue',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,6 +123,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsProductIdImport
       parentRoute: typeof rootRoute
     }
+    '/profile/$tabValue': {
+      id: '/profile/$tabValue'
+      path: '/profile/$tabValue'
+      fullPath: '/profile/$tabValue'
+      preLoaderRoute: typeof ProfileTabValueImport
+      parentRoute: typeof rootRoute
+    }
     '/carts/': {
       id: '/carts/'
       path: '/carts'
@@ -121,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexImport
       parentRoute: typeof rootRoute
     }
     '/users/': {
@@ -154,8 +182,10 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/products/$productId': typeof ProductsProductIdRoute
+  '/profile/$tabValue': typeof ProfileTabValueRoute
   '/carts': typeof CartsIndexRoute
   '/checkout': typeof CheckoutIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/users': typeof UsersIndexRoute
   '/users/orders': typeof UsersOrdersIndexRoute
   '/users/orders/$orderId': typeof UsersOrdersOrderIdIndexRoute
@@ -166,8 +196,10 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/products/$productId': typeof ProductsProductIdRoute
+  '/profile/$tabValue': typeof ProfileTabValueRoute
   '/carts': typeof CartsIndexRoute
   '/checkout': typeof CheckoutIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/users': typeof UsersIndexRoute
   '/users/orders': typeof UsersOrdersIndexRoute
   '/users/orders/$orderId': typeof UsersOrdersOrderIdIndexRoute
@@ -179,8 +211,10 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/products/$productId': typeof ProductsProductIdRoute
+  '/profile/$tabValue': typeof ProfileTabValueRoute
   '/carts/': typeof CartsIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
+  '/profile/': typeof ProfileIndexRoute
   '/users/': typeof UsersIndexRoute
   '/users/orders/': typeof UsersOrdersIndexRoute
   '/users/orders/$orderId/': typeof UsersOrdersOrderIdIndexRoute
@@ -193,8 +227,10 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/sign-up'
     | '/products/$productId'
+    | '/profile/$tabValue'
     | '/carts'
     | '/checkout'
+    | '/profile'
     | '/users'
     | '/users/orders'
     | '/users/orders/$orderId'
@@ -204,8 +240,10 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/sign-up'
     | '/products/$productId'
+    | '/profile/$tabValue'
     | '/carts'
     | '/checkout'
+    | '/profile'
     | '/users'
     | '/users/orders'
     | '/users/orders/$orderId'
@@ -215,8 +253,10 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/sign-up'
     | '/products/$productId'
+    | '/profile/$tabValue'
     | '/carts/'
     | '/checkout/'
+    | '/profile/'
     | '/users/'
     | '/users/orders/'
     | '/users/orders/$orderId/'
@@ -228,8 +268,10 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
+  ProfileTabValueRoute: typeof ProfileTabValueRoute
   CartsIndexRoute: typeof CartsIndexRoute
   CheckoutIndexRoute: typeof CheckoutIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
   UsersIndexRoute: typeof UsersIndexRoute
   UsersOrdersIndexRoute: typeof UsersOrdersIndexRoute
   UsersOrdersOrderIdIndexRoute: typeof UsersOrdersOrderIdIndexRoute
@@ -240,8 +282,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignUpRoute: AuthSignUpRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
+  ProfileTabValueRoute: ProfileTabValueRoute,
   CartsIndexRoute: CartsIndexRoute,
   CheckoutIndexRoute: CheckoutIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   UsersIndexRoute: UsersIndexRoute,
   UsersOrdersIndexRoute: UsersOrdersIndexRoute,
   UsersOrdersOrderIdIndexRoute: UsersOrdersOrderIdIndexRoute,
@@ -261,8 +305,10 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/sign-up",
         "/products/$productId",
+        "/profile/$tabValue",
         "/carts/",
         "/checkout/",
+        "/profile/",
         "/users/",
         "/users/orders/",
         "/users/orders/$orderId/"
@@ -280,11 +326,17 @@ export const routeTree = rootRoute
     "/products/$productId": {
       "filePath": "products.$productId.tsx"
     },
+    "/profile/$tabValue": {
+      "filePath": "profile/$tabValue.tsx"
+    },
     "/carts/": {
       "filePath": "carts/index.tsx"
     },
     "/checkout/": {
       "filePath": "checkout/index.tsx"
+    },
+    "/profile/": {
+      "filePath": "profile/index.tsx"
     },
     "/users/": {
       "filePath": "users/index.tsx"

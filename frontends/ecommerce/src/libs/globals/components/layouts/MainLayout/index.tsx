@@ -35,9 +35,11 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           <div className="flex flex-row items-center gap-4">
             {auth.user ? (
               <div className="flex items-center gap-3">
-                <span className="cursor-pointer select-none">
-                  <Button variant="text">Profile</Button>
-                </span>
+                <Link to="/profile">
+                  <span className="cursor-pointer select-none">
+                    <Button variant="text">Profile</Button>
+                  </span>
+                </Link>
                 <Button
                   variant="text"
                   onClick={() => {

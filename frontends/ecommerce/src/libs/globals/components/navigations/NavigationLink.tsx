@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { ComponentProps, FC } from "react";
+import { ComponentProps, FC, ReactNode } from "react";
 
-type NavigationLinkProps = { label: string } & Omit<
+type NavigationLinkProps = { label: ReactNode } & Omit<
   ComponentProps<typeof Link>,
   "className"
 >;

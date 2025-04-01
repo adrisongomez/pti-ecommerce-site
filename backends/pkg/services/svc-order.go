@@ -32,11 +32,10 @@ var Connection = []db.OrderRelationWith{
 
 func (o *OrderService) Create(ctx context.Context, payload *CreatePayload) (*Order, error) {
 	o.Info("Create Order got called with", zap.Any("payload", payload))
-	totalPrice := 0
 
 	orderDB, err := o.client.Order.CreateOne(
 		db.Order.UserEmail.Set(payload.Input.Email),
-		db.Order.TotalPrice.Set(decimal.New(int64(totalPrice), DecimalSize)),
+		db.Order.TotalPrice.Set(decimal.New(int64(payload.Input.TotalPrice), DecimalSize)),
 		db.Order.User.Link(db.User.ID.Equals(payload.Input.UserID)),
 		db.Order.Address.Link(db.Address.ID.Equals(payload.Input.AddressID)),
 	).Exec(ctx)

@@ -10,6 +10,7 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/utils"
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 	"go.uber.org/zap"
 
 	productGenhttp "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/svc_products/server"
@@ -88,7 +89,7 @@ func MapFromProductDbToOut(model *db.ProductModel) *Product {
 		variant := ProductVariant{
 			ID:              dbVariant.ID,
 			ColorName:       dbVariant.ColorName,
-			Price:           dbVariant.Price,
+			Price:           dbVariant.Price.String(),
 			ColorHex:        nil,
 			FeatureMediaLoc: nil,
 			CreatedAt:       dbVariant.CreatedAt.String(),
@@ -247,7 +248,7 @@ func (p *ProductService) CreateProduct(ctx context.Context, input *CreateProduct
 			)
 			txs = append(txs, p.client.ProductVariant.CreateOne(
 				db.ProductVariant.ColorName.Set(variant.ColorName),
-				db.ProductVariant.Price.Set(variant.Price),
+				db.ProductVariant.Price.Set(decimal.New(int64(variant.Price), DecimalSize)),
 				changes...,
 			).Tx())
 		}
@@ -328,7 +329,7 @@ func (p *ProductService) UpdateProductByID(ctx context.Context, payload *UpdateP
 				db.ProductVariant.ID.Equals(*&payload.ProductID),
 			).CreateOrUpdate(
 				db.ProductVariant.ColorName.Set(variant.ColorName),
-				db.ProductVariant.Price.Set(variant.Price),
+				db.ProductVariant.Price.Set(decimal.New(int64(variant.Price), DecimalSize)),
 				changes...).Tx(),
 		)
 	}

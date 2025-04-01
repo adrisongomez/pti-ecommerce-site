@@ -14,7 +14,10 @@ var OrderInput = Type("OrderInput", func() {
 	Attribute("userId", Int)
 	Attribute("lineItems", ArrayOf(OrderLineItemInput))
 	Attribute("addressId", Int)
-	Required("email", "lineItems", "addressId", "userId")
+	Attribute("totalPrice", Int64, func() {
+		Default(0)
+	})
+	Required("email", "lineItems", "addressId", "userId", "totalPrice")
 })
 
 var Order = ResultType("application/vnd.order+json", func() {

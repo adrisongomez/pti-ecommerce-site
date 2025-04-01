@@ -65,7 +65,7 @@ model ProductCollection {
 model ProductVariant {
   id              Int     @id @default(autoincrement())
   colorName       String  @map("color_name")
-  price           Int
+  price           Decimal @db.Money
   colorHex        String? @map("color_hex")
   productId       Int     @map("product_id")
   featureMediaLoc Int?    @map("feature_media_loc_no")

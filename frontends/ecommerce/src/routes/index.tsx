@@ -1,10 +1,8 @@
-import { PRODUCTS } from "@/assets/data";
 import ProductCard from "@/libs/globals/components/cards/ProductCard";
 import MainLayout from "@/libs/globals/components/layouts/MainLayout";
+import { PLACEHOLDER_IMAGE } from "@/libs/globals/constants";
 import SectionTitle from "@/libs/globals/components/sections/SectionTitle";
-import CollectionsSection from "@/libs/routes/home/CollectionsSection";
-import FeatureProductsGallery from "@/libs/routes/home/FeatureProductsGallery";
-import InstagramFeed from "@/libs/routes/home/InstagramFeed";
+import { useSvcProductsServiceGetApiProducts } from "@/libs/globals/generated/queries";
 import MainHeroGallery from "@/libs/routes/home/MainHeroGallery";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
@@ -16,29 +14,32 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  const products = useSvcProductsServiceGetApiProducts({}, [
+    "HomePage_Products_QUery",
+  ]);
   return (
     <MainLayout>
       <div className="flex w-full flex-col gap-20 p-6 lg:p-[auto]">
         <section className="w-full">
           <MainHeroGallery />
         </section>
-        <section className="flex w-full flex-col items-start md:gap-3 xl:gap-6 2xl:flex-row">
+        <section className="flex w-full flex-col items-start md:gap-3 ">
           <SectionTitle className="mb-3 md:mr-[inherit] xl:mr-56">
             Products
           </SectionTitle>
           <div className="flex w-full flex-1 flex-col flex-wrap items-stretch gap-6 sm:flex-row lg:gap-6">
-            {PRODUCTS.slice(0, 6).map((p, i) => (
+            {products.data?.data.map((p, i) => (
               <Link
                 key={`product-card-${i}`}
                 to="/products/$productId"
                 params={{ productId: p.id.toString() }}
               >
                 <ProductCard
-                  title={p.name}
-                  variants={p.colorOptions.map((v) => ({
-                    imageUrl: v.imageUrl,
-                    colorSwatch: v.colorSwatch,
-                    price: 100.0 * Math.random(),
+                  title={p.title}
+                  variants={p.variants.map((v, i) => ({
+                    imageUrl: p.medias.at(i)?.url ?? PLACEHOLDER_IMAGE ?? "#",
+                    colorSwatch: v.colorHex ?? "",
+                    price: v.price,
                   }))}
                   onClick={(e) => {
                     e.preventDefault();
@@ -47,18 +48,6 @@ function HomePage() {
               </Link>
             ))}
           </div>
-        </section>
-        <section>
-          <SectionTitle>Categories</SectionTitle>
-          <CollectionsSection />
-        </section>
-        <section>
-          <SectionTitle>Clearance Sale</SectionTitle>
-          <FeatureProductsGallery />
-        </section>
-        <section>
-          <SectionTitle>Our Instagram</SectionTitle>
-          <InstagramFeed />
         </section>
       </div>
     </MainLayout>

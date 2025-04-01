@@ -5,39 +5,70 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
-var _ = Service("address", func() {
-	Error("NotFound")
-	Error("BadInput")
-	Error("Unauthorized")
+var PaginatedAddress = types.PaginatedResult("address-list", types.Address)
 
+var _ = Service("address", func() {
+	Error("Unauthorized")
+	Error("NotFound")
 	HTTP(func() {
 		Path("/addresses")
-		Response("NotFound", StatusNotFound)
+		Response("Unauthorized", StatusUnauthorized)
 	})
-
-	Method("show", func() {
+	Method("create", func() {
 		Payload(func() {
-			Attribute("addressId", Int)
+			Attribute("input", types.AddressInput)
+			Required("input")
 		})
 		Result(types.Address)
 		HTTP(func() {
-			GET("/{addressId}")
-			Param("addressId")
-			Response(StatusOK)
-			Response("NotFound", StatusOK)
+			POST("")
+			Body("input")
+			Response(StatusCreated)
 		})
 	})
-	Method("upsert", func() {
+	Method("Delete", func() {
+		Result(Boolean)
 		Payload(func() {
 			Attribute("addressId", Int)
 			Required("addressId")
 		})
-		Result(types.Address)
 		HTTP(func() {
-			POST("/{addressId}")
+			DELETE("/{addressId}")
 			Param("addressId")
-			Response(StatusCreated)
-			Response("BadInput", StatusOK)
+			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
+		})
+	})
+	Method("Show", func() {
+		Result(types.Address)
+		Payload(func() {
+			Attribute("addressId", Int)
+			Required("addressId")
+		})
+		HTTP(func() {
+			GET("/{addressId}")
+			Param("addressId")
+			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
+		})
+	})
+	Method("List", func() {
+		Result(PaginatedAddress)
+		Payload(func() {
+			Attribute("pageSize", Int, "Record per page", func() {
+				Minimum(10)
+				Maximum(100)
+				Default(10)
+			})
+			Attribute("after", Int, "Start listing after this resource", func() {
+				Default(0)
+			})
+		})
+		HTTP(func() {
+			GET("")
+			Param("pageSize")
+			Param("after")
+			Response(StatusOK)
 		})
 	})
 })

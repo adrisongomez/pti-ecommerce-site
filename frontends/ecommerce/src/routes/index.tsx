@@ -5,6 +5,8 @@ import SectionTitle from "@/libs/globals/components/sections/SectionTitle";
 import { useSvcProductsServiceGetApiProducts } from "@/libs/globals/generated/queries";
 import MainHeroGallery from "@/libs/routes/home/MainHeroGallery";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useAppDispatch } from "@/libs/globals/hooks/redux";
+import CartSlider from "@/libs/globals/redux/CartReducer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -14,6 +16,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  const dispatch = useAppDispatch();
   const products = useSvcProductsServiceGetApiProducts({}, [
     "HomePage_Products_QUery",
   ]);
@@ -23,7 +26,7 @@ function HomePage() {
         <section className="w-full">
           <MainHeroGallery />
         </section>
-        <section className="flex w-full flex-col items-start md:gap-3 ">
+        <section className="flex w-full flex-col items-start md:gap-3">
           <SectionTitle className="mb-3 md:mr-[inherit] xl:mr-56">
             Products
           </SectionTitle>
@@ -43,6 +46,10 @@ function HomePage() {
                   }))}
                   onClick={(e) => {
                     e.preventDefault();
+                  }}
+                  onAddToCarcClick={() => {
+                    console.log("here");
+                    dispatch(CartSlider.actions.addCart(p));
                   }}
                 />
               </Link>

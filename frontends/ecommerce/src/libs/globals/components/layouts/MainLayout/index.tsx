@@ -1,4 +1,4 @@
-import { Link, ReactNode } from "@tanstack/react-router";
+import { Link, ReactNode, useNavigate } from "@tanstack/react-router";
 import { FC } from "react";
 import Navigation from "../../navigations/Navigation";
 import Footer from "../../footers/Footer";
@@ -16,6 +16,10 @@ type MainLayoutProps = {
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const dispatch = useAppDispatch();
+  const cartQty = useAppSelector((state) =>
+    state.cart.data.flatMap((v) => v.quantity).reduce((acc, v) => acc + v, 0),
+  );
+  const nav = useNavigate();
   const auth = useAppSelector((state) => state.auth);
   return (
     <div
@@ -53,23 +57,35 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 </Link>
               </div>
             )}
-            <IconButton className="p-2">
-              <ShoppingCart className="text-(--bg-dark)" />
-            </IconButton>
+            <div className="relative">
+              {!!cartQty && (
+                <span className="absolute -top-1 -right-1.5 rounded-full bg-(--bg-dark) p-1 px-2 text-[10px] font-medium text-white">
+                  {cartQty}
+                </span>
+              )}
+              <IconButton
+                className="p-2"
+                onClick={() => {
+                  nav({ to: "/carts" });
+                }}
+              >
+                <ShoppingCart className="text-(--bg-dark)" />
+              </IconButton>
+            </div>
           </div>
         }
       />
-      <main className="m-auto mb-12 flex h-full w-full max-w-7xl flex-1 bg-transparent px-1.5">
+      <main
+        className={joinClass(
+          "m-auto mb-12 flex h-full",
+          "w-full max-w-7xl flex-1 bg-transparent px-1.5",
+        )}
+      >
         {children}
       </main>
       <Footer />
     </div>
   );
 };
-
-// <div className="no-wrap flex flex-row items-center gap-2">
-//   <Smartphone />
-//   <span>123 456 7891</span>
-// </div>
 
 export default MainLayout;

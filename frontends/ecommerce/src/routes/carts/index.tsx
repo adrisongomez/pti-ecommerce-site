@@ -29,7 +29,10 @@ function RouteComponent() {
           </p>
         )}
         {cart.map((c) => (
-          <div className="flex items-center justify-between">
+          <div
+            key={`product-item-${c.product.id}`}
+            className="flex items-center justify-between"
+          >
             <div className="flex items-center gap-6">
               <img
                 className="size-12 rounded-md bg-slate-300 object-contain"
@@ -48,7 +51,7 @@ function RouteComponent() {
               >
                 <PlusCircle />
               </IconButton>
-              <h5 className="texxt-xl font-medium">{c.quantity}</h5>
+              <h5 className="text-xl font-medium">{c.quantity}</h5>
               <IconButton
                 onClick={() => {
                   dispatch(CartSlider.actions.removeCart(c.product.id));
@@ -60,8 +63,14 @@ function RouteComponent() {
           </div>
         ))}
         <div className="mt-6 flex items-end justify-end gap-6">
-          <Button disabled={!cart.length} variant="contained">
-            Submit
+          <Button
+            disabled={!cart.length}
+            variant="contained"
+            onClick={() => {
+              nav({ to: "/checkout" });
+            }}
+          >
+            Checkout
           </Button>
           <Button
             variant="outlined"

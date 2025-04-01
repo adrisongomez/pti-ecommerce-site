@@ -6,17 +6,20 @@ type TextfieldProps = {
   label: string;
   error?: boolean;
   helperText?: string;
+  fullWidth?: boolean;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "className">;
 
 const Textfield: FC<TextfieldProps> = ({
   label,
   error = false,
   helperText,
+  fullWidth = false,
   ...props
 }) => {
   return (
     <label
       className={joinClass(
+        fullWidth ? "w-full flex-1" : "",
         "flex flex-col gap-1.5 text-sm",
         error ? "text-red-600" : "text-(--text-primary)",
       )}

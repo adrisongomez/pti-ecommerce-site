@@ -77,16 +77,11 @@ func (a AuthService) MapUserDBToOutput(model db.UserModel) *User {
 }
 
 func (a *AuthService) Me(ctx context.Context, input *MePayload) (*User, error) {
-	token, err := a.Parse(input.Token)
-	if token == nil || err != nil {
-		return nil, MakeUnproccesable(CantParseToken)
+	a.Info("current user", zap.Any("ctx", ctx.Value(auth.UserCtxKey)))
+	if value, ok := ctx.Value(auth.UserCtxKey).(*db.UserModel); ok {
+		return a.MapUserDBToOutput(*value), nil
 	}
-	userID := token.UserID
-	user, err := a.client.User.FindUnique(db.User.ID.Equals(userID)).Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return a.MapUserDBToOutput(*user), nil
+	return nil, MakeNotFound(fmt.Errorf("No current user"))
 }
 
 func (a *AuthService) Signup(ctx context.Context, input *UserRegistrationInput) (res *Creds, err error) {

@@ -22,11 +22,11 @@ type OrderService struct {
 	*zap.Logger
 }
 
-const DecimalSize = 2
+const DecimalSize = -2
 
 var Connection = []db.OrderRelationWith{
 	db.Order.Address.Fetch(),
-	db.Order.LineItems.Fetch().With(db.OrderLineItem.Order.Fetch()),
+	db.Order.LineItems.Fetch(),
 	db.Order.User.Fetch(),
 }
 
@@ -39,7 +39,7 @@ func (o *OrderService) Create(ctx context.Context, payload *CreatePayload) (*Ord
 		db.Order.TotalPrice.Set(decimal.New(int64(totalPrice), DecimalSize)),
 		db.Order.User.Link(db.User.ID.Equals(payload.Input.UserID)),
 		db.Order.Address.Link(db.Address.ID.Equals(payload.Input.AddressID)),
-	).With(Connection...).Exec(ctx)
+	).Exec(ctx)
 
 	if err != nil {
 		return nil, err
@@ -79,8 +79,17 @@ func (o *OrderService) Cancel(ctx context.Context, payload *CancelPayload) (bool
 
 func (o *OrderService) List(ctx context.Context, payload *ListPayload) (*OrderList, error) {
 	o.Info("List Order got called with", zap.Any("payload", payload))
-	// user := db.UserModel(ctx.Value(auth.UserCtxKey))
-	ordersDB, err := o.client.Order.FindMany().With(Connection...).Take(payload.PageSize).Skip(payload.After).Exec(ctx)
+
+	filters := []db.OrderWhereParam{}
+	if user, ok := ctx.Value(auth.UserCtxKey).(*db.UserModel); ok {
+		filters = append(filters, db.Order.UserID.Equals(user.ID))
+	}
+
+	ordersDB, err := o.client.Order.FindMany(filters...).
+		With(Connection...).
+		Take(payload.PageSize).
+		Skip(payload.After).
+		Exec(ctx)
 	if err != nil {
 		o.Error("Error List Order findMany", zap.Error(err))
 		return nil, err
@@ -124,7 +133,6 @@ func MapOrderModelToOrder(model *db.OrderModel) *Order {
 		TotalPrice: model.TotalPrice.String(),
 		CreatedAt:  model.CreatedAt.String(),
 	}
-	lineItems := []*OrderLineItem{}
 	if value := model.User(); value != nil {
 		user := *MapUserDBToOutput(*value)
 		output.User = &User{
@@ -159,11 +167,14 @@ func MapOrderModelToOrder(model *db.OrderModel) *Order {
 			addressOut.ZipCode = *utils.StringRef(data)
 		}
 	}
+
+	lineItems := []*OrderLineItem{}
 	lineItemsDB := model.LineItems()
 	if len(lineItemsDB) == 0 {
 		output.LineItems = lineItems
 		return &output
 	}
+
 	for _, lineItemDB := range lineItemsDB {
 		lineItem := OrderLineItem{
 			ID:       lineItemDB.ID,
@@ -176,6 +187,7 @@ func MapOrderModelToOrder(model *db.OrderModel) *Order {
 		}
 		lineItems = append(lineItems, &lineItem)
 	}
+	output.LineItems = lineItems
 	return &output
 }
 
@@ -183,7 +195,7 @@ func (o *OrderService) Show(ctx context.Context, payload *ShowPayload) (*Order, 
 	o.Info("Show Order got called with", zap.Any("payload", payload))
 	order, err := o.client.Order.FindUnique(
 		db.Order.ID.Equals(payload.OrderID),
-	).With().
+	).With(Connection...).
 		Exec(ctx)
 	if err != nil {
 		if db.IsErrNotFound(err) {

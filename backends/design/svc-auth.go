@@ -22,9 +22,9 @@ var BasicAuth = BasicAuthSecurity("basic", func() {
 
 var _ = Service("auth", func() {
 	Error("NotValidCrendentials")
-	Error("BadInput")
 	Error("Unproccesable")
 	Error("Unauthorized")
+	Error("NotFound")
 
 	HTTP(func() {
 		Path("/auth")
@@ -53,7 +53,7 @@ var _ = Service("auth", func() {
 		HTTP(func() {
 			POST("/signup")
 			Response(StatusOK)
-			Response("BadInput", StatusBadRequest)
+			Response("NotFound", StatusNotFound)
 		})
 		Result(Creds)
 	})

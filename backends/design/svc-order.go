@@ -1,7 +1,9 @@
 package design
 
 import (
+	"github.com/adrisongomez/pti-ecommerce-site/backends/design/securities"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/design/types"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	. "goa.design/goa/v3/dsl"
 )
 
@@ -17,9 +19,13 @@ var _ = Service("order", func() {
 		Response("Unauthorized", StatusUnauthorized)
 	})
 	Method("create", func() {
+		Security(securities.JWTAuth, func() {
+			Scope(auth.OrderWrite)
+		})
 		Payload(func() {
 			Attribute("input", types.OrderInput)
-			Required("input")
+			Token("token")
+			Required("input", "token")
 		})
 
 		Result(types.Order)
@@ -31,9 +37,13 @@ var _ = Service("order", func() {
 		})
 	})
 	Method("Cancel", func() {
+		Security(securities.JWTAuth, func() {
+			Scope(auth.OrderWrite)
+		})
 		Payload(func() {
 			Attribute("orderId", Int)
-			Required("orderId")
+			Token("token")
+			Required("orderId", "token")
 		})
 		Result(Boolean)
 		HTTP(func() {
@@ -44,6 +54,9 @@ var _ = Service("order", func() {
 		})
 	})
 	Method("list", func() {
+		Security(securities.JWTAuth, func() {
+			Scope(auth.OrderRead)
+		})
 		Payload(func() {
 			Attribute("pageSize", Int, "Record per page", func() {
 				Minimum(10)
@@ -54,6 +67,8 @@ var _ = Service("order", func() {
 			Attribute("after", Int, "Start listing after this resource", func() {
 				Default(0)
 			})
+			Token("token")
+			Required("token")
 		})
 		Result(PaginatedOrder)
 		HTTP(func() {
@@ -65,9 +80,13 @@ var _ = Service("order", func() {
 		})
 	})
 	Method("show", func() {
+		Security(securities.JWTAuth, func() {
+			Scope(auth.OrderRead)
+		})
 		Payload(func() {
 			Attribute("orderId", Int)
-			Required("orderId")
+			Token("token")
+			Required("orderId", "token")
 		})
 		Result(types.Order)
 		HTTP(func() {

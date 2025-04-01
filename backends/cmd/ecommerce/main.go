@@ -57,7 +57,7 @@ func main() {
 	mediaSvc := svc.NewMediaService(client, accessTokenValidator)
 	userSvc := svc.NewUserService(client, passwordHasher, accessTokenValidator)
 	orderSvc := svc.NewOrderService(client, accessTokenValidator)
-	addressSvc := svc.NewAddressService(client)
+	addressSvc := svc.NewAddressService(client, accessTokenValidator)
 	mux := goahttp.NewMuxer()
 	svc.MountAddressSVC(mux, addressSvc)
 	svc.MountOrderSVC(mux, orderSvc)

@@ -11,12 +11,14 @@ import (
 	. "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/address"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/address/server"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 )
 
 type AddressService struct {
 	client *db.PrismaClient
 
 	*zap.Logger
+	*auth.JWTValidator
 }
 
 func MapAddressDBToOutput(model *db.AddressModel) *Address {
@@ -44,7 +46,15 @@ func MapAddressDBToOutput(model *db.AddressModel) *Address {
 }
 
 func (a AddressService) Show(ctx context.Context, payload *ShowPayload) (*Address, error) {
-	addressDB, err := a.client.Address.FindUnique(db.Address.ID.Equals(payload.AddressID)).Exec(ctx)
+	filters := []db.AddressWhereParam{
+		db.Address.ID.Equals(payload.AddressID),
+	}
+	if value, ok := ctx.Value(auth.UserCtxKey).(*db.UserModel); ok {
+		filters = append(filters,
+			db.Address.UserID.Equals(value.ID),
+		)
+	}
+	addressDB, err := a.client.Address.FindFirst(filters...).Exec(ctx)
 	if err != nil {
 		if db.IsErrNotFound(err) {
 			return nil, MakeNotFound(err)
@@ -55,8 +65,16 @@ func (a AddressService) Show(ctx context.Context, payload *ShowPayload) (*Addres
 }
 
 func (a AddressService) Create(ctx context.Context, payload *CreatePayload) (*Address, error) {
-	changes := []db.AddressSetParam{
-		db.Address.User.Link(db.User.ID.Equals(payload.Input.UserID)),
+	changes := []db.AddressSetParam{}
+
+	if value, ok := ctx.Value(auth.UserCtxKey).(*db.UserModel); ok {
+		changes = append(changes,
+			db.Address.User.Link(db.User.ID.Equals(value.ID)),
+		)
+	} else {
+		changes = append(changes,
+			db.Address.User.Link(db.User.ID.Equals(payload.Input.UserID)),
+		)
 	}
 
 	if payload.Input.AddressLine2 != nil {
@@ -80,12 +98,29 @@ func (a AddressService) Create(ctx context.Context, payload *CreatePayload) (*Ad
 }
 
 func (a AddressService) Delete(ctx context.Context, payload *DeletePayload) (bool, error) {
-	_, err := a.client.Address.FindUnique(db.Address.ID.Equals(payload.AddressID)).Delete().Exec(ctx)
-	return err != nil, nil
+	filters := []db.AddressWhereParam{
+		db.Address.ID.Equals(payload.AddressID),
+	}
+	if value, ok := ctx.Value(auth.UserCtxKey).(*db.UserModel); ok {
+		filters = append(filters,
+			db.Address.UserID.Equals(value.ID),
+		)
+	}
+	_, err := a.client.Address.FindMany(db.Address.And(filters...)).Delete().Exec(ctx)
+	return err != nil, err
 }
 
 func (a AddressService) List(ctx context.Context, payload *ListPayload) (*AddressList, error) {
-	addressDbs, err := a.client.Address.FindMany().Take(payload.PageSize).Skip(payload.After).Exec(ctx)
+	filters := []db.AddressWhereParam{}
+	if value, ok := ctx.Value(auth.UserCtxKey).(*db.UserModel); ok {
+		filters = append(filters,
+			db.Address.UserID.Equals(value.ID),
+		)
+	}
+	addressDbs, err := a.client.Address.FindMany(filters...).
+		Take(payload.PageSize).
+		Skip(payload.After).
+		Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -119,8 +154,8 @@ func (a AddressService) List(ctx context.Context, payload *ListPayload) (*Addres
 	return response, nil
 }
 
-func NewAddressService(client *db.PrismaClient) Service {
-	return &AddressService{client: client, Logger: zap.L()}
+func NewAddressService(client *db.PrismaClient, validator *auth.JWTValidator) Service {
+	return &AddressService{client: client, Logger: zap.L(), JWTValidator: validator}
 }
 
 func MountAddressSVC(mux http.Muxer, svc Service) {

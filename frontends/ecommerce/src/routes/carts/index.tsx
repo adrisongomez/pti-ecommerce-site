@@ -10,6 +10,9 @@ import { MinusCircle, PlusCircle } from "react-feather";
 
 export const Route = createFileRoute("/carts/")({
   component: RouteComponent,
+  head: () => ({
+    meta: [{ title: "Ecommerce | Cart" }],
+  }),
 });
 
 function RouteComponent() {

@@ -10,6 +10,9 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
+  head: () => ({
+    meta: [{ title: "Ecommerce | Login" }],
+  }),
 });
 
 function LoginPage() {

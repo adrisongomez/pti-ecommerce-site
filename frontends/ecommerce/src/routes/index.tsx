@@ -10,7 +10,7 @@ import CartSlider from "@/libs/globals/redux/CartReducer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [{ title: "Home Page" }],
+    meta: [{ title: "Ecommerce | Home" }],
   }),
   component: HomePage,
 });
@@ -48,7 +48,6 @@ function HomePage() {
                     e.preventDefault();
                   }}
                   onAddToCarcClick={() => {
-                    console.log("here");
                     dispatch(CartSlider.actions.addCart(p));
                   }}
                 />

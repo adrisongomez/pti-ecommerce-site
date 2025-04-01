@@ -58,6 +58,7 @@ const ProductCard: FC<ProductCardProps> = ({
       <div className="flex flex-row gap-4">
         {variants.map((v, i) => (
           <div
+            key={"variant-" + i}
             onClick={() => setCurrentPosition(i)}
             style={{ background: v.colorSwatch }}
             className={joinClass(`size-4 rounded-full`, "cursor-pointer")}

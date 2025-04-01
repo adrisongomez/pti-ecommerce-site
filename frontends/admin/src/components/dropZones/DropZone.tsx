@@ -8,6 +8,7 @@ import SortableList, { SortableItem } from "react-easy-sort";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "../images/Images";
 import AddIcon from "@mui/icons-material/Add";
+import { getCreds } from "../../utils/auth";
 
 type DropdownZoneProps<T> = {
   values: T[];
@@ -34,6 +35,7 @@ export function DropZone<
     async onDrop(files) {
       const response = await Promise.all(
         files.map(async (value) => {
+          const creds = getCreds();
           const mediaInput: MediaInput = {
             bucket: "ecommerce-public",
             filename: value.name,
@@ -42,6 +44,11 @@ export function DropZone<
             size: value.size,
           };
           const response = await svcMediaCreate<true>({
+            headers: creds
+              ? {
+                  Authorization: `Bearer ${creds?.accessToken}`,
+                }
+              : undefined,
             throwOnError: true,
             body: mediaInput,
           });

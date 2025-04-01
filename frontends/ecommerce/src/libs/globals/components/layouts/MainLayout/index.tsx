@@ -7,6 +7,8 @@ import MainHeader from "../../headers/MainHeader";
 import { useAppDispatch, useAppSelector } from "@/libs/globals/hooks/redux";
 import Button from "../../buttons/Button";
 import authSlice from "@/libs/globals/redux/AuthReducer";
+import { ShoppingCart } from "react-feather";
+import IconButton from "../../buttons/IconButton";
 
 type MainLayoutProps = {
   children: ReactNode | ReactNode[];
@@ -30,9 +32,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             {auth.user ? (
               <div className="flex items-center gap-3">
                 <span className="cursor-pointer select-none">
-                  <Button variant="text">
-                    Profile
-                  </Button>
+                  <Button variant="text">Profile</Button>
                 </span>
                 <Button
                   variant="text"
@@ -53,6 +53,9 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 </Link>
               </div>
             )}
+            <IconButton className="p-2">
+              <ShoppingCart className="text-(--bg-dark)" />
+            </IconButton>
           </div>
         }
       />

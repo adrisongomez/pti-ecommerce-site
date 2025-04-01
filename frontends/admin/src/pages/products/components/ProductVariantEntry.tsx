@@ -67,8 +67,13 @@ const ProductVariantEntry: FC<ProductVariantEntryProps> = ({
           <TextField
             fullWidth
             variant="filled"
-            value={formik.values.price}
-            onChange={formik.handleChange}
+            value={formik.values.price / 100}
+            onChange={(e) => {
+              formik.setFieldValue(
+                "price",
+                Number(e.currentTarget.value) * 100,
+              );
+            }}
             slotProps={{
               input: {
                 startAdornment: (

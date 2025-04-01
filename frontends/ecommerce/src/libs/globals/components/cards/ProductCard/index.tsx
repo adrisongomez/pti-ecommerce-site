@@ -11,7 +11,7 @@ type ProductCardProps = {
   variants: {
     imageUrl: string;
     colorSwatch: string;
-    price: number;
+    price: string;
   }[];
   label?: {
     color: string;
@@ -28,8 +28,8 @@ const ProductCard: FC<ProductCardProps> = ({
 }) => {
   const [currentPosition, setCurrentPosition] = useState<number | null>();
   const [lower, max] = [
-    Math.min(...variants.map((v) => v.price)),
-    Math.max(...variants.map((v) => v.price)),
+    Math.min(...variants.map((v) => Number(v.price))),
+    Math.max(...variants.map((v) => Number(v.price))),
   ];
   const currentVariant = variants.at(currentPosition ?? 0);
   const imageUrl = currentVariant?.imageUrl ?? "placeholder";
@@ -52,7 +52,7 @@ const ProductCard: FC<ProductCardProps> = ({
         </IconButton>
       </div>
       <img
-        className="w-lg rounded object-cover object-top sm:w-xs md:w-2xs lg:w-3xs"
+        className="h-[256px] w-[256px] rounded object-cover object-top sm:w-xs md:w-2xs lg:w-3xs"
         src={imageUrl}
       />
       <div className="flex flex-row gap-4">
@@ -84,11 +84,7 @@ const ProductCard: FC<ProductCardProps> = ({
           >
             ${" "}
             {currentVariant && currentPosition !== null ? (
-              <FormattedNumber
-                value={currentVariant.price}
-                maximumSignificantDigits={2}
-                minimumFractionDigits={2}
-              />
+              currentVariant.price
             ) : (
               <>
                 <FormattedNumber

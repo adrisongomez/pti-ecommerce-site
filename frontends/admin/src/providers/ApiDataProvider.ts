@@ -9,6 +9,7 @@ export default function ApiDataProvider(baseUrl: string): DataProvider {
     // @ts-ignore
     async getList({ pagination, resource }) {
       const creds = getCreds();
+      console.log(creds);
       const response = await client.get<{
         data: unknown[];
         pageInfo: { totalResource: number };
@@ -44,6 +45,7 @@ export default function ApiDataProvider(baseUrl: string): DataProvider {
     // @ts-ignore
     async create({ resource, variables }) {
       const creds = getCreds();
+      console.log(creds);
       const response = await client.post<unknown>({
         headers: creds
           ? {

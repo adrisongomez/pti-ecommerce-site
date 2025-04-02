@@ -6,18 +6,22 @@ import (
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	. "github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/chat"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/gen/http/chat/server"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/assistant"
 	"go.uber.org/zap"
+	"goa.design/goa/v3/http"
 )
 
 type ChatService struct {
-	client *db.PrismaClient
+	client          *db.PrismaClient
+	assistantClient *assistant.AssitantService
 	*auth.JWTValidator
 }
 
-func NewChatService(client *db.PrismaClient, validator *auth.JWTValidator) Service {
-	return &ChatService{client, validator}
+func NewChatService(client *db.PrismaClient, validator *auth.JWTValidator, assistantClient *assistant.AssitantService) Service {
+	return &ChatService{client, assistantClient, validator}
 }
 
 func (c *ChatService) CreateChatSession(ctx context.Context, payload *CreateChatSessionPayload) (int, error) {
@@ -99,4 +103,19 @@ func (c *ChatService) SubmitMessageToSession(ctx context.Context, payload *Submi
 		return "", err
 	}
 	return openApiMessage, nil
+}
+
+func MountChatSVC(mux http.Muxer, svc Service) {
+	endpoints := NewEndpoints(svc)
+	req := http.RequestDecoder
+	res := http.ResponseEncoder
+
+	handler := server.New(endpoints, mux, req, res, nil, nil)
+	server.Mount(mux, handler)
+
+	go func() {
+		for _, mount := range handler.Mounts {
+			zap.L().Info(fmt.Sprintf("%q mounted on %s %s\n", mount.Method, mount.Verb, mount.Pattern))
+		}
+	}()
 }

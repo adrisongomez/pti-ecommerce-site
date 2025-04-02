@@ -8,6 +8,7 @@ import (
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
+	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/assistant"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/loggers"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/services"
 	"github.com/joho/godotenv"
@@ -53,8 +54,8 @@ func main() {
 		accessTokenValidator  = auth.NewJWTValidator(&ACCESS_TOKEN_SECRET, client)
 		refreshTokenValidator = auth.NewJWTValidator(&REFRESH_TOKEN_SECRET, client)
 		passwordHasher        = &auth.PasswordHasher{}
+		assistantClient       = assistant.NewAssitantService(client)
 	)
-
 	healthcheckSvc := svc.NewHealthcheckService()
 	refreshAuthService := svc.NewAuthRefreshService(client, logger, accessTokenGenerator, refreshTokenGenerator, refreshTokenValidator)
 	authService := svc.NewAuthService(logger, client, passwordHasher, accessTokenGenerator, refreshTokenGenerator, accessTokenValidator)
@@ -63,7 +64,9 @@ func main() {
 	userSvc := svc.NewUserService(client, passwordHasher, accessTokenValidator)
 	orderSvc := svc.NewOrderService(client, accessTokenValidator)
 	addressSvc := svc.NewAddressService(client, accessTokenValidator)
+	chatSvc := svc.NewChatService(client, accessTokenValidator, assistantClient)
 	mux := goahttp.NewMuxer()
+	svc.MountChatSVC(mux, chatSvc)
 	svc.MountAddressSVC(mux, addressSvc)
 	svc.MountOrderSVC(mux, orderSvc)
 	svc.MountMediaSVC(mux, mediaSvc)

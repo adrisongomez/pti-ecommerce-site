@@ -90,7 +90,11 @@ func (c *ChatService) SubmitMessageToSession(ctx context.Context, payload *Submi
 		zap.L().Error("Error saving user message", zap.Error(err))
 		return "", err
 	}
-	openApiMessage := ""
+	openApiMessage, err := c.assistantClient.GetOpenAPIMessage(*payload.Message, ctx)
+
+	if err != nil {
+		return "", err
+	}
 
 	_, err = c.client.ChatMessage.CreateOne(
 		db.ChatMessage.Source.Set(db.ChatSourceAssistant),

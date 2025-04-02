@@ -11,7 +11,7 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/assistant"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/loggers"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/services"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"go.uber.org/zap"
 	goahttp "goa.design/goa/v3/http"
 )
@@ -24,18 +24,18 @@ var (
 )
 
 func main() {
-	err := godotenv.Load("../../../.env.local", "../../../.env", "../../../.env.production")
-	if err != nil {
-		log.Fatal("Error loading environment variables")
-	}
 	var (
 		port   = "3030"
 		logger = loggers.CreateLogger("ecommerce-api")
-		client = db.NewClient()
 	)
-
 	zap.ReplaceGlobals(logger)
+	// err := godotenv.Load("../../../.")
+	// if err != nil {
+	// 	logger.Fatal("Error loading environment variables", zap.Error(err))
+	// 	panic(err)
+	// }
 
+	client := db.NewClient()
 	if err := client.Prisma.Connect(); err != nil {
 		logger.Error("Error connecting to prisma server", zap.Error(err))
 		panic(err)

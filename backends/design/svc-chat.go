@@ -37,7 +37,7 @@ var _ = Service("chat", func() {
 		})
 		Result(types.ChatSession)
 		HTTP(func() {
-			POST("/{sessionId}")
+			GET("/{sessionId}")
 			Param("sessionId")
 			Response(StatusOK)
 		})

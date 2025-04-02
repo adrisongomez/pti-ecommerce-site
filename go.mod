@@ -11,6 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.78.2
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/joho/godotenv v1.5.1
+	github.com/openai/openai-go v0.1.0-beta.3
 	github.com/shopspring/decimal v1.4.0
 	go.uber.org/zap v1.27.0
 	goa.design/clue v1.1.1
@@ -36,7 +37,6 @@ require (
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/gohugoio/hashstructure v0.5.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
-	github.com/openai/openai-go v0.1.0-beta.3 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect

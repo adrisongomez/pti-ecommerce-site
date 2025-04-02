@@ -40,8 +40,8 @@ const RootComponent: FC = () => {
       <HeadContent />
       <Outlet />
       <Suspense>
-        <TanStackRouterDevtools />
-        <ReactQueryDevtools />
+        <TanStackRouterDevtools position="bottom-left" />
+        <ReactQueryDevtools position="left" buttonPosition="top-left" />
       </Suspense>
     </>
   );

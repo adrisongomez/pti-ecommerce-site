@@ -42,6 +42,7 @@ export const authSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.loading = false;
+        state.status = "logged";
         state.user = action.payload;
       })
       .addCase(fetchUser.rejected, (state) => {

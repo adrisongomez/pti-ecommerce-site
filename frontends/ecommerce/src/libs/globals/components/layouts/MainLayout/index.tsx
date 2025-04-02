@@ -1,5 +1,5 @@
 import { Link, ReactNode, useNavigate } from "@tanstack/react-router";
-import { FC } from "react";
+import { FC, useState } from "react";
 import Navigation from "../../navigations/Navigation";
 import Footer from "../../footers/Footer";
 import { joinClass } from "@/libs/globals/utilities/joinClass";
@@ -9,12 +9,19 @@ import Button from "../../buttons/Button";
 import authSlice from "@/libs/globals/redux/AuthReducer";
 import { ShoppingCart } from "react-feather";
 import IconButton from "../../buttons/IconButton";
+import AssitantChat from "@/libs/routes/ChatModal";
+import { useChatServicePostApiChats } from "@/libs/globals/generated/queries";
 
 type MainLayoutProps = {
   children: ReactNode | ReactNode[];
 };
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
+  const [open, setOpen] = useState(false);
+  const [sessionId, setSessionId] = useState(0);
+  const session = useChatServicePostApiChats({
+    mutationKey: ["MainLayout_CreateChatSession"],
+  });
   const dispatch = useAppDispatch();
   const cartQty = useAppSelector((state) =>
     state.cart.data.flatMap((v) => v.quantity).reduce((acc, v) => acc + v, 0),
@@ -86,6 +93,20 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
         {children}
       </main>
       <Footer />
+      {auth.status === "logged" && (
+        <AssitantChat
+          open={open}
+          sessionId={sessionId}
+          onOpen={async () => {
+            setOpen(true);
+            const sessionId = await session.mutateAsync();
+            setSessionId(sessionId);
+          }}
+          onClose={async () => {
+            setOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

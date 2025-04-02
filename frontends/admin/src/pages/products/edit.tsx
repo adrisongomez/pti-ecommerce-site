@@ -31,7 +31,14 @@ const EditProduct: FC = () => {
   const formik = useFormik<EditProductFormState>({
     initialValues: {
       medias: originalProduct?.data?.medias ?? [],
-      variants: originalProduct?.data?.variants ?? [],
+      variants:
+        originalProduct?.data?.variants.map((v) => ({
+          id: v.id,
+          colorName: v.colorName,
+          price: parseInt(v.price),
+          colorHex: v.colorHex,
+          featureMediaLoc: v.featureMediaLoc,
+        })) ?? [],
       productUpdate: {
         handle: originalProduct?.data?.handle ?? "",
         title: originalProduct?.data?.title ?? "",
@@ -69,7 +76,15 @@ const EditProduct: FC = () => {
     if (originalProduct && !formik.dirty) {
       formik.setValues({
         medias: originalProduct?.data.medias,
-        variants: originalProduct?.data.variants,
+        variants:
+          originalProduct?.data?.variants.map((v) => ({
+            id: v.id,
+            colorName: v.colorName,
+            price: parseInt(v.price),
+            colorHex: v.colorHex,
+            featureMediaLoc: v.featureMediaLoc,
+          })) ?? [],
+
         productUpdate: {
           handle: originalProduct?.data.handle ?? "",
           title: originalProduct?.data.title ?? "",

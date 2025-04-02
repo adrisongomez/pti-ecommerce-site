@@ -86,7 +86,7 @@ const LoginForm: FC<LoginFormProps> = ({
           >
             Login
           </Button>
-          <Button className="flex-1 py-1.5" type="reset" variant="outline">
+          <Button className="flex-1 py-1.5" type="reset" variant="outlined">
             Sign Up
           </Button>
         </div>

@@ -26,7 +26,7 @@ export const ProductCardDefault: Story = {
     variants: PRODUCT.colorOptions.map((v) => ({
       imageUrl: v.imageUrl,
       colorSwatch: v.colorSwatch,
-      price: Math.random() * 100.0,
+      price: "500",
     })),
     label: {
       color: PRODUCT.labelColor,

@@ -11,7 +11,7 @@ const FeatureProductsGallery: FC = () => (
         variants={p.colorOptions.map((v) => ({
           imageUrl: v.imageUrl,
           colorSwatch: v.colorSwatch,
-          price: 100.0 * Math.random(),
+          price: "500",
         }))}
       />
     ))}

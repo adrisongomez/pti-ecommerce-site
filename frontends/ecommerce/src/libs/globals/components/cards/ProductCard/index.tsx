@@ -4,15 +4,17 @@ import { Heart, ShoppingCart } from "react-feather";
 import { FormattedNumber } from "react-intl";
 import IconButton from "../../buttons/IconButton";
 
+type Variant = {
+    imageUrl: string;
+    colorSwatch: string;
+    price: string;
+};
+
 type ProductCardProps = {
   onClick?: MouseEventHandler<HTMLDivElement>;
   onAddToCarcClick?: MouseEventHandler<HTMLButtonElement>;
   title: string;
-  variants: {
-    imageUrl: string;
-    colorSwatch: string;
-    price: string;
-  }[];
+  variants: Variant[];
   label?: {
     color: string;
     labelTitle: string;

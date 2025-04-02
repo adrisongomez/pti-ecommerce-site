@@ -33,7 +33,7 @@ format-prisma:
 	go run github.com/steebchen/prisma-client-go format --schema ./backends/databases/schema.prisma
 
 start-external-svc:
-	docker-compose -f ./docker/docker-compose.yml up -d
+	docker-compose -f ./docker/docker-compose.dev.yml up -d
 
 stop-docker:
-	docker-compose -f ./docker/docker-compose.yml stop
+	docker-compose -f ./docker/docker-compose.dev.yml stop

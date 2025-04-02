@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/adrisongomez/pti-ecommerce-site/backends/databases/db"
@@ -11,7 +12,6 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/assistant"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/loggers"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/services"
-	// "github.com/joho/godotenv"
 	"go.uber.org/zap"
 	goahttp "goa.design/goa/v3/http"
 )
@@ -19,23 +19,20 @@ import (
 var (
 	Day                  = time.Hour * 24
 	Month                = Day * 24 * 30
-	ACCESS_TOKEN_SECRET  = "SECRET"
-	REFRESH_TOKEN_SECRET = "SECRET2"
+	ACCESS_TOKEN_SECRET  = os.Getenv("ACCESS_SECRET")
+	REFRESH_TOKEN_SECRET = os.Getenv("REFRESH_SECRET")
 )
 
 func main() {
 	var (
+		host   = os.Getenv("APP_HOST")
 		port   = "3030"
+		dburl  = os.Getenv("DATABASE_URL")
 		logger = loggers.CreateLogger("ecommerce-api")
 	)
 	zap.ReplaceGlobals(logger)
-	// err := godotenv.Load("../../../.")
-	// if err != nil {
-	// 	logger.Fatal("Error loading environment variables", zap.Error(err))
-	// 	panic(err)
-	// }
 
-	client := db.NewClient()
+	client := db.NewClient(db.WithDatasourceURL(dburl))
 	if err := client.Prisma.Connect(); err != nil {
 		logger.Error("Error connecting to prisma server", zap.Error(err))
 		panic(err)
@@ -75,7 +72,7 @@ func main() {
 	svc.MountUserServiceSVC(mux, userSvc)
 	svc.MountAuthSVC(mux, authService)
 	svc.MountAuthRefreshSVC(mux, refreshAuthService)
-	server := &http.Server{Addr: ":" + port, Handler: mux}
+	server := &http.Server{Addr: host + ":" + port, Handler: mux}
 
 	logger.Info(fmt.Sprintf("Starting server on :%s\n", port))
 	if err := server.ListenAndServe(); err != nil {

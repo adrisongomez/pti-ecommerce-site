@@ -10,6 +10,7 @@ import (
 	"github.com/adrisongomez/pti-ecommerce-site/backends/internal/utils/auth"
 	"github.com/adrisongomez/pti-ecommerce-site/backends/pkg/loggers"
 	svc "github.com/adrisongomez/pti-ecommerce-site/backends/pkg/services"
+	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 	goahttp "goa.design/goa/v3/http"
 )
@@ -22,6 +23,10 @@ var (
 )
 
 func main() {
+	err := godotenv.Load("../../../.env.local", "../../../.env", "../../../.env.production")
+	if err != nil {
+		log.Fatal("Error loading environment variables")
+	}
 	var (
 		port   = "3030"
 		logger = loggers.CreateLogger("ecommerce-api")

@@ -7,22 +7,6 @@ generator db {
   provider = "go run github.com/steebchen/prisma-client-go"
 }
 
-model Collection {
-  id      Int    @id @default(autoincrement())
-  name    String
-  handler String
-
-  products Product[]
-
-  ProductCollection ProductCollection[]
-
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-  deletedAt DateTime? @map("deleted_at")
-
-  @@map("collections")
-}
-
 model Product {
   id          Int           @id @default(autoincrement())
   title       String        @db.VarChar(200)
@@ -30,14 +14,12 @@ model Product {
   handler     String        @unique
   status      ProductStatus
 
-  variants    ProductVariant[]
-  tags        String[]
-  medias      ProductMedia[]
-  collections Collection[]
+  variants ProductVariant[]
+  tags     String[]
+  medias   ProductMedia[]
 
-  MediasIn          Media[]
-  ProductCollection ProductCollection[]
-  orderLineItem     OrderLineItem[]
+  MediasIn      Media[]
+  orderLineItem OrderLineItem[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
@@ -45,21 +27,6 @@ model Product {
 
   @@index([id, title, handler])
   @@map("products")
-}
-
-model ProductCollection {
-  productId    Int @map("product_id")
-  collectionId Int @map("collection_id")
-
-  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-  deletedAt DateTime? @map("deleted_at")
-
-  @@id(name: "id", [productId, collectionId])
-  @@map("product_collections")
 }
 
 model ProductVariant {
@@ -129,9 +96,10 @@ model User {
   address Address[]
   order   Order[]
 
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
-  deletedAt DateTime? @map("deleted_at")
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime?     @updatedAt @map("updated_at") @db.Timestamptz()
+  deletedAt   DateTime?     @map("deleted_at")
+  ChatSession ChatSession[]
 
   @@map("users")
 }
@@ -192,6 +160,35 @@ model OrderLineItem {
   deletedAt DateTime? @map("deleted_at")
 
   @@map("order_line_items")
+}
+
+model ChatSession {
+  id     Int @id @default(autoincrement())
+  userId Int @map("user_id")
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  messages ChatMessage[]
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id            Int        @id @default(autoincrement())
+  chatSessionId Int        @map("chat_session_id")
+  source        ChatSource
+  message       String
+
+  chat ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+}
+
+enum ChatSource {
+  Assistant
+  User
 }
 
 enum UserRole {

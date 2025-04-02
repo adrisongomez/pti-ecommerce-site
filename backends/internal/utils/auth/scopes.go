@@ -12,10 +12,12 @@ const (
 	AccessTokenGeneration Scope = "access_token:generation"
 
 	// Customer access scope
-	UserMe      Scope = "user:read_personal"
-	UserMeWrite Scope = "user:write_personal"
-	OrderWrite  Scope = "order:write"
-	OrderRead   Scope = "order:read"
+	UserMe           Scope = "user:read_personal"
+	UserMeWrite      Scope = "user:write_personal"
+	OrderWrite       Scope = "order:write"
+	OrderRead        Scope = "order:read"
+	ChatSessionWrite Scope = "chat_session:write"
+	ChatSessionRead  Scope = "chat_session:read"
 
 	// Admin access scope
 	ProductsWrite Scope = "products:write"
@@ -34,6 +36,8 @@ var CustomerScope = []string{
 	UserMeWrite,
 	OrderWrite,
 	OrderRead,
+	ChatSessionWrite,
+	ChatSessionRead,
 }
 
 var AdminScope = append([]string{
